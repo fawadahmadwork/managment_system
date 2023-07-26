@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  base_salary: 9.99
+  allowances: 9.99
+  bonuses: 9.99
+  employee_id: 1
+
+two:
+  base_salary: 9.99
+  allowances: 9.99
+  bonuses: 9.99
+  employee_id: 1
