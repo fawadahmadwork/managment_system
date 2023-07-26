@@ -4,10 +4,8 @@ one:
   name: MyString
   salary: 1
   allowances: 1
-  employee: one
 
 two:
   name: MyString
   salary: 1
   allowances: 1
-  employee: two
