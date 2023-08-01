@@ -1,4 +1,4 @@
-ActiveAdmin.register SalaryStructureHistory do
+ActiveAdmin.register SalaryDetailHistory do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -6,7 +6,7 @@ ActiveAdmin.register SalaryStructureHistory do
   #
 
   config.clear_action_items!
-  permit_params :name, :salary, :allowances, :salary_structure_id
+  permit_params :name, :salary, :allowances, :salary_detail_id
   #
   # or
   #
