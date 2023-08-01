@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  salary: 1
+  allownces: 1
+  date: 2023-07-26
+  employee: one
+
+two:
+  salary: 1
+  allownces: 1
+  date: 2023-07-26
+  employee: two

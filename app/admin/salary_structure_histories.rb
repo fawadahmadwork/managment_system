@@ -4,6 +4,8 @@ ActiveAdmin.register SalaryStructureHistory do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
+
+  config.clear_action_items!
   permit_params :name, :salary, :allowances, :salary_structure_id
   #
   # or
