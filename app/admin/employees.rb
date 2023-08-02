@@ -1,40 +1,39 @@
 ActiveAdmin.register Employee do
-  member_action :create_salary_slip, method: :get do
-    redirect_to new_admin_salary_slip_path(salary_slip: { employee_id: resource.id })
-  end
-  action_item :create_salary_slip, only: :show do
-    link_to 'Create Salary Slip', create_salary_slip_admin_employee_path(employee)
-  end
-  member_action :create_salary_detail, method: :get do
-    if resource.salary_detail.present?
-
-      redirect_to edit_admin_salary_detail_path(resource.salary_detail),
-                  notice: 'Salary detail already exists for this employee.'
-    else
-      # Create a new salary detail and redirect to the salary detail edit page
-      salary_detail = SalaryDetail.create(employee_id: resource.id)
-      redirect_to edit_admin_salary_detail_path(salary_detail), notice: 'Salary detail created successfully!'
-    end
-  end
-
-  action_item :create_salary_detail, only: :show do
-    link_to 'Create Salary Detail', create_salary_detail_admin_employee_path(employee)
-  end
-
   form do |f|
     f.inputs do
       f.input :first_name, input_html: { class: 'text-color' }
       f.input :last_name, input_html: { class: 'text-color' }
       f.input :gender, as: :select, collection: %w[Male Female]
-      f.input :date_of_birth, as: :datepicker, palceholder: 'yyyy-mm-dd'
+      f.input :date_of_birth, as: :datepicker, datepicker_options: {
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '1970:2008'
+
+      }
+
       f.input :national_id_card, length: { maximum: 15 },
-                                 format: { with: /\A\d{5}-\d{7}-\d{1}\z/, message: "should be in the format '12345-1234567-1'" }
-      f.input :designation
-      f.input :department
-      f.input :date_of_joining, as: :datepicker
-      f.input :termination_date, as: :datepicker
-      f.input :avatar, as: :file, input_html: { accept: 'image/jpeg, image/png', maxlength: 5.megabytes }
-      f.input :employment_status
+                                 input_html: {
+                                   placeholder: 'i-e 12345-1234567-1'
+                                 }
+
+      f.input :employment_status, as: :select,
+                                  collection: %w[Active Inactive Freeze]
+      f.input :department, as: :select, collection: ['Quality Assurance', 'Development']
+
+      f.input :designation, as: :select,
+                            collection: ['Intern', 'Software Engineer', 'L1, Software Engineer', 'L2, Software Engineer']
+
+      f.input :date_of_joining, as: :datepicker, datepicker_options: { changeYear: true, yearRange: '2015:c' }
+
+      if f.object.new_record?
+
+        f.input :termination_date, as: :datepicker, label: false, input_html: { style: 'display: none;' }
+      else
+
+        f.input :termination_date, as: :datepicker
+      end
+      f.input :avatar, as: :file,
+                       hint: f.object.avatar.attached? ? image_tag(f.object.avatar.variant(resize: '150x150')) : ''
       f.input :address, as: :text
       f.input :notes
 
@@ -42,17 +41,18 @@ ActiveAdmin.register Employee do
         email_form.input :email
       end
       f.has_many :phone_numbers, allow_destroy: true do |phone_form|
-        phone_form.input :phone_number, input_html: { pattern: '\+\d{2}-\d{4}-\{7}' }, placeholder: '+92-0322-4713041'
+        phone_form.input :phone_number, input_html: { pattern: '\+\d{2}-\d{4}-\{7}' }, placeholder: '0300-1234567'
       end
     end
     f.has_many :bank_account_details, allow_destroy: true do |bank_account_form|
       bank_account_form.input :bank_name
-      bank_account_form.input :branch_name
       bank_account_form.input :account_title
+      bank_account_form.input :branch_name
       bank_account_form.input :account_number
     end
     f.actions
   end
+
   index do
     selectable_column
     id_column
@@ -75,7 +75,7 @@ ActiveAdmin.register Employee do
 
   show do
     attributes_table do
-      row :first_name
+      row :first_name, id: 'first-name-row'
       row :last_name
       row :gender
       row :age do |employee|
@@ -133,6 +133,26 @@ ActiveAdmin.register Employee do
           column :account_title
           column :account_number
         end
+      end
+    end
+
+    panel 'Salary Details' do
+      if employee.salary_detail.present?
+        # Display existing salary details and a link to view them
+        attributes_table_for employee.salary_detail do
+          row :id
+          # Add other salary detail attributes here
+        end
+        # Link to view the existing salary details
+        link_to 'View Salary Detail', admin_salary_detail_path(employee.salary_detail), class: 'button'
+      else
+        # If salary detail does not exist, show link to create it
+        link_to 'Create Salary Detail', new_admin_salary_detail_path(employee_id: employee.id), class: 'button'
+      end
+    end
+    div class: 'hide-button' do
+      button type: 'button', id: 'hide-first-name-button', class: 'button', 'data-action': 'hide-first-name' do
+        'Hide First Name'
       end
     end
     active_admin_comments

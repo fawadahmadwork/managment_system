@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_152719) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,15 +115,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_152719) do
   end
 
   create_table "salary_detail_histories", force: :cascade do |t|
-    t.string "name"
     t.integer "salary"
     t.integer "allowances"
-    t.bigint "salary_structure_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "salary_detail_id"
+    t.string "name"
     t.index ["salary_detail_id"], name: "index_salary_detail_histories_on_salary_detail_id"
-    t.index ["salary_structure_id"], name: "index_salary_detail_histories_on_salary_structure_id"
   end
 
   create_table "salary_details", force: :cascade do |t|
@@ -159,7 +157,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_152719) do
   add_foreign_key "bank_account_details", "employees"
   add_foreign_key "emails", "employees"
   add_foreign_key "phone_numbers", "employees"
-  add_foreign_key "salary_detail_histories", "salary_structures"
   add_foreign_key "salary_details", "employees"
   add_foreign_key "salary_slips", "employees"
 end

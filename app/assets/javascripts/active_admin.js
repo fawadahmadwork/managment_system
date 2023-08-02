@@ -1,2 +1,5 @@
 //= require active_admin/base
-//= require active_admin_custom
+//= require jquery
+//= require custom
+//= require employees
+//= require national_id_card_format

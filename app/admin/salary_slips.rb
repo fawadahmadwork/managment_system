@@ -1,4 +1,4 @@
-ActiveAdmin.register SalarySlip, as: 'Salary Slip History' do
+ActiveAdmin.register SalarySlip do
   menu parent: 'salary'
 
   permit_params :salary, :allowances, :date, :employee_id
