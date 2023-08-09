@@ -1,8 +1,7 @@
 class Employee < ApplicationRecord
-  has_one :salary_detail, dependent: :destroy
-  accepts_nested_attributes_for :salary_detail, allow_destroy: true
-  has_many :salary_detail_histories, through: :salary_detail
-  has_many :salary_slips, dependent: :destroy
+  has_one :salary_structure, dependent: :destroy
+  has_many :salary_detail_histories, dependent: :destroy
+  # has_many :salary_slips, dependent: :destroy
   has_one_attached :avatar
   has_many :emails, dependent: :destroy
   accepts_nested_attributes_for :emails, allow_destroy: true

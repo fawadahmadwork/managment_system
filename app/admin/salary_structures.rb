@@ -1,17 +1,83 @@
 ActiveAdmin.register SalaryStructure do
   menu parent: 'salary'
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  permit_params :name, :salary, :allowances
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:name, :salary, :allowances]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
+
+  form do |f|
+    f.semantic_errors # Displays error messages at the top of the form
+
+    f.inputs 'Salary Structure Details' do
+      if params[:employee_id].present?
+        employee = Employee.find(params[:employee_id])
+        f.input :employee_id, as: :hidden, input_html: { value: params[:employee_id] }
+        f.input :name, input_html: { value: employee.first_name }
+      else
+        f.input :employee_id, as: :hidden
+        f.input :name, input_html: { value: f.object.employee&.first_name }
+      end
+      f.input :basic_salary
+      f.input :fuel
+      f.input :medical_allownce
+      f.input :house_rent
+      f.input :opd
+      f.input :arrears
+      f.input :other_bonus
+      f.input :gross_salary
+      f.input :provident_fund
+      f.input :unpaid_leaves
+      f.input :net_salary
+    end
+
+    # Display created_at and updated_at as non-editable fields
+    if f.object.persisted?
+      f.inputs 'Timestamps' do
+        f.input :created_at, as: :string, input_html: { readonly: true }
+        f.input :updated_at, as: :string, input_html: { readonly: true }
+      end
+    end
+
+    f.actions
+  end
+
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :basic_salary
+    column :fuel
+    column :medical_allownce
+    column :house_rent
+    column :opd
+    column :arrears
+    column :other_bonus
+    column :gross_salary
+    column :provident_fund
+    column :unpaid_leaves
+    column :net_salary
+    column :created_at
+    column :updated_at
+    actions
+  end
+
+  show do
+    attributes_table do
+      row :name
+      row :basic_salary
+      row :fuel
+      row :medical_allownce
+      row :house_rent
+      row :opd
+      row :arrears
+      row :other_bonus
+      row :gross_salary
+      row :provident_fund
+      row :unpaid_leaves
+      row :net_salary
+      row :created_at
+      row :updated_at
+    end
+
+    # Additional panels, comments, or custom content here
+  end
+
+  permit_params :name, :salary, :allowances, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
+                :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
 end

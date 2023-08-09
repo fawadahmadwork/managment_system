@@ -15,13 +15,19 @@ ActiveAdmin.register Employee do
                                  input_html: {
                                    placeholder: 'i-e 12345-1234567-1'
                                  }
-
-      f.input :employment_status, as: :select,
-                                  collection: %w[Active Inactive Freeze]
+      f.input :employment_type, as: :select,
+                                collection: %w[FullTime PartTime Contractor Internee]
       f.input :department, as: :select, collection: ['Quality Assurance', 'Development']
 
       f.input :designation, as: :select,
                             collection: ['Intern', 'Software Engineer', 'L1, Software Engineer', 'L2, Software Engineer']
+
+      f.input :employment_status, as: :select,
+                                  collection: %w[Active Inactive Freeze]
+      if f.object.employment_status == 'Freeze'
+        f.input :freezing_date, as: :datepicker, label: 'Freezing Date'
+        f.input :freezing_comment, as: :text, label: 'Freezing Comment'
+      end
 
       f.input :date_of_joining, as: :datepicker, datepicker_options: { changeYear: true, yearRange: '2015:c' }
 
@@ -41,14 +47,21 @@ ActiveAdmin.register Employee do
         email_form.input :email
       end
       f.has_many :phone_numbers, allow_destroy: true do |phone_form|
-        phone_form.input :phone_number, input_html: { pattern: '\+\d{2}-\d{4}-\{7}' }, placeholder: '0300-1234567'
+        phone_form.input :phone_number, input_html: { placeholder: '0300-1234567' }
       end
     end
     f.has_many :bank_account_details, allow_destroy: true do |bank_account_form|
       bank_account_form.input :bank_name
       bank_account_form.input :account_title
-      bank_account_form.input :branch_name
-      bank_account_form.input :account_number
+      bank_account_form.input :branch_name, label: 'Branch Code'
+      bank_account_form.input :account_number, input_html: {
+        pattern: '\d{16}',
+        placeholder: 'Please enter a 16-digit account number'
+      }
+      bank_account_form.input :iban, input_html: {
+        pattern: 'PK\d{2}[A-Za-z]{4}\d{16}',
+        placeholder: ' (e.g., PK36SCBL0000001123456702)'
+      }
     end
     f.actions
   end
@@ -75,7 +88,7 @@ ActiveAdmin.register Employee do
 
   show do
     attributes_table do
-      row :first_name, id: 'first-name-row'
+      row :first_name
       row :last_name
       row :gender
       row :age do |employee|
@@ -102,12 +115,17 @@ ActiveAdmin.register Employee do
       end
       row :address
       row :national_id_card
-      row :designation
+      row :employment_type
       row :department
+      row :designation
+      row :employment_status
+      if employee.employment_status == 'Freeze'
+        row :freezing_date
+        row :freezing_comment
+      end
       row :date_of_joining
       row :termination_date
       row :notes
-      row :employment_status
       row :avatar do |employee|
         if employee.avatar.attached?
           image_tag url_for(employee.avatar), height: '100px', width: '100px'
@@ -132,29 +150,25 @@ ActiveAdmin.register Employee do
           column :branch_name
           column :account_title
           column :account_number
+          column :iban
         end
       end
     end
 
-    panel 'Salary Details' do
-      if employee.salary_detail.present?
-        # Display existing salary details and a link to view them
-        attributes_table_for employee.salary_detail do
-          row :id
-          # Add other salary detail attributes here
+    panel 'Salary Structures' do
+      if employee.salary_structure.present?
+        attributes_table_for employee.salary_structure do
         end
-        # Link to view the existing salary details
-        link_to 'View Salary Detail', admin_salary_detail_path(employee.salary_detail), class: 'button'
+        div do
+          link_to 'View Salary structure', admin_salary_structure_path(employee.salary_structure), class: 'button'
+        end
       else
-        # If salary detail does not exist, show link to create it
-        link_to 'Create Salary Detail', new_admin_salary_detail_path(employee_id: employee.id), class: 'button'
+        div do
+          link_to 'Create Salary Structure', new_admin_salary_structure_path(employee_id: employee.id), class: 'button'
+        end
       end
     end
-    div class: 'hide-button' do
-      button type: 'button', id: 'hide-first-name-button', class: 'button', 'data-action': 'hide-first-name' do
-        'Hide First Name'
-      end
-    end
+
     active_admin_comments
   end
 
@@ -168,10 +182,10 @@ ActiveAdmin.register Employee do
   end
 
   permit_params :first_name, :last_name, :age, :gender, :date_of_birth, :address, :national_id_card,
-                :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status,
+                :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment,
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
-                bank_account_details_attributes: %i[id account_title account_number bank_name branch_name _destroy]
+                bank_account_details_attributes: %i[id account_title account_number bank_name branch_name iban _destroy]
 end
 def calculate_age(date_of_birth)
   return '' if date_of_birth.blank?

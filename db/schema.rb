@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_09_151517) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
     t.bigint "employee_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "iban"
     t.index ["employee_id"], name: "index_bank_account_details_on_employee_id"
   end
 
@@ -104,6 +105,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
     t.string "employment_status"
     t.string "first_name"
     t.string "last_name"
+    t.string "employment_type"
+    t.date "freezing_date"
+    t.string "freezing_comment"
   end
 
   create_table "phone_numbers", force: :cascade do |t|
@@ -119,9 +123,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
     t.integer "allowances"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "salary_detail_id"
     t.string "name"
-    t.index ["salary_detail_id"], name: "index_salary_detail_histories_on_salary_detail_id"
+    t.integer "basic_salary"
+    t.integer "fuel"
+    t.integer "medical_allownce"
+    t.integer "house_ren"
+    t.integer "opd"
+    t.integer "arrears"
+    t.integer "other_bonus"
+    t.integer "gross_salary"
+    t.integer "provident_fund"
+    t.integer "unpaid_leaves"
+    t.integer "net_salary"
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_salary_detail_histories_on_employee_id"
   end
 
   create_table "salary_details", force: :cascade do |t|
@@ -150,6 +165,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
     t.integer "allowances"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "basic_salary"
+    t.integer "fuel"
+    t.integer "medical_allownce"
+    t.integer "house_rent"
+    t.integer "opd"
+    t.integer "arrears"
+    t.integer "other_bonus"
+    t.integer "gross_salary"
+    t.integer "provident_fund"
+    t.integer "unpaid_leaves"
+    t.integer "net_salary"
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_salary_structures_on_employee_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -157,6 +185,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_113715) do
   add_foreign_key "bank_account_details", "employees"
   add_foreign_key "emails", "employees"
   add_foreign_key "phone_numbers", "employees"
+  add_foreign_key "salary_detail_histories", "employees"
   add_foreign_key "salary_details", "employees"
   add_foreign_key "salary_slips", "employees"
+  add_foreign_key "salary_structures", "employees"
 end

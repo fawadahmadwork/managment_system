@@ -7,7 +7,8 @@ ActiveAdmin.register SalaryDetailHistory do
   #
 
   config.clear_action_items!
-  permit_params :name, :salary, :allowances, :salary_detail_id
+  permit_params :name, :salary, :allowances, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
+                :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
   #
   # or
   #
