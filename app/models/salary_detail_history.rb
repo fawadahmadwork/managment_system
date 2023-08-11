@@ -1,3 +1,3 @@
 class SalaryDetailHistory < ApplicationRecord
-  belongs_to :employee
+  belongs_to :salary_structure
 end

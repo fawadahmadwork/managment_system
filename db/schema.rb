@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_151517) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_10_103245) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,15 +119,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_151517) do
   end
 
   create_table "salary_detail_histories", force: :cascade do |t|
-    t.integer "salary"
-    t.integer "allowances"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
     t.integer "basic_salary"
     t.integer "fuel"
     t.integer "medical_allownce"
-    t.integer "house_ren"
+    t.integer "house_rent"
     t.integer "opd"
     t.integer "arrears"
     t.integer "other_bonus"
@@ -135,18 +133,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_151517) do
     t.integer "provident_fund"
     t.integer "unpaid_leaves"
     t.integer "net_salary"
-    t.bigint "employee_id"
-    t.index ["employee_id"], name: "index_salary_detail_histories_on_employee_id"
-  end
-
-  create_table "salary_details", force: :cascade do |t|
-    t.string "name"
-    t.integer "salary"
-    t.integer "allowances"
-    t.bigint "employee_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_salary_details_on_employee_id"
+    t.bigint "salary_structure_id"
+    t.index ["salary_structure_id"], name: "index_salary_detail_histories_on_salary_structure_id"
   end
 
   create_table "salary_slips", force: :cascade do |t|
@@ -185,8 +173,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_09_151517) do
   add_foreign_key "bank_account_details", "employees"
   add_foreign_key "emails", "employees"
   add_foreign_key "phone_numbers", "employees"
-  add_foreign_key "salary_detail_histories", "employees"
-  add_foreign_key "salary_details", "employees"
+  add_foreign_key "salary_detail_histories", "salary_structures"
   add_foreign_key "salary_slips", "employees"
   add_foreign_key "salary_structures", "employees"
 end

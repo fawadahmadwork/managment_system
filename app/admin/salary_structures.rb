@@ -2,16 +2,15 @@ ActiveAdmin.register SalaryStructure do
   menu parent: 'salary'
 
   form do |f|
-    f.semantic_errors # Displays error messages at the top of the form
-
+    f.semantic_errors
     f.inputs 'Salary Structure Details' do
       if params[:employee_id].present?
         employee = Employee.find(params[:employee_id])
         f.input :employee_id, as: :hidden, input_html: { value: params[:employee_id] }
-        f.input :name, input_html: { value: employee.first_name }
+        f.input :name, input_html: { value: employee.first_name, readonly: true }
       else
         f.input :employee_id, as: :hidden
-        f.input :name, input_html: { value: f.object.employee&.first_name }
+        f.input :name
       end
       f.input :basic_salary
       f.input :fuel
@@ -40,7 +39,7 @@ ActiveAdmin.register SalaryStructure do
   index do
     selectable_column
     id_column
-    column :name
+    column 'Employee Name', :name
     column :basic_salary
     column :fuel
     column :medical_allownce
@@ -51,7 +50,7 @@ ActiveAdmin.register SalaryStructure do
     column :gross_salary
     column :provident_fund
     column :unpaid_leaves
-    column :net_salary
+    column :net_salary, class: 'clr'
     column :created_at
     column :updated_at
     actions
@@ -59,7 +58,7 @@ ActiveAdmin.register SalaryStructure do
 
   show do
     attributes_table do
-      row :name
+      row('Employee Name') { |employee| employee.name }
       row :basic_salary
       row :fuel
       row :medical_allownce

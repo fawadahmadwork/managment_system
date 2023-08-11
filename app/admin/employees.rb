@@ -1,9 +1,9 @@
 ActiveAdmin.register Employee do
   form do |f|
     f.inputs do
-      f.input :first_name, input_html: { class: 'text-color' }
-      f.input :last_name, input_html: { class: 'text-color' }
-      f.input :gender, as: :select, collection: %w[Male Female]
+      f.input :first_name, input_html: { style: 'background-color: red;' }
+      f.input :last_name, input_html: { style: 'background-color: red;' }
+      f.input :gender, as: :select, collection: %w[Male Female], input_html: { style: 'background-color: red;' }
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
         changeMonth: true,
         changeYear: true,
@@ -69,18 +69,14 @@ ActiveAdmin.register Employee do
   index do
     selectable_column
     id_column
-    column 'Full Name', sortable: :last_name do |employee|
+    column 'Full Name', class: 'bt', sortable: :last_name do |employee|
       "#{employee.first_name} #{employee.last_name}"
     end
-    column :age do |employee|
-      if employee.date_of_birth.present?
-        calculate_age(employee.date_of_birth)
-      else
-        'N/A'
-      end
+    column :age, class: 'clr' do |employee|
+      calculate_age(employee.date_of_birth) if employee.date_of_birth.present?
     end
 
-    column :gender
+    column :gender, class: 'clr'
     column :designation
     column :department
     actions
@@ -88,9 +84,13 @@ ActiveAdmin.register Employee do
 
   show do
     attributes_table do
-      row :first_name
-      row :last_name
-      row :gender
+      row 'Test JavaScript Function' do
+        button 'Test', id: 'test-button'
+      end
+
+      row :first_name, class: 'ty'
+      row :last_name, class: 'clr'
+      row :gender, class: 'bt'
       row :age do |employee|
         if employee.date_of_birth.present?
           calculate_age(employee.date_of_birth)
@@ -159,13 +159,32 @@ ActiveAdmin.register Employee do
       if employee.salary_structure.present?
         attributes_table_for employee.salary_structure do
         end
+
         div do
-          link_to 'View Salary structure', admin_salary_structure_path(employee.salary_structure), class: 'button'
+          link_to 'View Salary Structure', admin_salary_structure_path(employee.salary_structure), class: 'button'
+        end
+
+        div style: 'margin-top: 10px;' do
+          link_to 'View Salary Detail Histories',
+                  admin_salary_detail_histories_path(q: { salary_structure_id_eq: employee.salary_structure.id }),
+                  class: 'button'
         end
       else
         div do
           link_to 'Create Salary Structure', new_admin_salary_structure_path(employee_id: employee.id), class: 'button'
         end
+      end
+    end
+    panel 'Salary Slips' do
+      if employee.salary_slips.present?
+        div style: 'margin-top: 10px;' do
+          link_to 'View Salary Slips', admin_salary_slips_path(q: { employee_id_eq: employee.id }), class: 'button'
+        end
+      else
+        div style: 'margin-top: 10px;' 'No salary slips available.'
+      end
+      div style: 'margin-top: 10px;' do
+        link_to 'Create New Salary Slip', new_admin_salary_slip_path(employee_id: employee.id), class: 'button'
       end
     end
 
