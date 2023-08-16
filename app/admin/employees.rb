@@ -1,9 +1,9 @@
 ActiveAdmin.register Employee do
   form do |f|
     f.inputs do
-      f.input :first_name, input_html: { style: 'background-color: red;' }
-      f.input :last_name, input_html: { style: 'background-color: red;' }
-      f.input :gender, as: :select, collection: %w[Male Female], input_html: { style: 'background-color: red;' }
+      f.input :first_name
+      f.input :last_name
+      f.input :gender, as: :select, collection: %w[Male Female]
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
         changeMonth: true,
         changeYear: true,
@@ -13,21 +13,23 @@ ActiveAdmin.register Employee do
 
       f.input :national_id_card, length: { maximum: 15 },
                                  input_html: {
-                                   placeholder: 'i-e 12345-1234567-1'
+                                   placeholder: 'i-e 12345-1234567-1', class: 'national-id-input'
                                  }
       f.input :employment_type, as: :select,
-                                collection: %w[FullTime PartTime Contractor Internee]
-      f.input :department, as: :select, collection: ['Quality Assurance', 'Development']
+                                collection: %w[FullTime PartTime Contractor]
+      f.input :department, as: :select,
+                           collection: ['Development', 'Quality Assurance'],
+                           input_html: { id: 'employee_department' }
 
       f.input :designation, as: :select,
-                            collection: ['Intern', 'Software Engineer', 'L1, Software Engineer', 'L2, Software Engineer']
+                            collection: [], # We'll populate this dynamically
+                            input_html: { id: 'employee_designation' }
 
       f.input :employment_status, as: :select,
-                                  collection: %w[Active Inactive Freeze]
-      if f.object.employment_status == 'Freeze'
-        f.input :freezing_date, as: :datepicker, label: 'Freezing Date'
-        f.input :freezing_comment, as: :text, label: 'Freezing Comment'
-      end
+                                  collection: %w[Active Inactive Freeze], id: 'employment-status-select'
+
+      f.input :freezing_date, as: :datepicker, id: 'freezing-date-input'
+      f.input :freezing_comment, id: 'freezing-comment-input'
 
       f.input :date_of_joining, as: :datepicker, datepicker_options: { changeYear: true, yearRange: '2015:c' }
 
@@ -47,13 +49,16 @@ ActiveAdmin.register Employee do
         email_form.input :email
       end
       f.has_many :phone_numbers, allow_destroy: true do |phone_form|
-        phone_form.input :phone_number, input_html: { placeholder: '0300-1234567' }
+        phone_form.input :phone_number,
+                         input_html: { placeholder: '0300-1234567', pattern: '\d{4}-\d{7}',
+                                       id: 'phone_number_input_id' }
       end
     end
     f.has_many :bank_account_details, allow_destroy: true do |bank_account_form|
       bank_account_form.input :bank_name
       bank_account_form.input :account_title
-      bank_account_form.input :branch_name, label: 'Branch Code'
+      bank_account_form.input :branch_name, label: 'Branch Code',
+                                            input_html: { placeholder: 'Enter a 4-digit branch code' }
       bank_account_form.input :account_number, input_html: {
         pattern: '\d{16}',
         placeholder: 'Please enter a 16-digit account number'
@@ -147,7 +152,7 @@ ActiveAdmin.register Employee do
       panel 'Bank Account Details' do
         table_for employee.bank_account_details do
           column :bank_name
-          column :branch_name
+          column 'branch_code', :branch_name
           column :account_title
           column :account_number
           column :iban

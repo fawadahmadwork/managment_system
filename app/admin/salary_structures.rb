@@ -12,20 +12,22 @@ ActiveAdmin.register SalaryStructure do
         f.input :employee_id, as: :hidden
         f.input :name
       end
-      f.input :basic_salary
-      f.input :fuel
-      f.input :medical_allownce
-      f.input :house_rent
-      f.input :opd
-      f.input :arrears
-      f.input :other_bonus
-      f.input :gross_salary
-      f.input :provident_fund
-      f.input :unpaid_leaves
-      f.input :net_salary
+      template = SalaryStructure.find_by(employee_id: nil, name: employee&.designation)
+      fields = %i[
+        basic_salary fuel medical_allownce house_rent opd
+        arrears other_bonus gross_salary provident_fund
+        unpaid_leaves net_salary
+      ]
+
+      fields.each do |field|
+        if f.object.new_record?
+          f.input field, input_html: { value: template&.send(field) }
+        else
+          f.input field
+        end
+      end
     end
 
-    # Display created_at and updated_at as non-editable fields
     if f.object.persisted?
       f.inputs 'Timestamps' do
         f.input :created_at, as: :string, input_html: { readonly: true }

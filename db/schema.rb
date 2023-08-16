@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_10_103245) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_16_110331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -140,10 +140,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_103245) do
   create_table "salary_slips", force: :cascade do |t|
     t.integer "salary"
     t.integer "allownces"
-    t.date "date"
+    t.date "salary_month"
     t.bigint "employee_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "basic_salary"
+    t.integer "fuel"
+    t.integer "medical_allownce"
+    t.integer "house_rent"
+    t.integer "opd"
+    t.integer "arrears"
+    t.integer "other_bonus"
+    t.integer "gross_salary"
+    t.integer "provident_fund"
+    t.integer "unpaid_leaves"
+    t.integer "net_salary"
+    t.string "name"
+    t.string "designation"
+    t.string "date_of_joining"
     t.index ["employee_id"], name: "index_salary_slips_on_employee_id"
   end
 
