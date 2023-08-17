@@ -7,6 +7,8 @@ gem 'bootstrap'
 gem 'devise'
 gem 'jquery-rails'
 gem 'sassc'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 gem 'rails', '~> 7.0.5'
 
@@ -21,7 +23,6 @@ gem 'importmap-rails'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'turbo-rails'
-
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails'
 
@@ -56,6 +57,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'letter_opener'
+  gem 'letter_opener_web'
   gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]

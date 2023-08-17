@@ -1,5 +1,8 @@
 ActiveAdmin.register SalaryDetailHistory do
   menu parent: 'salary'
+  action_item :back_to_employee, only: :show do
+    link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
+  end
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #

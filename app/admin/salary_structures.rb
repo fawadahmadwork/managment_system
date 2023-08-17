@@ -1,6 +1,8 @@
 ActiveAdmin.register SalaryStructure do
   menu parent: 'salary'
-
+  action_item :back_to_employee, only: :show do
+    link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
+  end
   form do |f|
     f.semantic_errors
     f.inputs 'Salary Structure Details' do
@@ -16,7 +18,7 @@ ActiveAdmin.register SalaryStructure do
       fields = %i[
         basic_salary fuel medical_allownce house_rent opd
         arrears other_bonus gross_salary provident_fund
-        unpaid_leaves net_salary
+        net_salary
       ]
 
       fields.each do |field|
@@ -41,6 +43,7 @@ ActiveAdmin.register SalaryStructure do
   index do
     selectable_column
     id_column
+    column :employee
     column 'Employee Name', :name
     column :basic_salary
     column :fuel
@@ -51,7 +54,6 @@ ActiveAdmin.register SalaryStructure do
     column :other_bonus
     column :gross_salary
     column :provident_fund
-    column :unpaid_leaves
     column :net_salary, class: 'clr'
     column :created_at
     column :updated_at
@@ -70,7 +72,6 @@ ActiveAdmin.register SalaryStructure do
       row :other_bonus
       row :gross_salary
       row :provident_fund
-      row :unpaid_leaves
       row :net_salary
       row :created_at
       row :updated_at

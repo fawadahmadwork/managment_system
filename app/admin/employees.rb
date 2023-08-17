@@ -16,13 +16,13 @@ ActiveAdmin.register Employee do
                                    placeholder: 'i-e 12345-1234567-1', class: 'national-id-input'
                                  }
       f.input :employment_type, as: :select,
-                                collection: %w[FullTime PartTime Contractor]
+                                collection: %w[FullTime PartTime Contractor Internee ]
       f.input :department, as: :select,
                            collection: ['Development', 'Quality Assurance'],
                            input_html: { id: 'employee_department' }
 
       f.input :designation, as: :select,
-                            collection: [], # We'll populate this dynamically
+                            collection: [], 
                             input_html: { id: 'employee_designation' }
 
       f.input :employment_status, as: :select,

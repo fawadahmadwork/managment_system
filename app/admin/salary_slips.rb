@@ -1,5 +1,19 @@
 ActiveAdmin.register SalarySlip do
+  member_action :send_email, method: :post do
+    salary_slip = SalarySlip.find(params[:id])
+    SalarySlipMailer.send_salary_slip(salary_slip).deliver_now
+
+    redirect_to admin_salary_slip_path, notice: 'Salary slip email sent!'
+  end
+
+  action_item :send_email, only: :show do
+    link_to 'Send Salary Slip Email', send_email_admin_salary_slip_path(resource), method: :post
+  end
+
   menu parent: 'salary'
+  action_item :back_to_employee, only: :show do
+    link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
+  end
   form do |f|
     f.semantic_errors(*f.object.errors.keys) if f.object.errors.any?
 
@@ -12,7 +26,7 @@ ActiveAdmin.register SalarySlip do
 
         f.input :salary_month, as: :datepicker,
                                input_html: {
-                                 value: f.object.salary_month || Date.today.beginning_of_month,
+                                 value: f.object.salary_month || Date.today,
                                  format: '%B %Y'
                                }
         f.input :designation, input_html: { value: employee.designation, readonly: true }
@@ -25,7 +39,6 @@ ActiveAdmin.register SalarySlip do
         f.input :other_bonus, input_html: { value: employee.salary_structure&.other_bonus }
         f.input :gross_salary, input_html: { value: employee.salary_structure&.gross_salary }
         f.input :provident_fund, input_html: { value: employee.salary_structure&.provident_fund }
-        f.input :unpaid_leaves, input_html: { value: employee.salary_structure&.unpaid_leaves }
         f.input :net_salary, input_html: { value: employee.salary_structure&.net_salary }
       end
     end
@@ -50,10 +63,10 @@ ActiveAdmin.register SalarySlip do
       row :other_bonus
       row :gross_salary
       row :provident_fund
-      row :unpaid_leaves
       row :net_salary
     end
   end
+
   permit_params :name, :salary_month, :designation, :date_of_joining, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
                 :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
 end
