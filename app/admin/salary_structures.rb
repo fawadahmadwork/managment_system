@@ -29,14 +29,6 @@ ActiveAdmin.register SalaryStructure do
         end
       end
     end
-
-    if f.object.persisted?
-      f.inputs 'Timestamps' do
-        f.input :created_at, as: :string, input_html: { readonly: true }
-        f.input :updated_at, as: :string, input_html: { readonly: true }
-      end
-    end
-
     f.actions
   end
 

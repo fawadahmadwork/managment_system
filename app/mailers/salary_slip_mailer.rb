@@ -6,10 +6,11 @@ class SalarySlipMailer < ApplicationMailer
     pdf = generate_pdf(@salary_slip)
 
     attachments['salary_slip.pdf'] = pdf
-
-    mail(to: @employee.emails.first, subject: 'Your Salary Slip') do |format|
-      format.text { render plain: 'Your salary slip is attached. Click the link below to download it.' }
-      format.html { render layout: nil } # Render without layout for HTML format
+    @employee.emails.each do |email_record|
+      mail(to: email_record.email, subject: 'Your Salary Slip') do |format|
+        format.text { render plain: 'Your salary slip is attached. Click the link above to download it.' }
+        format.html { render 'salary_slip_text' }
+      end
     end
   end
 
@@ -18,7 +19,7 @@ class SalarySlipMailer < ApplicationMailer
   def generate_pdf(_salary_slip)
     WickedPdf.new.pdf_from_string(
       render_to_string(
-        pdf: 'salary_slip_mailer/salary_slip_pdf.html.erb',
+        pdf: 'salary_slip_mailer/send_salary_slip.html.erb',
         layout: 'layouts/pdf'
       )
     )

@@ -1,31 +1,7 @@
-  .rt{
-      color :violet;
-
-  }
-  .test-of{
-      text-align: center;
-      font-weight: 900;
-      font-size: 50px;
-      color: red;
-      background-color: yellow;
-  }
-  .st{
-      color: pink;
-  }
-  .bt{
-      color:blue;
-  }
-  .ty{
-      color: blueviolet;
-  }
-
-  #employee_last_name:hover {
-    background-color: aliceblue;
-  }
-  .inputs input:hover {
-    background-color:azure;
+ .inputs input:hover {
+    background-color:aliceblue;
   }
   .inputs select {
-    color: green;
+    color:rgb(38, 29, 29);
   }
   

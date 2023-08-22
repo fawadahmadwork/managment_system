@@ -16,20 +16,20 @@ ActiveAdmin.register Employee do
                                    placeholder: 'i-e 12345-1234567-1', class: 'national-id-input'
                                  }
       f.input :employment_type, as: :select,
-                                collection: %w[FullTime PartTime Contractor Internee ]
+                                collection: %w[FullTime PartTime Contractor Internee]
       f.input :department, as: :select,
                            collection: ['Development', 'Quality Assurance'],
                            input_html: { id: 'employee_department' }
 
       f.input :designation, as: :select,
-                            collection: [], 
+                            collection: [],
                             input_html: { id: 'employee_designation' }
 
       f.input :employment_status, as: :select,
                                   collection: %w[Active Inactive Freeze], id: 'employment-status-select'
 
       f.input :freezing_date, as: :datepicker, id: 'freezing-date-input'
-      f.input :freezing_comment, id: 'freezing-comment-input'
+      f.input :freezing_comment, as: :text, id: 'freezing-comment-input'
 
       f.input :date_of_joining, as: :datepicker, datepicker_options: { changeYear: true, yearRange: '2015:c' }
 
@@ -57,13 +57,12 @@ ActiveAdmin.register Employee do
     f.has_many :bank_account_details, allow_destroy: true do |bank_account_form|
       bank_account_form.input :bank_name
       bank_account_form.input :account_title
-      bank_account_form.input :branch_name, label: 'Branch Code',
-                                            input_html: { placeholder: 'Enter a 4-digit branch code' }
+      bank_account_form.input :branch_code,
+                              input_html: { placeholder: 'Enter a 4-digit branch code' }
       bank_account_form.input :account_number, input_html: {
-        pattern: '\d{16}',
         placeholder: 'Please enter a 16-digit account number'
       }
-      bank_account_form.input :iban, input_html: {
+      bank_account_form.input :IBAN, input_html: {
         pattern: 'PK\d{2}[A-Za-z]{4}\d{16}',
         placeholder: ' (e.g., PK36SCBL0000001123456702)'
       }
@@ -74,14 +73,14 @@ ActiveAdmin.register Employee do
   index do
     selectable_column
     id_column
-    column 'Full Name', class: 'bt', sortable: :last_name do |employee|
+    column 'Full Name', sortable: :last_name do |employee|
       "#{employee.first_name} #{employee.last_name}"
     end
-    column :age, class: 'clr' do |employee|
+    column :age do |employee|
       calculate_age(employee.date_of_birth) if employee.date_of_birth.present?
     end
 
-    column :gender, class: 'clr'
+    column :gender
     column :designation
     column :department
     actions
@@ -89,13 +88,9 @@ ActiveAdmin.register Employee do
 
   show do
     attributes_table do
-      row 'Test JavaScript Function' do
-        button 'Test', id: 'test-button'
-      end
-
-      row :first_name, class: 'ty'
-      row :last_name, class: 'clr'
-      row :gender, class: 'bt'
+      row :first_name
+      row :last_name
+      row :gender
       row :age do |employee|
         if employee.date_of_birth.present?
           calculate_age(employee.date_of_birth)
@@ -125,11 +120,11 @@ ActiveAdmin.register Employee do
       row :designation
       row :employment_status
       if employee.employment_status == 'Freeze'
-        row :freezing_date
-        row :freezing_comment
+        row :freezing_date if resource.freezing_date.present?
+        row :freezing_comment if resource.freezing_comment.present?
       end
       row :date_of_joining
-      row :termination_date
+      row :termination_date if resource.termination_date.present?
       row :notes
       row :avatar do |employee|
         if employee.avatar.attached?
@@ -152,10 +147,10 @@ ActiveAdmin.register Employee do
       panel 'Bank Account Details' do
         table_for employee.bank_account_details do
           column :bank_name
-          column 'branch_code', :branch_name
+          column :branch_code
           column :account_title
           column :account_number
-          column :iban
+          column :IBAN
         end
       end
     end
@@ -209,7 +204,7 @@ ActiveAdmin.register Employee do
                 :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment,
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
-                bank_account_details_attributes: %i[id account_title account_number bank_name branch_name iban _destroy]
+                bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]
 end
 def calculate_age(date_of_birth)
   return '' if date_of_birth.blank?

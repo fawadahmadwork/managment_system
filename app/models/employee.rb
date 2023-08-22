@@ -19,6 +19,8 @@ class Employee < ApplicationRecord
   validates :national_id_card, length: { maximum: 15 },
                                format: { with: /\A\d{5}-\d{7}-\d{1}\z/, message: "should be in the format '12345-1234567-1'" }
   validates :designation, presence: true
+  validates :avatar, presence: true
   validates :department, presence: true
   validates :employment_status, presence: true
+  validates :employment_type, presence: true
 end
