@@ -1,36 +1,36 @@
 ActiveAdmin.register SalaryDetailHistory do
   menu parent: 'salary'
-  before_action :redirect_to_show, only: %i[edit update]
-
-  controller do
-    def redirect_to_show
-      flash[:error] = 'Editing is not allowed for Salary Detail History.'
-      redirect_to admin_employee_salary_detail_history_path(resource.employee, resource)
-    end
-  end
-  action_item :back_to_employee, only: :show do
-    link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
-  end
-  config.clear_action_items!
-
   index do
     selectable_column
     id_column
     column :name
-    column :basic_salary
-    column :fuel
-    column :medical_allownce
-    column :house_rent
-    column :opd
-    column :arrears
-    column :other_bonus
-    column :gross_salary
-    column :provident_fund
-    column :unpaid_leaves
-    column :net_salary
-    column :employee_id
-  end
 
-  permit_params :name, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
-                :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
+    separator = '<br>from<br>'
+    previous_values = {}
+    columns_to_display = %i[basic_salary fuel medical_allownce house_rent opd arrears other_bonus gross_salary
+                            provident_fund unpaid_leaves net_salary]
+
+    columns_to_display.each do |field|
+      column field.to_s.titleize do |salary_detail_history|
+        current_value = salary_detail_history.send(field)
+        prev_value = salary_detail_history.salary_structure.salary_detail_histories.order(id: :asc).where('id < ?',
+                                                                                                          salary_detail_history.id).last&.send(field)
+
+        value_display = if prev_value && prev_value != current_value
+                          if prev_value < current_value
+                            "<span style='color: green;'>#{current_value}</span>#{separator}<span style='color: red;'>#{prev_value}".html_safe
+                          else
+                            "<span style='color: red;'>#{current_value}</span>#{separator}<span style='color: green;'>#{prev_value}".html_safe
+                          end
+                        else
+                          current_value
+                        end
+
+        previous_values[field] = current_value
+        value_display
+      end
+    end
+
+    actions
+  end
 end

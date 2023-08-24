@@ -1,5 +1,21 @@
 ActiveAdmin.register SalarySlip do
+  preserve_default_filters!
+  filter :employee, collection: proc {
+                                  Employee.all.map do |employee|
+                                    ["#{employee.first_name} #{employee.last_name}", employee.id]
+                                  end
+                                }
   menu parent: 'salary'
+  before_action :redirect_to_show, only: %i[edit update]
+
+  controller do
+    def redirect_to_show
+      flash[:error] = 'Editing is not allowed for Salary Detail History.'
+      redirect_to admin_salary_slip_path
+    end
+  end
+
+  config.clear_action_items!
   member_action :send_email, method: :post do
     salary_slip = SalarySlip.find(params[:id])
     SalarySlipMailer.send_salary_slip(salary_slip).deliver_now
@@ -45,6 +61,20 @@ ActiveAdmin.register SalarySlip do
     end
 
     f.actions
+  end
+
+  index do
+    selectable_column
+    column :name
+    column :salary_month
+    column :date_of_joining
+    column :designation
+    column :basic_salary
+    column :gross_salary
+    column :net_salary
+    actions defaults: false do |salary_slip|
+      item 'View', admin_salary_slip_path(salary_slip)
+    end
   end
 
   show do

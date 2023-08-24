@@ -145,3 +145,31 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initial calculation
   updateCalculations();
 });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var dateOfBirthInput = document.getElementById("date-of-birth");
+    var ageInput = document.getElementById("age");
+
+    $(dateOfBirthInput).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1970:2008',
+      dateFormat: 'dd-M-yy',
+      onSelect: function (dateText) {
+        var selectedDate = new Date(dateText);
+        var currentDate = new Date();
+
+        var age = currentDate.getFullYear() - selectedDate.getFullYear();
+        if (
+          currentDate.getMonth() < selectedDate.getMonth() ||
+          (currentDate.getMonth() === selectedDate.getMonth() &&
+            currentDate.getDate() < selectedDate.getDate())
+        ) {
+          age--;
+        }
+
+        ageInput.value = age;
+      }
+    });
+  });

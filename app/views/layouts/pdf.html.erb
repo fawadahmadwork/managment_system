@@ -4,6 +4,16 @@
   <title>PDF Layout</title>
   <%= wicked_pdf_stylesheet_link_tag 'application' %>
   <%= wicked_pdf_javascript_include_tag 'application' %>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale= 0.5">
+<style>
+    body {
+      font-size: 25px; /* Adjust this value to increase or decrease the font size */
+      font-family: Arial, sans-serif;
+    }
+   
+  </style>
+
 </head>
 <body>
   <%= yield %>

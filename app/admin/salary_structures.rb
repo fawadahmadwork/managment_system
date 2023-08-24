@@ -46,7 +46,7 @@ ActiveAdmin.register SalaryStructure do
     column :other_bonus
     column :gross_salary
     column :provident_fund
-    column :net_salary, class: 'clr'
+    column :net_salary
     column :created_at
     column :updated_at
     actions
@@ -56,7 +56,22 @@ ActiveAdmin.register SalaryStructure do
     attributes_table do
       row('Employee Name') { |employee| employee.name }
       row :basic_salary
-      row :fuel
+      row :fuel do |salary_structure|
+        current_fuel = salary_structure.fuel
+        prev_fuel = salary_structure.salary_detail_histories.last&.fuel
+
+        value_display = if prev_fuel && prev_fuel != current_fuel
+                          if prev_fuel < current_fuel
+                            "<span style='color: green;'>#{current_fuel}</span> from <span style='color: red;'>#{prev_fuel}</span>".html_safe
+                          else
+                            "<span style='color: red;'>#{current_fuel}</span> from <span style='color: green;'>#{prev_fuel}</span>".html_safe
+                          end
+                        else
+                          current_fuel
+                        end
+
+        value_display
+      end
       row :medical_allownce
       row :house_rent
       row :opd
@@ -72,6 +87,6 @@ ActiveAdmin.register SalaryStructure do
     # Additional panels, comments, or custom content here
   end
 
-  permit_params :name, :salary, :allowances, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
+  permit_params :name, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
                 :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
 end

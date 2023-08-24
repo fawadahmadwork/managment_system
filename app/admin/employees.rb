@@ -3,13 +3,15 @@ ActiveAdmin.register Employee do
     f.inputs do
       f.input :first_name
       f.input :last_name
-      f.input :gender, as: :select, collection: %w[Male Female]
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
         changeMonth: true,
         changeYear: true,
-        yearRange: '1970:2008'
+        yearRange: '1970:2008',
+        dateFormat: 'dd-M-yy'
 
-      }
+      }, input_html: { id: 'date-of-birth' }
+      f.input :age, input_html: { id: 'age', readonly: true }
+      f.input :gender, as: :select, collection: %w[Male Female]
 
       f.input :national_id_card, length: { maximum: 15 },
                                  input_html: {
@@ -76,10 +78,7 @@ ActiveAdmin.register Employee do
     column 'Full Name', sortable: :last_name do |employee|
       "#{employee.first_name} #{employee.last_name}"
     end
-    column :age do |employee|
-      calculate_age(employee.date_of_birth) if employee.date_of_birth.present?
-    end
-
+    column :age
     column :gender
     column :designation
     column :department
@@ -91,13 +90,7 @@ ActiveAdmin.register Employee do
       row :first_name
       row :last_name
       row :gender
-      row :age do |employee|
-        if employee.date_of_birth.present?
-          calculate_age(employee.date_of_birth)
-        else
-          'N/A'
-        end
-      end
+      row :age
       row :date_of_birth
       row :email do |employee|
         if employee.emails.any?
@@ -205,11 +198,4 @@ ActiveAdmin.register Employee do
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]
-end
-def calculate_age(date_of_birth)
-  return '' if date_of_birth.blank?
-
-  age = Date.today.year - date_of_birth.year
-  age -= 1 if Date.today < date_of_birth + age.years
-  age
 end

@@ -1,6 +1,6 @@
-  <div style="font-family:Arial"> 
+  <div style="font-family:Arial; background-color: eeeeee; "> 
           <div>
-          <table style="width:75%;margin:auto;padding:20px;/* background:#645e5e */">
+          <table style="width:100%;margin:auto;padding:20px;/* background:#645e5e */">
               <tbody><tr>
               
               <td><img src="https://www.xcorebit.com/assets/img/lolol.png" class="CToWUd a6T" jslog="138226; u014N:xr6bB; 53:W2ZhbHNlXQ.." tabindex="0" style="
@@ -21,31 +21,8 @@
       </td>
               </tr>
           </tbody></table>
-          <table style="width:75%;margin:auto;padding:20px">
-          <tbody><tr>
-              <td>
-            <div style="float: left;">
-    <span style="font-weight: bold; margin-right: 2px;">Name:</span>
-    <%= "#{@employee.first_name} #{@employee.last_name}" %>
-  </div>
-
-
-              <div style="float:right"><span style="font-weight:bold;margin-right:2px">Designation: </span><%= @employee.designation %> </div>
-              <div style="clear:both"></div>
-              </td>
-          </tr><tr>
-              <td>
-              <div><span style="font-weight:bold;margin-right:2px"><span class="il">Salary</span> Month: </span><%= @salary_slip.salary_month&.strftime('%B %Y') %></div>
-              </td>
-          </tr>
-      ​
-          <tr>
-              <td>
-              <div><span style="font-weight:bold;margin-right:2px">Date of Joining: </span><%= @employee.date_of_joining %></div>
-              </td>
-          </tr>
-          </tbody></table>
-         <div style="font-family: Arial; background-color: #f4f4f4; padding: 15px; border-radius: 5px; text-align: center;">
+          
+         <div style="font-family: Arial;; padding: 15px; border-radius: 5px; text-align: center;">
   <p style="font-size: 14px; margin-bottom: 10px; line-height: 1.5;">
    <span style= "font-weight:bold"> Dear <%= "#{@employee.first_name} #{@employee.last_name}" %>
    </span>
@@ -61,11 +38,10 @@
     Address: H, 21 Mateen Fatima Rd Block, Gulberg, Lahore<br>
     Google Maps: <a href="https://goo.gl/maps/8imB4HCzwXJ8NzGWA" style="color: #3498db; text-decoration: none;">https://goo.gl/maps/8imB4HCzwXJ8NzGWA</a>
   </p>
-</div>
 
           
   <a style="color:white; text-decoration:none;" href="<%= attachments['salary_slip.pdf'].url %>">
-        <table style="width:100%;margin:auto;padding:2px;background: black;">
+        <table style="width:75%;margin:auto;padding:2px;background: black;">
     <tbody>
       <tr>
         <td>
@@ -78,3 +54,4 @@
     </tbody>
   </table>
             </a>
+</div>

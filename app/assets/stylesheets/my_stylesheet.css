@@ -1,1 +1,11 @@
-  
+ .bd {
+    margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden; /* Prevent content overflow */
+}
+/* Apply this style to the last element in your PDF content */
+.last-element {
+  margin-bottom: 0; /* Set margin-bottom to zero */
+  padding-bottom: 0; /* Set padding-bottom to zero */
+}
