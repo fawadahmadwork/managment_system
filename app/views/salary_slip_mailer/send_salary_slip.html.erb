@@ -1,17 +1,18 @@
-   <div style="font-family:Arial"> 
-        <div>
+<div style="font-family:Arial"> 
+        
         <table style="width:100%;margin:auto;padding:20px">
             <tbody><tr>
-            <td><img src="https://www.xcorebit.com/assets/img/lolol.png" style="width: 400px;">
+            <td><img src="https://www.xcorebit.com/assets/img/lolol.png" style="width: 500px;">
         </div>
+    <div style='float:none;clear:both'></div>   
+    <div style="float:left;margin-top:auto; font-size:17px"><i>H, 21 Mateen Fatima Rd Block, Gulberg, Lahore</i>
     </div>
-    <div style="float:left;margin-top:auto; font-size: 20px;"><i>H, 21 Mateen Fatima Rd Block, Gulberg, Lahore</i>
+    <div style='float:none;clear:both'>
+    </div>
+    <div style="float:left;margin-top:5px; ">+92 321 8814341
     </div>
     <div style='float:none;clear:both'></div>
-    <div style="float:left;margin-top:5px;font-size: 20px; ">+92 321 8814341
-    </div>
-    <div style='float:none;clear:both'></div>
-    <div style="float:left;margin-top:10px;font-size: 20px;">hr@xcorebit.com
+    <div style="float:left;margin-top:10px;">hr@xcorebit.com
     </div>
         </td>
             </tr>
@@ -19,24 +20,23 @@
         <table style="width:100%;margin:auto;padding:10px">
         <tbody><tr>
             <td>
-           <div style="float: left;  margin-right: 2px; font-size: 20px; ">Name:<span style="font-weight: bold;"> 
-  <%= "#{ @employee.first_name} #{@employee.last_name}" %></span>
+           <div style="float: left; margin-right: 2px;"> <span style="font-weight: bold;">Name:</span><%= "#{ @employee.first_name} #{@employee.last_name}" %>
 </div>
 
 
-            <div style="float:right; margin-right:2px; font-size: 20px;">Designation: <span style="font-weight: bold;"> <%= @employee.designation %> </span></div>
+            <div style="float:right; margin-right:2px;"> <span style="font-weight: bold;">Designation:</span> <%= @employee.designation %> </div>
             <div style="clear:both"></div>
             </td>
         </tr><tr>
             <td>
-            <div><span style="margin-right:2px;  font-size: 20px;">Salary Month:<span style="font-weight: bold;"> <%= @salary_slip.salary_month&.strftime('%B %Y') %>
-            </span></div>
+            <div><span style="margin-right:2px;"><span style="font-weight: bold;">Salary Month: </span><%= @salary_slip.salary_month&.strftime('%B %Y') %>
+            </div>
             </td>
         </tr>
     ​
         <tr>
             <td>
-            <div style="margin-right:2px;  font-size: 20px;">Date of Joining: <span style="font-weight: bold;"> <%= @employee.date_of_joining.strftime('%d %b %Y') %></span></div>
+            <div style="margin-right:2px;"><span style="font-weight: bold;">Date of Joining:</span>  <%= @employee.date_of_joining.strftime('%d %b %Y') %></div>
             </td>
         </tr>
         </tbody></table>
@@ -108,28 +108,28 @@
         </tr>
         <tr>
             <td>
-            <div><span style="float:left;margin-bottom:1%">Gross <span class="il">Salary</span></span></div> 
-            <div style="float:right"><%= @salary_slip.gross_salary %></div>
+            <div><span style="float:left;margin-bottom:1%; margin-top: 25px">GrossSalary</span></span></div> 
+            <div style="float:right;margin-bottom:1%;margin-top: 25px "><%= @salary_slip.gross_salary %></div>
             <div style="clear:both"></div>
             </td>
         </tr>
         <tr>
             <td>
-            <div style="font-weight:bold; font-size: 30px; float:left;"> Deductions</div>
+            <div style="font-weight:bold; font-size: 30px; float:left; margin-top:20px"> Deductions</div>
            
             </td>
         </tr>
         <tr>
             <td>
-            <div style="float:left;font-size: 20px;  ">Provident Fund</div> 
-            <div style="float:right"><%= @salary_slip.provident_fund %></div>
+            <div style="float:left;font-size: 20px; margin-top: 25px  ">Provident Fund</div> 
+            <div style="float:right; ;font-size: 20px; margin-top: 25px     "><%= @salary_slip.provident_fund %></div>
             <div style="clear:both"></div>
             </td>
         </tr>
         <tr>
             <td>
-            <div><span style="font-size:25px;font-weight:bold;float:left;margin-bottom:1%;margin-top:2%">Net Salary</span></div>
-             <div style="font-size:25px;float:right;font-weight:bold;margin-top:2%"><%= @salary_slip.net_salary %></div>
+            <div><span style="font-size:25px;font-weight:bold;float:left;margin-bottom:1%;margin-top:5%">Net Salary</span></div>
+             <div style="font-size:25px;float:right;font-weight:bold;margin-top:5%"><%= @salary_slip.net_salary %></div>
             <div style="clear:both"></div>
             </td>
     </tr>

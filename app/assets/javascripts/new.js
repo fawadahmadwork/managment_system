@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
       changeMonth: true,
       changeYear: true,
       yearRange: '1970:2008',
-      dateFormat: 'dd-M-yy',
+      dateFormat: 'yy-mm-dd',
       onSelect: function (dateText) {
         var selectedDate = new Date(dateText);
         var currentDate = new Date();
@@ -173,3 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+
+  

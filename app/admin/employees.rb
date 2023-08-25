@@ -1,16 +1,15 @@
 ActiveAdmin.register Employee do
   form do |f|
     f.inputs do
-      f.input :first_name
-      f.input :last_name
+      f.input :first_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
+      f.input :last_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
         changeMonth: true,
         changeYear: true,
-        yearRange: '1970:2008',
-        dateFormat: 'dd-M-yy'
+        yearRange: '1970:2008'
 
       }, input_html: { id: 'date-of-birth' }
-      f.input :age, input_html: { id: 'age', readonly: true }
+      f.input :age, input_html: { id: 'age' }
       f.input :gender, as: :select, collection: %w[Male Female]
 
       f.input :national_id_card, length: { maximum: 15 },

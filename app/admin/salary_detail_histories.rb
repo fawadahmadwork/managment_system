@@ -1,5 +1,6 @@
 ActiveAdmin.register SalaryDetailHistory do
   menu parent: 'salary'
+  config.clear_action_items!
   index do
     selectable_column
     id_column
@@ -16,7 +17,7 @@ ActiveAdmin.register SalaryDetailHistory do
         prev_value = salary_detail_history.salary_structure.salary_detail_histories.order(id: :asc).where('id < ?',
                                                                                                           salary_detail_history.id).last&.send(field)
 
-        value_display = if prev_value && prev_value != current_value
+        value_display = if prev_value.present? && current_value.present? && prev_value != current_value
                           if prev_value < current_value
                             "<span style='color: green;'>#{current_value}</span>#{separator}<span style='color: red;'>#{prev_value}".html_safe
                           else
@@ -30,7 +31,5 @@ ActiveAdmin.register SalaryDetailHistory do
         value_display
       end
     end
-
-    actions
   end
 end

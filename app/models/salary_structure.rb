@@ -1,6 +1,6 @@
 class SalaryStructure < ApplicationRecord
   belongs_to :employee, optional: :true
-  has_many :salary_detail_histories
+  has_many :salary_detail_histories, dependent: :destroy
   before_save :create_salary_detail_history
 
   private

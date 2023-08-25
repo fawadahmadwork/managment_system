@@ -1,4 +1,7 @@
 ActiveAdmin.register SalaryStructure do
+  filter :employee_id_null, label: 'Employee not assigned', as: :boolean
+  filter :employee, as: :select, collection: proc { Employee.pluck(:first_name, :id) }, label: 'Employee'
+  preserve_default_filters!
   menu parent: 'salary'
   action_item :back_to_employee, only: :show do
     link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
@@ -9,7 +12,7 @@ ActiveAdmin.register SalaryStructure do
       if params[:employee_id].present?
         employee = Employee.find(params[:employee_id])
         f.input :employee_id, as: :hidden, input_html: { value: params[:employee_id] }
-        f.input :name, input_html: { value: employee.first_name, readonly: true }
+        f.input :name, input_html: { value: "#{employee.first_name} #{employee.last_name}", readonly: true }
       else
         f.input :employee_id, as: :hidden
         f.input :name
@@ -56,22 +59,7 @@ ActiveAdmin.register SalaryStructure do
     attributes_table do
       row('Employee Name') { |employee| employee.name }
       row :basic_salary
-      row :fuel do |salary_structure|
-        current_fuel = salary_structure.fuel
-        prev_fuel = salary_structure.salary_detail_histories.last&.fuel
-
-        value_display = if prev_fuel && prev_fuel != current_fuel
-                          if prev_fuel < current_fuel
-                            "<span style='color: green;'>#{current_fuel}</span> from <span style='color: red;'>#{prev_fuel}</span>".html_safe
-                          else
-                            "<span style='color: red;'>#{current_fuel}</span> from <span style='color: green;'>#{prev_fuel}</span>".html_safe
-                          end
-                        else
-                          current_fuel
-                        end
-
-        value_display
-      end
+      row :fuel
       row :medical_allownce
       row :house_rent
       row :opd
@@ -83,8 +71,6 @@ ActiveAdmin.register SalaryStructure do
       row :created_at
       row :updated_at
     end
-
-    # Additional panels, comments, or custom content here
   end
 
   permit_params :name, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,

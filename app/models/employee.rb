@@ -12,6 +12,7 @@ class Employee < ApplicationRecord
 
   validates :first_name, presence: true
   validates :last_name, presence: true
+  validates :age, presence: true
   validates :gender, presence: true, inclusion: { in: %w[Male Female] }
   validates :date_of_birth, presence: true
   validates :date_of_joining, presence: true
