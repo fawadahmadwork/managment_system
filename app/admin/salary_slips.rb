@@ -1,16 +1,16 @@
 ActiveAdmin.register SalarySlip do
+  menu false
   preserve_default_filters!
   filter :employee, collection: proc {
                                   Employee.all.map do |employee|
                                     ["#{employee.first_name} #{employee.last_name}", employee.id]
                                   end
                                 }
-  menu parent: 'salary'
   before_action :redirect_to_show, only: %i[edit update]
 
   controller do
     def redirect_to_show
-      flash[:error] = 'Editing is not allowed for Salary Detail History.'
+      flash[:error] = 'Editing is not allowed for Salary Slip'
       redirect_to admin_salary_slip_path
     end
   end
@@ -21,10 +21,6 @@ ActiveAdmin.register SalarySlip do
     SalarySlipMailer.send_salary_slip(salary_slip).deliver_now
 
     redirect_to admin_salary_slip_path, notice: 'Salary slip email sent!'
-  end
-
-  action_item :send_email, only: :show do
-    link_to 'Send Salary Slip Email', send_email_admin_salary_slip_path(resource), method: :post
   end
 
   action_item :back_to_employee, only: :show do
@@ -95,9 +91,16 @@ ActiveAdmin.register SalarySlip do
       row :gross_salary
       row :provident_fund
       row :net_salary
+      row :pdf_attachment do |salary_slip|
+        if salary_slip.pdf_attachment.attached?
+          link_to 'View PDF', url_for(salary_slip.pdf_attachment)
+        else
+          'No PDF attached'
+        end
+      end
     end
   end
 
-  permit_params :name, :salary_month, :designation, :date_of_joining, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
-                :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
+  permit_params :name, :salary_month, :designation, :date_of_joining, :basic_salary, :fuel, :medical_allownce,
+                :house_rent, :opd, :arrears, :other_bonus, :gross_salary, :provident_fund, :net_salary, :employee_id
 end

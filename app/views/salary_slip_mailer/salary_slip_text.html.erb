@@ -38,20 +38,23 @@
     Address: H, 21 Mateen Fatima Rd Block, Gulberg, Lahore<br>
     Google Maps: <a href="https://goo.gl/maps/8imB4HCzwXJ8NzGWA" style="color: #3498db; text-decoration: none;">https://goo.gl/maps/8imB4HCzwXJ8NzGWA</a>
   </p>
+ <%= image_tag 'abs copy.jpeg', class: 'avatar-image' %>
 
-          
-  <a style="color:white; text-decoration:none;" href="<%= attachments['salary_slip.pdf'].url %>">
+
+        
+ <a style="color:white; text-decoration:none;" href="<%= url_for(@salary_slip.pdf_attachment) %>">
+
+
         <table style="width:75%;margin:auto;padding:2px;background: black;">
     <tbody>
       <tr>
         <td>
           <h2 style="margin-top:1%;font-size:20px;text-align:center;margin-bottom:2px;">
             
-              Employee Pay Slip
+             Employee Pay Slip Pdf
           </h2>
         </td>
       </tr>
     </tbody>
   </table>
-            </a>
 </div>

@@ -6,12 +6,25 @@ Rails.application.configure do
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.hosts << 'ab8e-45-249-10-232.ngrok-free.app'
+  config.hosts << 'f98f-103-217-178-124.ngrok-free.app'
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.gmail.com',
+  #   port: 587,
+  #   domain: 'yourdomain.com', # Replace with your domain or leave it as-is
+  #   user_name: 'fawadahmad99h@gmail.com', # Your Gmail email address
+  #   password: 'bccalnvxfeglesga', # Your Gmail password or an app-specific password
+  #   authentication: 'plain',
+  #   enable_starttls_auto: true
+  # }
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.raise_delivery_errors = true
 
   config.cache_classes = false
 

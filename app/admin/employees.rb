@@ -61,7 +61,7 @@ ActiveAdmin.register Employee do
       bank_account_form.input :branch_code,
                               input_html: { placeholder: 'Enter a 4-digit branch code' }
       bank_account_form.input :account_number, input_html: {
-        placeholder: 'Please enter a 16-digit account number'
+        placeholder: 'Please enter account number'
       }
       bank_account_form.input :IBAN, input_html: {
         pattern: 'PK\d{2}[A-Za-z]{4}\d{16}',
@@ -120,7 +120,9 @@ ActiveAdmin.register Employee do
       row :notes
       row :avatar do |employee|
         if employee.avatar.attached?
-          image_tag url_for(employee.avatar), height: '100px', width: '100px'
+          div class: 'avatar-wrapper' do
+            image_tag url_for(employee.avatar), class: 'avatar-image'
+          end
         else
           'N/A'
         end
@@ -179,6 +181,12 @@ ActiveAdmin.register Employee do
         link_to 'Create New Salary Slip', new_admin_salary_slip_path(employee_id: employee.id), class: 'button'
       end
     end
+    panel 'Provident fund' do
+      link_to 'View Provident Fund', admin_employee_provident_fund_path(employee_id: resource.id), class: 'button'
+    end
+    panel 'All Salaries Paid' do
+      link_to 'View all Salaries paid', admin_employee_salary_slips_path(employee_id: resource.id), class: 'button'
+    end
 
     active_admin_comments
   end
@@ -197,4 +205,10 @@ ActiveAdmin.register Employee do
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]
+
+  controller do
+    def employee_id_present?
+      resource.employee_id.present?
+    end
+  end
 end

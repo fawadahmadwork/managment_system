@@ -1,8 +1,20 @@
 ActiveAdmin.register SalaryStructure do
+  config.clear_action_items!
+  action_item :edit, only: :show do
+    link_to 'Edit Salary Structure', edit_admin_salary_structure_path(resource)
+  end
+
+  action_item :delete, only: :show do
+    if resource.employee_id.blank?
+      link_to 'Delete Salary Structure', admin_salary_structure_path(resource), method: :delete,
+                                                                                data: { confirm: 'Are you sure?' }
+    end
+  end
+  menu label: 'Salary Structure Templates'
+  scope :unassigned, default: true
   filter :employee_id_null, label: 'Employee not assigned', as: :boolean
   filter :employee, as: :select, collection: proc { Employee.pluck(:first_name, :id) }, label: 'Employee'
   preserve_default_filters!
-  menu parent: 'salary'
   action_item :back_to_employee, only: :show do
     link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
   end
@@ -38,8 +50,8 @@ ActiveAdmin.register SalaryStructure do
   index do
     selectable_column
     id_column
-    column :employee
-    column 'Employee Name', :name
+
+    column :name
     column :basic_salary
     column :fuel
     column :medical_allownce
@@ -70,6 +82,17 @@ ActiveAdmin.register SalaryStructure do
       row :net_salary
       row :created_at
       row :updated_at
+    end
+  end
+  controller do
+    def destroy
+      salary_structure = SalaryStructure.find(params[:id])
+      if salary_structure.employee_id.present?
+        flash[:error] = 'Cannot delete a Salary Structure with an assigned employee.'
+        redirect_to admin_salary_structure_path(salary_structure)
+      else
+        super
+      end
     end
   end
 

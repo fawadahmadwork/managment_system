@@ -4,4 +4,22 @@
   .inputs select {
     color:rgb(38, 29, 29);
   }
-  
+
+
+   .avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-image {
+  height: 100px;
+  width: 100px;
+  transition: transform 0.3s; /* Adding a smooth transition effect */
+  z-index: 0; /* Default z-index */
+}
+
+.avatar-image:hover {
+  transform: scale(6); /* Enlarge the image on hover */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  z-index: 1; /* Bring the enlarged image to the front */
+}

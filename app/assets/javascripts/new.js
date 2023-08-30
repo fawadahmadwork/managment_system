@@ -174,5 +174,49 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  document.addEventListener('DOMContentLoaded', function() {
+  const basicSalaryInput = document.getElementById('salary_slip_basic_salary');
+  const fuelInput = document.getElementById('salary_slip_fuel');
+  const medicalAllowanceInput = document.getElementById('salary_slip_medical_allownce');
+  const houseRentInput = document.getElementById('salary_slip_house_rent');
+  const opdInput = document.getElementById('salary_slip_opd');
+  const arrearsInput = document.getElementById('salary_slip_arrears');
+  const otherBonusInput = document.getElementById('salary_slip_other_bonus');
+  const providentFundInput = document.getElementById('salary_slip_provident_fund');
+  const grossSalaryInput = document.getElementById('salary_slip_gross_salary');
+  const netSalaryInput = document.getElementById('salary_slip_net_salary');
+
+  function updateCalculations() {
+    const basicSalary = parseFloat(basicSalaryInput.value) || 0;
+    const fuel = parseFloat(fuelInput.value) || 0;
+    const medicalAllowance = parseFloat(medicalAllowanceInput.value) || 0;
+    const houseRent = parseFloat(houseRentInput.value) || 0;
+    const opd = parseFloat(opdInput.value) || 0;
+    const arrears = parseFloat(arrearsInput.value) || 0;
+    const otherBonus = parseFloat(otherBonusInput.value) || 0;
+
+    const grossSalary = basicSalary + fuel + medicalAllowance + houseRent + opd + arrears + otherBonus;
+    const providentFund = (basicSalary * 0.05).toFixed(2); // 5% of basic salary
+    const netSalary = (grossSalary - providentFund).toFixed(2);
+
+    grossSalaryInput.value = grossSalary.toFixed(2);
+    providentFundInput.value = providentFund;
+    netSalaryInput.value = netSalary;
+
+    // Set read-only for the calculated fields
+    providentFundInput.readOnly = true;
+    netSalaryInput.readOnly = true;
+    grossSalaryInput.readOnly = true;
+  }
+
+  // Attach event listeners to input fields
+  [basicSalaryInput, fuelInput, medicalAllowanceInput, houseRentInput, opdInput, arrearsInput, otherBonusInput].forEach(input => {
+    input.addEventListener('input', updateCalculations);
+  });
+
+  // Initial calculation
+  updateCalculations();
+});
+
 
   
