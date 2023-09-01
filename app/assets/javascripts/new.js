@@ -1,36 +1,40 @@
- document.addEventListener('DOMContentLoaded', function() {
-  var departmentSelect = document.getElementById('employee_department');
-  var designationSelect = document.getElementById('employee_designation_select');
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if it's a new form
+  var isNewForm = !document.querySelector('form.formtastic').classList.contains('new_record');
 
-  var designationOptions = {
-    'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
-    'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
-  };
+  if (isNewForm) {
+    var departmentSelect = document.getElementById('employee_department');
+    var designationSelect = document.getElementById('employee_designation');
 
-  // Function to update designation select options
-  function updateDesignationOptions() {
-    var selectedDepartment = departmentSelect.value;
-    var newOptions = designationOptions[selectedDepartment] || [];
+    var designationOptions = {
+      'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
+      'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
+    };
 
-    // Clear existing options
-    while (designationSelect.options.length > 0) {
-      designationSelect.remove(0);
-    }
+    departmentSelect.addEventListener('change', function() {
+      var selectedDepartment = departmentSelect.value;
+      var newOptions = designationOptions[selectedDepartment] || [];
 
-    // Add new options
-    newOptions.forEach(function(value) {
-      var option = new Option(value, value);
-      designationSelect.add(option);
+      // Clear existing options
+      while (designationSelect.options.length > 0) {
+        designationSelect.remove(0);
+      }
+
+      // Add new options
+      newOptions.forEach(function(value) {
+        var option = new Option(value, value);
+        designationSelect.add(option);
+      });
+
+      // Set selected designation based on saved value if not a new record
+      if (!document.querySelector('form.formtastic').classList.contains('new_record')) {
+        designationSelect.value = '<%= @employee.designation %>'; // Replace with your actual code
+      }
     });
+
+    departmentSelect.dispatchEvent(new Event('change')); // Initialize options on page load
   }
-
-  // Add an event listener to the department select
-  departmentSelect.addEventListener('change', updateDesignationOptions);
-
-  // Initialize designation options on page load
-  updateDesignationOptions();
 });
-
 
 
 // for id card
