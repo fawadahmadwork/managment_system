@@ -10,13 +10,14 @@ class Employee < ApplicationRecord
   has_many :bank_account_details, dependent: :destroy
   accepts_nested_attributes_for :bank_account_details, allow_destroy: true
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates :first_name, presence: true, length: { maximum: 100 }
+  validates :last_name, presence: true, length: { maximum: 100 }
   validates :age, presence: true
   validates :gender, presence: true, inclusion: { in: %w[Male Female] }
   validates :date_of_birth, presence: true
+  validate :date_of_birth_within_range
   validates :date_of_joining, presence: true
-  validates :address, presence: true, length: { maximum: 200 }
+  validates :address, presence: true, length: { maximum: 100 }
   validates :national_id_card, length: { maximum: 15 },
                                format: { with: /\A\d{5}-\d{7}-\d{1}\z/, message: "should be in the format '12345-1234567-1'" },
                                uniqueness: true
@@ -26,8 +27,31 @@ class Employee < ApplicationRecord
   validates :employment_status, presence: true
   validates :employment_type, presence: true
   before_save :capitalize_names
+  after_save :update_related_salary_structure
 
   private
+
+  def date_of_birth_within_range
+    return if date_of_birth.blank? # Skip validation if date_of_birth is blank
+
+    min_date = Date.new(1970, 1, 1)
+    max_date = Date.new(2005, 12, 31)
+
+    return if date_of_birth.between?(min_date, max_date)
+
+    errors.add(:date_of_birth, 'must be between 1970 and 2005')
+  end
+
+  def update_related_salary_structure
+    return unless saved_change_to_first_name? || saved_change_to_last_name?
+
+    related_salary_structure = SalaryStructure.find_by(employee: self)
+
+    return unless related_salary_structure
+
+    new_name = "#{first_name} #{last_name}"
+    related_salary_structure.update(name: new_name)
+  end
 
   def capitalize_names
     self.first_name = first_name.capitalize if first_name.present?

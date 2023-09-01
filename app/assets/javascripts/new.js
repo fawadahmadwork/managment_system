@@ -1,29 +1,41 @@
-document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
   var departmentSelect = document.getElementById('employee_department');
-  var designationSelect = document.getElementById('employee_designation');
+  var designationSelect = document.getElementById('employee_designation_select');
 
   var designationOptions = {
-    'Development': ['Internee', 'Software Engineer', ' Software Engineer-L1', ' Software Engineer-L2'],
+    'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
     'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
   };
 
+  // Function to update designation select options
   function updateDesignationOptions() {
     var selectedDepartment = departmentSelect.value;
     var newOptions = designationOptions[selectedDepartment] || [];
-    designationSelect.innerHTML = ''; 
+
+    // Clear existing options
+    while (designationSelect.options.length > 0) {
+      designationSelect.remove(0);
+    }
+
+    // Add new options
     newOptions.forEach(function(value) {
-      var option = document.createElement('option');
-      option.text = value;
-      option.value = value;
-      designationSelect.appendChild(option);
+      var option = new Option(value, value);
+      designationSelect.add(option);
     });
   }
 
+  // Add an event listener to the department select
   departmentSelect.addEventListener('change', updateDesignationOptions);
+
+  // Initialize designation options on page load
   updateDesignationOptions();
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+
+
+// for id card
+
+document.addEventListener('DOMContentLoaded', function () {
   const nationalIdInput = document.getElementById('employee_national_id_card');
 
   if (nationalIdInput) {
@@ -47,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// freezing date and comment 
+
 document.addEventListener('DOMContentLoaded', function() {
   const employmentStatusInput = document.getElementById('employee_employment_status');
   const freezingDateInput = document.getElementById('employee_freezing_date');
@@ -66,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
   employmentStatusInput.addEventListener('change', toggleFreezeFields);
 });
 
-
+// mobile pattren
 
 document.addEventListener('DOMContentLoaded', function() {
   const phoneNumberInput = document.getElementById('phone_number_input_id'); // Replace with the actual ID of your phone number input
@@ -88,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// salary sum
 
 document.addEventListener('DOMContentLoaded', function () {
   const basicSalaryInput = document.getElementById('salary_structure_basic_salary');
@@ -147,6 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+//age from dob
+
   document.addEventListener("DOMContentLoaded", function () {
     var dateOfBirthInput = document.getElementById("date-of-birth");
     var ageInput = document.getElementById("age");
@@ -173,6 +191,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+// salary slip data sum
 
   document.addEventListener('DOMContentLoaded', function() {
   const basicSalaryInput = document.getElementById('salary_slip_basic_salary');

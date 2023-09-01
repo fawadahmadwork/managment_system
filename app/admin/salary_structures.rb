@@ -27,7 +27,7 @@ ActiveAdmin.register SalaryStructure do
         f.input :name, input_html: { value: "#{employee.first_name} #{employee.last_name}", readonly: true }
       else
         f.input :employee_id, as: :hidden
-        f.input :name
+        f.input :name, input_html: { readonly: f.object.persisted? }
       end
       template = SalaryStructure.find_by(employee_id: nil, name: employee&.designation)
       fields = %i[
@@ -69,7 +69,7 @@ ActiveAdmin.register SalaryStructure do
 
   show do
     attributes_table do
-      row('Employee Name') { |employee| employee.name }
+      row :name
       row :basic_salary
       row :fuel
       row :medical_allownce
@@ -95,7 +95,6 @@ ActiveAdmin.register SalaryStructure do
       end
     end
   end
-
   permit_params :name, :basic_salary, :fuel, :medical_allownce, :house_rent, :opd, :arrears,
                 :other_bonus, :gross_salary, :provident_fund, :unpaid_leaves, :net_salary, :employee_id
 end

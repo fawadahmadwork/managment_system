@@ -10,24 +10,26 @@ ActiveAdmin.register Employee do
 
       }, input_html: { id: 'date-of-birth' }
       f.input :age, input_html: { id: 'age' }
-      f.input :gender, as: :select, collection: %w[Male Female]
+
+      f.input :gender, as: :select, collection: %w[Male Female],
+                       include_blank: false
 
       f.input :national_id_card, length: { maximum: 15 },
                                  input_html: {
                                    placeholder: 'i-e 12345-1234567-1', class: 'national-id-input'
                                  }
       f.input :employment_type, as: :select,
-                                collection: %w[FullTime PartTime Contractor Internee]
-      f.input :department, as: :select,
-                           collection: ['Development', 'Quality Assurance'],
-                           input_html: { id: 'employee_department' }
+                                collection: %w[FullTime PartTime Contractor],
+                                include_blank: false
 
-      f.input :designation, as: :select,
-                            collection: [],
-                            input_html: { id: 'employee_designation' }
+      f.input :department, as: :select, collection: ['Development', 'Quality Assurance'], include_blank: false
+
+      f.input :designation, as: :select, collection: [], input_html: { id: 'employee_designation' },
+                            include_blank: false
 
       f.input :employment_status, as: :select,
-                                  collection: %w[Active Inactive Freeze], id: 'employment-status-select'
+                                  collection: %w[Active Inactive Freeze], id: 'employment-status-select',
+                                  include_blank: false
 
       f.input :freezing_date, as: :datepicker, id: 'freezing-date-input'
       f.input :freezing_comment, as: :text, id: 'freezing-comment-input'
@@ -41,8 +43,11 @@ ActiveAdmin.register Employee do
 
         f.input :termination_date, as: :datepicker
       end
-      f.input :avatar, as: :file,
-                       hint: f.object.avatar.attached? ? image_tag(f.object.avatar.variant(resize: '150x150')) : ''
+      if f.object.avatar.attached?
+        f.input :avatar, as: :file, hint: image_tag(f.object.avatar.variant(resize: '100x100'))
+      else
+        f.input :avatar, as: :file
+      end
       f.input :address, as: :text
       f.input :notes
 
@@ -59,13 +64,21 @@ ActiveAdmin.register Employee do
       bank_account_form.input :bank_name
       bank_account_form.input :account_title
       bank_account_form.input :branch_code,
-                              input_html: { placeholder: 'Enter a 4-digit branch code' }
+                              input_html: {
+                                placeholder: 'Enter a 4-digit branch code',
+                                oninput: "this.value = this.value.slice(0, 4); this.value = this.value.replace(/[^0-9]/g, '');",
+                                type: 'text'
+                              }
       bank_account_form.input :account_number, input_html: {
-        placeholder: 'Please enter account number'
+        placeholder: 'Please enter account number',
+        oninput: "this.value = this.value.replace(/[^0-9]/g, '');",
+        type: 'text'
       }
       bank_account_form.input :IBAN, input_html: {
         pattern: 'PK\d{2}[A-Za-z]{4}\d{16}',
-        placeholder: ' (e.g., PK36SCBL0000001123456702)'
+        placeholder: ' (e.g., PK36SCBL0000001123456702)',
+        oninput: 'this.value = this.value.toUpperCase();',
+        onkeypress: 'return /[a-zA-Z0-9]/.test(event.key)'
       }
     end
     f.actions
@@ -117,7 +130,7 @@ ActiveAdmin.register Employee do
       end
       row :date_of_joining
       row :termination_date if resource.termination_date.present?
-      row :notes
+      row :notes if resource.notes.present?
       row :avatar do |employee|
         if employee.avatar.attached?
           div class: 'avatar-wrapper' do
@@ -165,7 +178,8 @@ ActiveAdmin.register Employee do
         end
       else
         div do
-          link_to 'Create Salary Structure', new_admin_salary_structure_path(employee_id: employee.id), class: 'button'
+          link_to 'Create Salary Structure', new_admin_salary_structure_path(employee_id: employee.id),
+                  class: 'button'
         end
       end
     end
@@ -192,11 +206,36 @@ ActiveAdmin.register Employee do
   end
 
   controller do
+    def create
+      @employee = Employee.new(permitted_params[:employee])
+
+      if @employee.save
+        flash[:notice] = 'Employee was successfully created!'
+        redirect_to admin_employee_path(@employee)
+      else
+        flash[:error] = 'Your form is missing or has incomplete fields. Please review your entry below.'
+        render action: 'new'
+      end
+    end
+
     def new
       @employee = Employee.new
       @employee.phone_numbers.build
       @employee.emails.build
       @employee.bank_account_details.build
+    end
+
+    def employee_id_present?
+      resource.employee_id.present?
+    end
+
+    def edit
+      @employee = Employee.find(params[:id])
+
+      # Pre-select the designation based on the saved value
+      @selected_designation = @employee.designation
+
+      super
     end
   end
 
@@ -205,10 +244,4 @@ ActiveAdmin.register Employee do
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]
-
-  controller do
-    def employee_id_present?
-      resource.employee_id.present?
-    end
-  end
 end

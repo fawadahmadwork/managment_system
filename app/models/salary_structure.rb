@@ -1,9 +1,8 @@
 class SalaryStructure < ApplicationRecord
-  
   scope :unassigned, -> { where(employee_id: nil) }
   belongs_to :employee, optional: :true
   has_many :salary_detail_histories, dependent: :destroy
-  before_save :create_salary_detail_history
+  after_save :create_salary_detail_history
   validates :basic_salary, :fuel, :medical_allownce, :house_rent,
             :opd, :arrears, :other_bonus, :gross_salary,
             :provident_fund, :net_salary, presence: true
@@ -11,8 +10,6 @@ class SalaryStructure < ApplicationRecord
   private
 
   def create_salary_detail_history
-    return unless changed?
-
     SalaryDetailHistory.create(
       salary_structure_id: id,
       name: name_was,
