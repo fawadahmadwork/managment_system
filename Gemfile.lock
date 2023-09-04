@@ -323,6 +323,7 @@ DEPENDENCIES
   pg
   puma (~> 5.0)
   rails (~> 7.0.5)
+  ransack
   redis (~> 4.0)
   sassc
   selenium-webdriver

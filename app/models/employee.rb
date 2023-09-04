@@ -22,10 +22,12 @@ class Employee < ApplicationRecord
                                format: { with: /\A\d{5}-\d{7}-\d{1}\z/, message: "should be in the format '12345-1234567-1'" },
                                uniqueness: true
   validates :designation, presence: true
-  validates :avatar, presence: true
+  # validates :avatar, presence: true
   validates :department, presence: true
   validates :employment_status, presence: true
   validates :employment_type, presence: true
+  # validates :starting_salary, numericality: { greater_than_or_equal_to: 0 }
+  # validates :signup_bonus, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_save :capitalize_names
   after_save :update_related_salary_structure
 

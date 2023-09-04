@@ -1,15 +1,16 @@
 ActiveAdmin.register Employee do
+  config.sort_order = 'id_asc'
   form do |f|
     f.inputs do
       f.input :first_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
       f.input :last_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
-        changeMonth: true,
-        changeYear: true,
-        yearRange: '1970:2008'
-
-      }, input_html: { id: 'date-of-birth' }
-      f.input :age, input_html: { id: 'age' }
+                                                 changeMonth: true,
+                                                 changeYear: true,
+                                                 yearRange: '1970:2008'
+                                               },
+                              input_html: { id: 'date-of-birth' }
+      f.input :age, input_html: { id: 'age', readonly: true }
 
       f.input :gender, as: :select, collection: %w[Male Female],
                        include_blank: false
@@ -25,7 +26,7 @@ ActiveAdmin.register Employee do
       f.input :department, as: :select, collection: ['Development', 'Quality Assurance'], include_blank: false
 
       f.input :designation, as: :select, collection: [], input_html: { id: 'employee_designation' },
-                            include_blank: false
+                            include_blank: false, selected: f.object.designation
 
       f.input :employment_status, as: :select,
                                   collection: %w[Active Inactive Freeze], id: 'employment-status-select',
@@ -43,11 +44,11 @@ ActiveAdmin.register Employee do
 
         f.input :termination_date, as: :datepicker
       end
-      if f.object.avatar.attached?
-        f.input :avatar, as: :file, hint: image_tag(f.object.avatar.variant(resize: '100x100'))
-      else
-        f.input :avatar, as: :file
+      f.input :avatar, as: :file, input_html: { id: 'avatar-input' }
+      div id: 'avatar-preview', style: 'display: none; margin-left: 300px;' do
+        image_tag '', id: 'avatar-image', style: 'max-width: 100px;'
       end
+      f.input :signup_bonus
       f.input :address, as: :text
       f.input :notes
 
@@ -84,19 +85,48 @@ ActiveAdmin.register Employee do
     f.actions
   end
 
+  filter :first_name_or_last_name_cont, as: :string, label: 'Name Contains'
+  filter :emails_email, as: :select, collection: -> { Email.pluck(:email).uniq }, label: 'Email'
+  filter :department, as: :select, collection: ['Development', 'Quality Assurance'], include_blank: true
+  filter :designation, as: :select,
+                       collection: ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2', 'SQA', 'Senior SQA'], include_blank: true
+
   index do
     selectable_column
     id_column
     column 'Full Name', sortable: :last_name do |employee|
-      "#{employee.first_name} #{employee.last_name}"
+      link_to "#{employee.first_name} #{employee.last_name}", admin_employee_path(employee)
     end
-    column :age
-    column :gender
-    column :designation
+    column :avatar do |employee|
+      if employee.avatar.attached?
+        div class: 'avatar-wrapper' do
+          link_to(url_for(employee.avatar), target: '_blank') do
+            image_tag url_for(employee.avatar), style: 'max-width: 50px;'
+          end
+        end
+      else
+        'N/A'
+      end
+    end
+    column :phone_number do |employee|
+      if employee.phone_numbers.any?
+        employee.phone_numbers.first.phone_number
+      else
+        'N/A'
+      end
+    end
+    column :email do |employee|
+      if employee.emails.any?
+        employee.emails.first.email
+      else
+        'N/A'
+      end
+    end
     column :department
+    column :designation
+
     actions
   end
-
   show do
     attributes_table do
       row :first_name
@@ -128,13 +158,20 @@ ActiveAdmin.register Employee do
         row :freezing_date if resource.freezing_date.present?
         row :freezing_comment if resource.freezing_comment.present?
       end
+      row :signup_bonus
+      row :starting_salary do |employee|
+        first_salary_history = employee.salary_detail_histories.order(created_at: :asc).first
+        first_salary_history&.net_salary || 'N/A'
+      end
       row :date_of_joining
       row :termination_date if resource.termination_date.present?
       row :notes if resource.notes.present?
       row :avatar do |employee|
         if employee.avatar.attached?
           div class: 'avatar-wrapper' do
-            image_tag url_for(employee.avatar), class: 'avatar-image'
+            link_to(url_for(employee.avatar), target: '_blank') do
+              image_tag url_for(employee.avatar), style: 'max-width: 150px;'
+            end
           end
         else
           'N/A'
@@ -238,9 +275,8 @@ ActiveAdmin.register Employee do
       super
     end
   end
-
   permit_params :first_name, :last_name, :age, :gender, :date_of_birth, :address, :national_id_card,
-                :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment,
+                :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment, :starting_salary, :signup_bonus,
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]

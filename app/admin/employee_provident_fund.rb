@@ -10,14 +10,19 @@ ActiveAdmin.register_page 'Employee Provident Fund' do
     salary_slips = employee.salary_slips
     provident_fund_total = salary_slips.sum(:provident_fund)
     company_contribution_total = salary_slips.sum(:provident_fund)
-    table do
-      tr(style: 'font-size: 20px; font-weight: bold;') do
-        th 'Total Provident Fund'
 
-        th(provident_fund_total + company_contribution_total)
+    panel '' + (employee&.first_name.to_s + ' ' + employee&.last_name.to_s),
+          style: 'font-size: 20px; font-weight: bold;' do
+      table do
+        tr do
+          th 'Total Provident Fund'
+        end
+
+        tr do
+          td(provident_fund_total + company_contribution_total)
+        end
       end
     end
-
     table do
       tr do
         th 'Salary Slip'

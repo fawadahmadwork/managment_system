@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_093717) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_04_071533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,6 +108,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_093717) do
     t.string "employment_type"
     t.date "freezing_date"
     t.string "freezing_comment"
+    t.integer "starting_salary"
+    t.integer "signup_bonus"
   end
 
   create_table "phone_numbers", force: :cascade do |t|

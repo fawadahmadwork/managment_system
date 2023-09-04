@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Set selected designation based on saved value if not a new record
       if (!document.querySelector('form.formtastic').classList.contains('new_record')) {
-        designationSelect.value = '<%= @employee.designation %>'; // Replace with your actual code
+        designationSelect.value = '<%= @employee.designation %>';
       }
     });
 
@@ -242,5 +242,31 @@ document.addEventListener('DOMContentLoaded', function() {
   updateCalculations();
 });
 
+
+
+// app/assets/javascripts/active_admin.js
+document.addEventListener('DOMContentLoaded', function() {
+  const avatarInput = document.getElementById('avatar-input');
+  const avatarPreview = document.getElementById('avatar-preview');
+  const avatarImage = document.getElementById('avatar-image');
+
+  avatarInput.addEventListener('change', function() {
+    const file = this.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        avatarImage.src = e.target.result;
+        avatarPreview.style.display = 'block';
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      avatarImage.src = '';
+      avatarPreview.style.display = 'none';
+    }
+  });
+});
 
   
