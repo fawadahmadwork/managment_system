@@ -44,10 +44,18 @@ ActiveAdmin.register Employee do
 
         f.input :termination_date, as: :datepicker
       end
+
       f.input :avatar, as: :file, input_html: { id: 'avatar-input' }
-      div id: 'avatar-preview', style: 'display: none; margin-left: 300px;' do
-        image_tag '', id: 'avatar-image', style: 'max-width: 100px;'
+      if f.object.avatar.attached?
+        div id: 'avatar-preview', style: 'margin-left: 300px;' do
+          image_tag url_for(f.object.avatar), id: 'avatar-image', style: 'max-width: 100px;'
+        end
+      else
+        div id: 'avatar-preview', style: 'display: none; margin-left: 300px;' do
+          image_tag '', id: 'avatar-image', style: 'max-width: 100px;'
+        end
       end
+
       f.input :signup_bonus
       f.input :address, as: :text
       f.input :notes
@@ -170,14 +178,13 @@ ActiveAdmin.register Employee do
         if employee.avatar.attached?
           div class: 'avatar-wrapper' do
             link_to(url_for(employee.avatar), target: '_blank') do
-              image_tag url_for(employee.avatar), style: 'max-width: 150px;'
+              image_tag url_for(employee.avatar), style: 'max-width: 50px;'
             end
           end
         else
           'N/A'
         end
       end
-
       panel 'Emails' do
         table_for employee.emails do
           column :email

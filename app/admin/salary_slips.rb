@@ -6,12 +6,17 @@ ActiveAdmin.register SalarySlip do
                                     ["#{employee.first_name} #{employee.last_name}", employee.id]
                                   end
                                 }
-  before_action :redirect_to_show, only: %i[edit update]
+  actions :all, except: %i[destroy edit update]
 
   controller do
-    def redirect_to_show
-      flash[:error] = 'Editing is not allowed for Salary Slip'
-      redirect_to admin_salary_slip_path
+    def edit
+      flash[:error] = 'Editing is not allowed for Salary Slips.'
+      redirect_to admin_salary_slips_path
+    end
+
+    def update
+      flash[:error] = 'Updating Salary Slips is not allowed.'
+      redirect_to admin_salary_slips_path
     end
   end
 
@@ -24,7 +29,7 @@ ActiveAdmin.register SalarySlip do
   end
 
   action_item :back_to_employee, only: :show do
-    link_to 'Back to Employee', admin_employee_path(resource.employee) if resource.employee_id.present?
+    link_to 'Back to Employee', admin_employee_path(resource.employee)
   end
   form do |f|
     f.semantic_errors(*f.object.errors.keys) if f.object.errors.any?

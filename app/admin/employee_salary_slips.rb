@@ -11,7 +11,7 @@ ActiveAdmin.register_page 'Employee Salary Slips' do
     net_salaries = salary_slips.pluck(:net_salary)
 
     panel "All Salaries of #{employee&.first_name} #{employee&.last_name}",
-          style: 'font-size: 20px; font-weight: bold;' do
+          style: 'font-size: 12px; font-weight: bold;' do
       table do
         tr do
           th 'Salary Slip'

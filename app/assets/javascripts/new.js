@@ -1,3 +1,7 @@
+
+
+
+// for designation change
 document.addEventListener('DOMContentLoaded', function() {
   // Check if it's a new form
   var isNewForm = !document.querySelector('form.formtastic').classList.contains('new_record');
@@ -269,4 +273,5 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-  
+
+
