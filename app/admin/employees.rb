@@ -25,8 +25,8 @@ ActiveAdmin.register Employee do
 
       f.input :department, as: :select, collection: ['Development', 'Quality Assurance'], include_blank: false
 
-      f.input :designation, as: :select, collection: [], input_html: { id: 'employee_designation' },
-                            include_blank: false, selected: f.object.designation
+      f.input :designation, as: :select, collection: [],
+                            include_blank: false, input_html: { id: 'employee_designation', 'data-saved-designation': f.object.designation }
 
       f.input :employment_status, as: :select,
                                   collection: %w[Active Inactive Freeze], id: 'employment-status-select',

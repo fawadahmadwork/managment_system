@@ -1,44 +1,43 @@
+document.addEventListener('DOMContentLoaded', function () {
+  var departmentSelect = document.getElementById('employee_department');
+  var designationSelect = document.getElementById('employee_designation');
+  var savedDesignation = designationSelect.getAttribute('data-saved-designation');
 
+  var designationOptions = {
+    'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
+    'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
+  };
 
+  // Function to update designation options based on the selected department
+  function updateDesignationOptions() {
+    var selectedDepartment = departmentSelect.value;
+    var newOptions = designationOptions[selectedDepartment] || [];
 
-// for designation change
-document.addEventListener('DOMContentLoaded', function() {
-  // Check if it's a new form
-  var isNewForm = !document.querySelector('form.formtastic').classList.contains('new_record');
+    // Clear existing options
+    while (designationSelect.options.length > 0) {
+      designationSelect.remove(0);
+    }
 
-  if (isNewForm) {
-    var departmentSelect = document.getElementById('employee_department');
-    var designationSelect = document.getElementById('employee_designation');
-
-    var designationOptions = {
-      'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
-      'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
-    };
-
-    departmentSelect.addEventListener('change', function() {
-      var selectedDepartment = departmentSelect.value;
-      var newOptions = designationOptions[selectedDepartment] || [];
-
-      // Clear existing options
-      while (designationSelect.options.length > 0) {
-        designationSelect.remove(0);
-      }
-
-      // Add new options
-      newOptions.forEach(function(value) {
-        var option = new Option(value, value);
-        designationSelect.add(option);
-      });
-
-      // Set selected designation based on saved value if not a new record
-      if (!document.querySelector('form.formtastic').classList.contains('new_record')) {
-        designationSelect.value = '<%= @employee.designation %>';
-      }
+    // Add new options
+    newOptions.forEach(function (value) {
+      var option = new Option(value, value);
+      designationSelect.add(option);
     });
 
-    departmentSelect.dispatchEvent(new Event('change')); // Initialize options on page load
+    // Select the saved designation if it's not empty
+    if (savedDesignation && newOptions.includes(savedDesignation)) {
+      designationSelect.value = savedDesignation;
+    }
   }
+
+  // Attach the event listener to the department select
+  departmentSelect.addEventListener('change', updateDesignationOptions);
+
+  // Initialize options on page load
+  updateDesignationOptions();
 });
+  
+
 
 
 // for id card

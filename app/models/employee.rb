@@ -18,16 +18,16 @@ class Employee < ApplicationRecord
   validate :date_of_birth_within_range
   validates :date_of_joining, presence: true
   validates :address, presence: true, length: { maximum: 100 }
-  validates :national_id_card, length: { maximum: 15 },
+  validates :national_id_card, presence: true, length: { maximum: 15 },
                                format: { with: /\A\d{5}-\d{7}-\d{1}\z/, message: "should be in the format '12345-1234567-1'" },
-                               uniqueness: true
+                               uniqueness: true, if: :national_id_card_present?
   validates :designation, presence: true
   # validates :avatar, presence: true
   validates :department, presence: true
   validates :employment_status, presence: true
   validates :employment_type, presence: true
   # validates :starting_salary, numericality: { greater_than_or_equal_to: 0 }
-  # validates :signup_bonus, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :signup_bonus, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_save :capitalize_names
   after_save :update_related_salary_structure
 
@@ -58,5 +58,9 @@ class Employee < ApplicationRecord
   def capitalize_names
     self.first_name = first_name.capitalize if first_name.present?
     self.last_name = last_name.capitalize if last_name.present?
+  end
+
+  def national_id_card_present?
+    national_id_card.present?
   end
 end
