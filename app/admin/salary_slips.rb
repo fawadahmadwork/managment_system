@@ -23,10 +23,23 @@ ActiveAdmin.register SalarySlip do
   config.clear_action_items!
   member_action :send_email, method: :post do
     salary_slip = SalarySlip.find(params[:id])
-    SalarySlipMailer.send_salary_slip(salary_slip).deliver_now
-
+   if  SalarySlipMailer.send_salary_slip(salary_slip).deliver_now
+    salary_slip.update(email_sent: true)
     redirect_to admin_salary_slip_path, notice: 'Salary slip email sent!'
+    else
+    flash[:error] = 'Failed to send salary slip email.'
+    redirect_to admin_salary_slip_path
+   end
   end
+action_item :send_email, only: :show do
+  if resource.email_sent # Check if the email has been sent
+    button_tag 'Email already sent', class: 'disabled', disabled: true
+  else
+    link_to 'Send Email', send_email_admin_salary_slip_path(resource), method: :post, data: { confirm: 'Are you sure you want to send an email to this employee?' }
+  end
+end
+
+
 
   action_item :back_to_employee, only: :show do
     link_to 'Back to Employee', admin_employee_path(resource.employee)

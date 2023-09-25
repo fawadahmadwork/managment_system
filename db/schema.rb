@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_04_071533) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_25_141300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -158,6 +158,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_071533) do
     t.string "name"
     t.string "designation"
     t.string "date_of_joining"
+    t.boolean "email_sent"
     t.index ["employee_id"], name: "index_salary_slips_on_employee_id"
   end
 
