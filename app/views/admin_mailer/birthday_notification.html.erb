@@ -1,14 +1,4 @@
-<%
-=begin%>
- <!-- app/views/admin_mailer/birthday_notification.html.erb -->
-
-<h1>Birthday Notification</h1>
-<p>Happy Birthday to <%= @employee.first_name %>!</p>
-<p>We hope you have a fantastic day filled with joy and celebration.</p>
-<!-- Add more content to the email template as needed --> 
-<%
-=end%>
-  <div style="font-family:Arial; background-color: eeeeee; "> 
+ <div style="font-family:Arial; background-color: eeeeee; "> 
           <div>
           <table style="width:100%;margin:auto;padding:20px;/* background:#645e5e */">
               <tbody><tr>
@@ -23,19 +13,14 @@
           </div>
       </div>
       </div>
-      <div style="float:left;margin-top:10px"><i>H, 21 Mateen Fatima Rd Block, Gulberg, Lahore</i></div>
-      <div style='float:none;clear:both'>
-      <div style="float:left;margin-top:10px">+92 321 8814341</div>
-      <div style='float:none;clear:both'>
-      <div style="float:left;margin-top:10px">hr@xcorebit.com</div>
       </td>
               </tr>
           </tbody></table>
           
          <div style="font-family: Arial;; padding: 15px; border-radius: 5px; text-align: center;">
   <p style="font-size: 14px; margin-bottom: 10px; line-height: 1.5;">
-   <span style= "font-weight:bold; font-size:20px;"><p style="font-size: 20px; margin-top: 20px; color: #3498db;">
-      🎉 Birthday Reminder of<span style="font-size: 25px; color:#9111FF" > <%= @employee.first_name %> <%= @employee.last_name %></span> 🎂
+   <span style= "font-weight:bold; font-size:20px;"><p style="font-size: 20px; margin-top: 20px;;">
+      🎉 Birthday Reminder of<span style="font-size: 25px; font-weight:bold;" > <%= @employee.first_name %> <%= @employee.last_name %></span> 🎂
     </p>
     
     <p style="font-size: 20px; margin-top: 10px;">
@@ -47,7 +32,7 @@
     </p>
     
     <p style="font-size: 16px; margin-top: 10px;">
-      The birthday of<span style="font-size: 20px; font-weight:bold;" > <%= @employee.first_name %> <%= @employee.last_name %> is on <%= @employee.date_of_birth.strftime("%d %B") %>.</span>
+      The birthday of<span style="font-size: 20px; font-weight:bold;" > <%= @employee.first_name %> <%= @employee.last_name %></span> is on <span style="font-size: 20px; font-weight:bold;" ><%= @employee.date_of_birth.strftime("%d %B") %>.</span>
     </p>
     
     <p style="font-size: 16px; margin-top: 10px;">
@@ -67,12 +52,3 @@
     </p>
     
    </span>
-   <br><br>
-  <p style="font-size: 14px; margin-bottom: 10px; line-height: 1.5;">
-    Regards,<br>
-    Zeeshan Gulzar<br>
-    Human Resource Officer, Xcorebit.<br>
-    Phone: +923218814341, +923314587577<br>
-    Address: H, 21 Mateen Fatima Rd Block, Gulberg, Lahore<br>
-    Google Maps: <a href="https://goo.gl/maps/8imB4HCzwXJ8NzGWA" style="color: #3498db; text-decoration: none;">https://goo.gl/maps/8imB4HCzwXJ8NzGWA</a>
-  </p>

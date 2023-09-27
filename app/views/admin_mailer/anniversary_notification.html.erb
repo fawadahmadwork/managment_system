@@ -1,14 +1,4 @@
-<%
-=begin%>
- <!-- app/views/admin_mailer/birthday_notification.html.erb -->
-
-<h1>Birthday Notification</h1>
-<p>Happy Birthday to <%= @employee.first_name %>!</p>
-<p>We hope you have a fantastic day filled with joy and celebration.</p>
-<!-- Add more content to the email template as needed --> 
-<%
-=end%>
-  <div style="font-family:Arial; background-color: eeeeee; "> 
+ <div style="font-family:Arial; background-color: eeeeee; "> 
           <div>
           <table style="width:100%;margin:auto;padding:20px;/* background:#645e5e */">
               <tbody><tr>
@@ -23,12 +13,7 @@
           </div>
       </div>
       </div>
-      <div style="float:left;margin-top:10px"><i>H, 21 Mateen Fatima Rd Block, Gulberg, Lahore</i></div>
-      <div style='float:none;clear:both'>
-      <div style="float:left;margin-top:10px">+92 321 8814341</div>
-      <div style='float:none;clear:both'>
-      <div style="float:left;margin-top:10px">hr@xcorebit.com</div>
-      </td>
+       </td>
               </tr>
           </tbody></table>
           
@@ -48,7 +33,7 @@
 </p>
 
 <p style="font-size: 16px; margin-top: 10px;">
-  The work anniversary of <span style="font-size: 22px; font-weight: bold;"><%= @employee.first_name %> <%= @employee.last_name %></span> is on <%= @employee.date_of_joining.strftime("%d %B") %>.
+  The work anniversary of <span style="font-size: 22px; font-weight: bold;"><%= @employee.first_name %> <%= @employee.last_name %></span> is on<span style="font-size: 22px; font-weight: bold;"> <%= @employee.date_of_joining.strftime("%d %B") %>.</span>
 </p>
 
 <p style="font-size: 16px; margin-top: 10px;">
@@ -65,13 +50,4 @@
 
 <p style="font-size: 16px; margin-top: 10px;">
   🎉 We hope you have a fantastic day celebrating their contribution to the company. 🥳
-</p>
-
-<p style="font-size: 14px; margin-top: 20px; line-height: 1.5;">
-  Regards,<br>
-  Zeeshan Gulzar<br>
-  Human Resource Officer, Xcorebit.<br>
-  Phone: +923218814341, +923314587577<br>
-  Address: H, 21 Mateen Fatima Rd Block, Gulberg, Lahore<br>
-  Google Maps: <a href="https://goo.gl/maps/8imB4HCzwXJ8NzGWA" style="color: #3498db; text-decoration: none;">https://goo.gl/maps/8imB4HCzwXJ8NzGWA</a>
 </p>
