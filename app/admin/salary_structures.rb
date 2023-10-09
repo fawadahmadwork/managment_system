@@ -1,5 +1,8 @@
 ActiveAdmin.register SalaryStructure do
   config.clear_action_items!
+    action_item :new, only: :index do
+    link_to 'New Salary Structure',new_admin_salary_structure_path
+  end
   action_item :edit, only: :show do
     link_to 'Edit Salary Structure', edit_admin_salary_structure_path(resource)
   end

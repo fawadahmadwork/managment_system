@@ -30,6 +30,24 @@ class Employee < ApplicationRecord
   validates :signup_bonus, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_save :capitalize_names
   after_save :update_related_salary_structure
+ def update_salary_structure_from_template
+    template = SalaryStructure.find_by(employee_id: nil, name: self.designation)
+    if template
+      self.salary_structure.update(
+        basic_salary: template.basic_salary,
+        fuel: template.fuel,
+        medical_allownce: template.medical_allownce,
+        house_rent: template.house_rent,
+        opd: template.opd,
+        arrears: template.arrears,
+        other_bonus: template.other_bonus,
+        gross_salary: template.gross_salary,
+        provident_fund: template.provident_fund,
+        net_salary: template.net_salary
+      )
+    end
+  end
+
 
   private
 

@@ -282,6 +282,17 @@ ActiveAdmin.register Employee do
       super
     end
   end
+  controller do
+    def update
+      super do |format|
+        if resource.valid? && resource.saved_change_to_designation?
+          resource.update_salary_structure_from_template
+          flash[:notice] = "Employee's salary structure updated based on new designation."
+          format.html { redirect_to edit_admin_salary_structure_path(resource.salary_structure) }
+        end
+      end
+    end
+  end
   permit_params :first_name, :last_name, :age, :gender, :date_of_birth, :address, :national_id_card,
                 :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment, :starting_salary, :signup_bonus,
                 emails_attributes: %i[id email _destroy],
