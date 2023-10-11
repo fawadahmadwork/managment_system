@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  done: false
+  done_at: 2023-10-10 15:40:20
+  employee: one
+
+two:
+  description: MyString
+  done: false
+  done_at: 2023-10-10 15:40:20
+  employee: two

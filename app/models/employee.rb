@@ -1,4 +1,6 @@
 class Employee < ApplicationRecord
+  has_many :todo_items, dependent: :destroy
+  accepts_nested_attributes_for :todo_items, allow_destroy: true
   has_one :salary_structure, dependent: :destroy
   has_many :salary_detail_histories, through: :salary_structure, dependent: :destroy
   has_many :salary_slips, dependent: :destroy
@@ -47,6 +49,7 @@ class Employee < ApplicationRecord
       )
     end
   end
+
 
 
   private

@@ -59,6 +59,11 @@ ActiveAdmin.register Employee do
       f.input :signup_bonus
       f.input :address, as: :text
       f.input :notes
+       f.has_many :todo_items do |todo_item|
+        todo_item.input :done, :wrapper_html => { :class => 'fl' }
+        todo_item.input :description, :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
+      end
+
 
       f.has_many :emails, allow_destroy: true do |email_form|
         email_form.input :email
@@ -245,8 +250,14 @@ ActiveAdmin.register Employee do
     panel 'All Salaries Paid' do
       link_to 'View all Salaries paid', admin_employee_salary_slips_path(employee_id: resource.id), class: 'button'
     end
-
     active_admin_comments
+    panel 'To-Do list' do
+      table_for employee.todo_items do
+        column :description
+        column :done
+        column :done_at
+      end
+    end
   end
 
   controller do
@@ -266,6 +277,10 @@ ActiveAdmin.register Employee do
       @employee = Employee.new
       @employee.phone_numbers.build
       @employee.emails.build
+          descriptions = YAML.load_file(Rails.root.join('config', 'todo_descriptions.yml'))['descriptions']
+      descriptions.each do |description|
+        @employee.todo_items.build(description: description, done: false)
+      end
       @employee.bank_account_details.build
     end
 
@@ -297,5 +312,6 @@ ActiveAdmin.register Employee do
                 :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment, :starting_salary, :signup_bonus,
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
-                bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy]
+                bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],
+                todo_items_attributes: %i[id description done done_at _destroy]
 end
