@@ -28,9 +28,31 @@
   display:inline;
 } */
 form.formtastic fieldset ol li.fl {float: left ; margin-left: auto ;}
-form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 50px; }
+form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 40px; }
 
 .fl input {
-  margin-left: -110px ;
+  margin-left: -50px ;
 
+}
+.has_many_container.todo_items .has_many_remove {
+  display: none;
+}
+.fl input[type="checkbox"] {
+  transform: scale(1.5); /* Adjust the scaling factor as needed */
+  margin-right: 10px; /* Adjust the spacing as needed */
+}
+.fk input[type="text"] {
+  transform: scale(1.1);
+  line-height: 1.2;
+}
+.has_many_container.todo_items h3 { 
+  font-size: 25px; 
+  text-align: center;
+}
+.has_many_container.todo_lists h3 { 
+  font-size: 25px; 
+  text-align: center;
+}
+.has_many_container.todo_lists .has_many_remove {
+  display: none;
 }

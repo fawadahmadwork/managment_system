@@ -59,12 +59,6 @@ ActiveAdmin.register Employee do
       f.input :signup_bonus
       f.input :address, as: :text
       f.input :notes
-       f.has_many :todo_items do |todo_item|
-        todo_item.input :done, :wrapper_html => { :class => 'fl' }
-        todo_item.input :description, :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
-      end
-
-
       f.has_many :emails, allow_destroy: true do |email_form|
         email_form.input :email
       end
@@ -73,7 +67,6 @@ ActiveAdmin.register Employee do
                          input_html: { placeholder: '0300-1234567', pattern: '\d{4}-\d{7}',
                                        id: 'phone_number_input_id' }
       end
-    end
     f.has_many :bank_account_details, allow_destroy: true do |bank_account_form|
       bank_account_form.input :bank_name
       bank_account_form.input :account_title
@@ -95,6 +88,19 @@ ActiveAdmin.register Employee do
         onkeypress: 'return /[a-zA-Z0-9]/.test(event.key)'
       }
     end
+    if employee.todo_items.any? { |todo_item| !todo_item.done }
+      f.has_many :todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
+        todo_item.input :done, :wrapper_html => { :class => 'fl' }
+        todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
+      end
+      end
+      if employee.todo_lists.any? { |todo_list| !todo_list.done }
+         f.has_many :todo_lists, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
+        todo_item.input :done, :wrapper_html => { :class => 'fl' }
+        todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
+      end
+      end
+      end
     f.actions
   end
 
@@ -251,13 +257,34 @@ ActiveAdmin.register Employee do
       link_to 'View all Salaries paid', admin_employee_salary_slips_path(employee_id: resource.id), class: 'button'
     end
     active_admin_comments
-    panel 'To-Do list' do
-      table_for employee.todo_items do
-        column :description
-        column :done
-        column :done_at
-      end
+    panel 'Pre Onboarding Steps by Admin' do
+  if employee.todo_items.any? { |todo_item| !todo_item.done }
+    table_for employee.todo_items do
+      column :description
+      column :done
+      column :done_at
     end
+  else
+    div class: 'empty-panel' do
+      span 'All steps are done by Admin.'
+    end
+  end
+end
+
+    panel ' On boarding Steps by Admin' do
+  if employee.todo_lists.any? { |todo_list| !todo_list.done }
+    table_for employee.todo_lists do
+      column :description
+      column :done
+      column :done_at
+    end
+  else
+    div class: 'empty-panel' do
+      span 'All On boarding steps are done by Admin.'
+    end
+  end
+end
+
   end
 
   controller do
@@ -280,6 +307,10 @@ ActiveAdmin.register Employee do
           descriptions = YAML.load_file(Rails.root.join('config', 'todo_descriptions.yml'))['descriptions']
       descriptions.each do |description|
         @employee.todo_items.build(description: description, done: false)
+      end
+         descriptions = YAML.load_file(Rails.root.join('config', 'todo_list_descriptions.yml'))['descriptions']
+      descriptions.each do |description|
+        @employee.todo_lists.build(description: description, done: false)
       end
       @employee.bank_account_details.build
     end
@@ -313,5 +344,6 @@ ActiveAdmin.register Employee do
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],
-                todo_items_attributes: %i[id description done done_at _destroy]
+                todo_items_attributes: %i[id description done done_at _destroy],
+                 todo_lists_attributes: %i[id description done done_at _destroy]
 end
