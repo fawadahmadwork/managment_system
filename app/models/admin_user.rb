@@ -14,4 +14,7 @@ class AdminUser < ApplicationRecord
   def hradmin?
     role == 'hradmin'
   end
+  def empty?
+    role == ''
+  end
 end

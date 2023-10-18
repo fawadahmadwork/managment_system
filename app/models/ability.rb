@@ -9,10 +9,9 @@ class Ability
       can :manage, :all
     elsif admin_user.admin?
       can :read, :all
-       cannot :read, SalaryStructure
+    elsif admin_user.empty?
     else admin_user.hradmin?
-      can :manage,[ Employee, SalaryStructure]
-      can :read, ActiveAdmin::Page, name: "Dashboard", namespace_name: "admin"
+      can :manage, Employee
 
   end
     # Define abilities for the user here. For example:
