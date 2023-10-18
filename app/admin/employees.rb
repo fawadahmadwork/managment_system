@@ -266,7 +266,7 @@ ActiveAdmin.register Employee do
     end
   else
     div class: 'empty-panel' do
-      span 'All steps are done by Admin.'
+      span 'All Pre Onboarding steps are done by Admin.'
     end
   end
 end
@@ -327,7 +327,7 @@ end
 
       super
     end
-  end
+ end
   controller do
     def update
       super do |format|
