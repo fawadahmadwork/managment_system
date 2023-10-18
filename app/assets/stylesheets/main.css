@@ -34,7 +34,7 @@ form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 40px;
   margin-left: -50px ;
 
 }
-.has_many_container.todo_items .has_many_remove {
+.has_many_container.pre_todo_items .has_many_remove {
   display: none;
 }
 .fl input[type="checkbox"] {
@@ -53,6 +53,6 @@ form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 40px;
   font-size: 25px; 
   text-align: center;
 }
-.has_many_container.todo_lists .has_many_remove {
+.has_many_container.post_todo_items .has_many_remove {
   display: none;
 }

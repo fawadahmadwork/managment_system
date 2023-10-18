@@ -8,9 +8,10 @@ class Ability
     if admin_user.superadmin?
       can :manage, :all
     elsif admin_user.admin?
-      can :manage, Employee
+      can :read, :all
+       cannot :read, SalaryStructure
     else admin_user.hradmin?
-      # can :manage, Employee
+      can :manage,[ Employee, SalaryStructure]
       can :read, ActiveAdmin::Page, name: "Dashboard", namespace_name: "admin"
 
   end

@@ -1,8 +1,8 @@
 class Employee < ApplicationRecord
-  has_many :todo_items, dependent: :destroy
-  accepts_nested_attributes_for :todo_items, allow_destroy: true
-  has_many :todo_lists, dependent: :destroy
-  accepts_nested_attributes_for :todo_lists, allow_destroy: true
+  has_many :pre_todo_items, dependent: :destroy
+  accepts_nested_attributes_for :pre_todo_items, allow_destroy: true
+  has_many :post_todo_items, dependent: :destroy
+  accepts_nested_attributes_for :post_todo_items, allow_destroy: true
   has_one :salary_structure, dependent: :destroy
   has_many :salary_detail_histories, through: :salary_structure, dependent: :destroy
   has_many :salary_slips, dependent: :destroy

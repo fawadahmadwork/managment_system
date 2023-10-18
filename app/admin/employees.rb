@@ -88,14 +88,14 @@ ActiveAdmin.register Employee do
         onkeypress: 'return /[a-zA-Z0-9]/.test(event.key)'
       }
     end
-    if employee.todo_items.any? { |todo_item| !todo_item.done }
-      f.has_many :todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
+    if employee.pre_todo_items.any? { |todo_item| !todo_item.done }
+      f.has_many :pre_todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
         todo_item.input :done, :wrapper_html => { :class => 'fl' }
         todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
       end
       end
-      if employee.todo_lists.any? { |todo_list| !todo_list.done }
-         f.has_many :todo_lists, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
+      if employee.pre_todo_items.any? { |todo_list| !todo_list.done }
+         f.has_many :post_todo_items, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
         todo_item.input :done, :wrapper_html => { :class => 'fl' }
         todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
       end
@@ -258,8 +258,8 @@ ActiveAdmin.register Employee do
     end
     active_admin_comments
     panel 'Pre Onboarding Steps by Admin' do
-  if employee.todo_items.any? { |todo_item| !todo_item.done }
-    table_for employee.todo_items do
+  if employee.pre_todo_items.any? { |pre_todo_item| !pre_todo_item.done }
+    table_for employee.pre_todo_items do
       column :description
       column :done
       column :done_at
@@ -272,8 +272,8 @@ ActiveAdmin.register Employee do
 end
 
     panel ' On boarding Steps by Admin' do
-  if employee.todo_lists.any? { |todo_list| !todo_list.done }
-    table_for employee.todo_lists do
+  if employee.post_todo_items.any? { |post_todo_item| !post_todo_item.done }
+    table_for employee.post_todo_items do
       column :description
       column :done
       column :done_at
@@ -304,13 +304,13 @@ end
       @employee = Employee.new
       @employee.phone_numbers.build
       @employee.emails.build
-          descriptions = YAML.load_file(Rails.root.join('config', 'todo_descriptions.yml'))['descriptions']
+          descriptions = YAML.load_file(Rails.root.join('config', 'pre_todo_items.yml'))['descriptions']
       descriptions.each do |description|
-        @employee.todo_items.build(description: description, done: false)
+        @employee.pre_todo_items.build(description: description, done: false)
       end
-         descriptions = YAML.load_file(Rails.root.join('config', 'todo_list_descriptions.yml'))['descriptions']
+         descriptions = YAML.load_file(Rails.root.join('config', 'post_todo_items.yml'))['descriptions']
       descriptions.each do |description|
-        @employee.todo_lists.build(description: description, done: false)
+        @employee.post_todo_items.build(description: description, done: false)
       end
       @employee.bank_account_details.build
     end
@@ -344,6 +344,6 @@ end
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],
-                todo_items_attributes: %i[id description done done_at _destroy],
-                 todo_lists_attributes: %i[id description done done_at _destroy]
+                pre_todo_items_attributes: %i[id description done done_at _destroy],
+                post_todo_items_attributes: %i[id description done done_at _destroy]
 end

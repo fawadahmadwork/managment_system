@@ -1,4 +1,4 @@
-class TodoList < ApplicationRecord
+class PostTodoItem < ApplicationRecord
   belongs_to :employee
    before_save :update_done_at_if_done_changed
 
