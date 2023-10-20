@@ -1,5 +1,24 @@
 ActiveAdmin.register Employee do
   config.sort_order = 'id_asc'
+    action_item :edit_pre_todo_items, only: :show do
+    link_to ' Todo Items', edit_pre_todo_items_admin_employee_path(employee), class: 'button'
+     end
+
+
+     member_action :edit_pre_todo_items, method: :get do
+      @employee = Employee.find(params[:id])
+      @pre_todo_items = @employee.pre_todo_items
+     end
+
+ member_action :update_pre_todo_items, method: :put do
+  pre_todo_items_params = params.permit(pre_todo_items: [:description, :done, :type])
+    pre_todo_items_params[:pre_todo_items].each do |id, attributes|
+      todo_item = PreTodoItem.find(id)
+      todo_item.update(attributes)
+    end
+     flash[:notice] = "Pre todo items updated successfully."
+    redirect_to admin_employee_path(params[:id])
+end
   form do |f|
     f.inputs do
       f.input :first_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
@@ -88,18 +107,18 @@ ActiveAdmin.register Employee do
         onkeypress: 'return /[a-zA-Z0-9]/.test(event.key)'
       }
     end
-    if employee.pre_todo_items.any? { |todo_item| !todo_item.done }
-      f.has_many :pre_todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
-        todo_item.input :done, :wrapper_html => { :class => 'fl' }
-        todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
-      end
-      end
-      if employee.pre_todo_items.any? { |todo_list| !todo_list.done }
-         f.has_many :post_todo_items, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
-        todo_item.input :done, :wrapper_html => { :class => 'fl' }
-        todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
-      end
-      end
+    # if employee.pre_todo_items.any? { |todo_item| !todo_item.done }
+    #   f.has_many :pre_todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
+    #     todo_item.input :done, :wrapper_html => { :class => 'fl' }
+    #     todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
+    #   end
+    #   end
+    #   if employee.pre_todo_items.any? { |todo_list| !todo_list.done }
+    #      f.has_many :post_todo_items, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
+    #     todo_item.input :done, :wrapper_html => { :class => 'fl' }
+    #     todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
+    #   end
+    #   end
       end
     f.actions
   end
@@ -257,34 +276,6 @@ ActiveAdmin.register Employee do
       link_to 'View all Salaries paid', admin_employee_salary_slips_path(employee_id: resource.id), class: 'button'
     end
     active_admin_comments
-    panel 'Pre Onboarding Steps by Admin' do
-  if employee.pre_todo_items.any? { |pre_todo_item| !pre_todo_item.done }
-    table_for employee.pre_todo_items do
-      column :description
-      column :done
-      column :done_at
-    end
-  else
-    div class: 'empty-panel' do
-      span 'All Pre Onboarding steps are done by Admin.'
-    end
-  end
-end
-
-    panel ' On boarding Steps by Admin' do
-  if employee.post_todo_items.any? { |post_todo_item| !post_todo_item.done }
-    table_for employee.post_todo_items do
-      column :description
-      column :done
-      column :done_at
-    end
-  else
-    div class: 'empty-panel' do
-      span 'All On boarding steps are done by Admin.'
-    end
-  end
-end
-
   end
 
   controller do
@@ -304,14 +295,6 @@ end
       @employee = Employee.new
       @employee.phone_numbers.build
       @employee.emails.build
-          descriptions = YAML.load_file(Rails.root.join('config', 'pre_todo_items.yml'))['descriptions']
-      descriptions.each do |description|
-        @employee.pre_todo_items.build(description: description, done: false)
-      end
-         descriptions = YAML.load_file(Rails.root.join('config', 'post_todo_items.yml'))['descriptions']
-      descriptions.each do |description|
-        @employee.post_todo_items.build(description: description, done: false)
-      end
       @employee.bank_account_details.build
     end
 
@@ -344,6 +327,6 @@ end
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],
-                pre_todo_items_attributes: %i[id description done done_at _destroy],
-                post_todo_items_attributes: %i[id description done done_at _destroy]
+                pre_todo_items_attributes: %i[id description done done_at type _destroy],
+                post_todo_items_attributes: %i[id description done done_at  _destroy]
 end

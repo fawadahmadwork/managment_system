@@ -56,3 +56,34 @@ form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 40px;
 .has_many_container.post_todo_items .has_many_remove {
   display: none;
 }
+
+/* Add this CSS to your stylesheet or in a style block in your view */
+.todo-item {
+  margin-bottom: 10px; /* Add some space between items */
+}
+
+.todo-item label {
+  margin-right: 10px; /* Add space between the label and the checkbox */
+  margin-left: 10px;
+}
+
+.todo-item input[type="checkbox"] {
+  margin-right: 20px; /* Add space between the checkbox and the text input */
+  margin-left: 20px; /* Add space between the checkbox and the text input */
+  scale: 1.3;
+}
+
+.todo-item input[type="text"] {
+  flex: 1; /* Fill the remaining space with the text input */
+}
+.todo-item input[type="datetime"] {
+  flex: 0.5;
+}
+
+.small-input {
+ width: 200px !important ; /* Adjust the width to your preference */
+}
+legend {
+  font-size: 30px;
+  font-weight: bold;
+}

@@ -86,4 +86,23 @@ class Employee < ApplicationRecord
   def national_id_card_present?
     national_id_card.present?
   end
+   after_create :create_pre_todo_items
+   after_create :create_post_todo_items
+
+  private
+
+  def create_pre_todo_items
+    # Add your logic to create pre_todo_items for the new employee here.
+    descriptions = YAML.load_file(Rails.root.join('config', 'pre_todo_items.yml'))['descriptions']
+    descriptions.each do |description|
+      pre_todo_items.create(description: description, done: false, type: 'pre_joining' )
+    end
+   end
+   private
+  def create_post_todo_items
+     descriptions = YAML.load_file(Rails.root.join('config', 'post_todo_items.yml'))['descriptions']
+      descriptions.each do |description|
+        pre_todo_items.create(description: description, done: false, type: 'on_joining')
+      end
+      end
 end

@@ -121,18 +121,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_090525) do
     t.index ["employee_id"], name: "index_phone_numbers_on_employee_id"
   end
 
-  create_table "post_todo_items", force: :cascade do |t|
-    t.string "description"
-    t.boolean "done"
-    t.datetime "done_at"
-    t.bigint "employee_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_post_todo_items_on_employee_id"
-  end
-
   create_table "pre_todo_items", force: :cascade do |t|
     t.string "description"
+    t.string "type"
     t.boolean "done"
     t.datetime "done_at"
     t.bigint "employee_id", null: false
@@ -204,14 +195,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_090525) do
     t.index ["employee_id"], name: "index_salary_structures_on_employee_id"
   end
 
+  create_table "todos", force: :cascade do |t|
+    t.string "description"
+    t.boolean "done"
+    t.datetime "done_at"
+    t.string "todo_type"
+    t.bigint "employee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_todos_on_employee_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bank_account_details", "employees"
   add_foreign_key "emails", "employees"
   add_foreign_key "phone_numbers", "employees"
-  add_foreign_key "post_todo_items", "employees"
   add_foreign_key "pre_todo_items", "employees"
   add_foreign_key "salary_detail_histories", "salary_structures"
   add_foreign_key "salary_slips", "employees"
   add_foreign_key "salary_structures", "employees"
+  add_foreign_key "todos", "employees"
 end

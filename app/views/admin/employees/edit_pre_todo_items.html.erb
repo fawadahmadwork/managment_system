@@ -1,0 +1,28 @@
+<%= form_for :pre_todo_items, url: update_pre_todo_items_admin_employee_path(@employee), method: :put do |f| %>
+  <fieldset>
+    <legend>Pre Joining</legend>
+    <% @pre_todo_items.where(type: 'pre_joining').order(id: :asc).each do |todo_item| %>
+      <%= f.fields_for "#{todo_item.id}", todo_item do |todo_form| %>
+      <div class="todo-item">
+      <%= todo_form.text_field :description %>
+      <%= todo_form.check_box :done %>
+      <%= todo_form.text_field :done_at, class: 'small-input'  %>
+         </div>
+      <% end %>
+    <% end %>
+  </fieldset>
+    <fieldset>
+    <legend>On Joining</legend>
+    <% @pre_todo_items.where(type: 'on_joining').each do |todo_item| %>
+      <%= f.fields_for "#{todo_item.id}", todo_item do |todo_form| %>
+       <div class="todo-item">
+        <%= todo_form.text_field :description %>
+         <%= todo_form.check_box :done %>
+      <%= todo_form.text_field :done_at, class: 'small-input'  %>
+         </div>
+      <% end %>
+    <% end %>
+  </fieldset>
+
+  <%= f.submit "Update" %>
+<% end %>
