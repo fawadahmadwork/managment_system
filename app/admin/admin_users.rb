@@ -23,7 +23,7 @@ ActiveAdmin.register AdminUser do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :role, as: :select, collection: ['admin', 'superadmin', 'hradmin']
+      f.input :role, as: :select, collection: ['admin', 'superadmin', 'HR'], selected: 'admin', include_blank: false
     end
     f.actions
   end

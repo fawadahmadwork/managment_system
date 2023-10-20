@@ -11,10 +11,7 @@ class AdminUser < ApplicationRecord
     role == 'superadmin'
   end
 
-  def hradmin?
-    role == 'hradmin'
-  end
-  def empty?
-    role == ''
+  def hr?
+    role == 'HR'
   end
 end
