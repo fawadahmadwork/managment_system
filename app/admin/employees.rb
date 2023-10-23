@@ -1,7 +1,9 @@
 ActiveAdmin.register Employee do
   config.sort_order = 'id_asc'
     action_item :edit_pre_todo_items, only: :show do
+       if employee.pre_todo_items.where(done: false).exists?
     link_to ' Todo Items', edit_pre_todo_items_admin_employee_path(employee), class: 'button'
+     end
      end
 
 
@@ -107,18 +109,6 @@ end
         onkeypress: 'return /[a-zA-Z0-9]/.test(event.key)'
       }
     end
-    # if employee.pre_todo_items.any? { |todo_item| !todo_item.done }
-    #   f.has_many :pre_todo_items, heading: 'Pre Onboarding Steps by Admin', new_record: false, allow_destroy: false do |todo_item|
-    #     todo_item.input :done, :wrapper_html => { :class => 'fl' }
-    #     todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
-    #   end
-    #   end
-    #   if employee.pre_todo_items.any? { |todo_list| !todo_list.done }
-    #      f.has_many :post_todo_items, heading: 'Onboarding Process', new_record: false, allow_destroy: false do |todo_item|
-    #     todo_item.input :done, :wrapper_html => { :class => 'fl' }
-    #     todo_item.input :description, label: "To do item", :wrapper_html => { :class => 'fk fl' }, input_html: { readonly: true }
-    #   end
-    #   end
       end
     f.actions
   end
@@ -327,6 +317,5 @@ end
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],
-                pre_todo_items_attributes: %i[id description done done_at type _destroy],
-                post_todo_items_attributes: %i[id description done done_at  _destroy]
+                pre_todo_items_attributes: %i[id description done done_at type _destroy]
 end
