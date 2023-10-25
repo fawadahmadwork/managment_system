@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
+ruby '3.2.2'
 gem 'activeadmin', '~> 2.14'
 gem 'bootstrap'
 gem 'devise'
@@ -9,6 +9,9 @@ gem 'jquery-rails'
 gem 'sassc'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'selenium-webdriver'
+gem 'capybara', require: false
+
 
 gem 'rails', '~> 7.0.5'
 
