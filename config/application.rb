@@ -20,6 +20,7 @@ module ManagmentSystem
     # in config/environments, which are processed later.
     #
     config.time_zone = 'Islamabad'
+    config.assets.js_compressor = :node
 
     # config.eager_load_paths << Rails.root.join("extras")
   end
