@@ -367,6 +367,7 @@ DEPENDENCIES
   redis (~> 4.0)
   sassc
   selenium-webdriver
+  sprockets (~> 4.2)
   sprockets-rails
   stimulus-rails
   turbo-rails

@@ -9,11 +9,12 @@ gem 'jquery-rails'
 gem 'sassc'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-gem 'selenium-webdriver'
-gem 'capybara', require: false
+# gem 'selenium-webdriver'
+# gem 'capybara', require: false
 
 
 gem 'rails', '~> 7.0.5'
+gem 'sprockets', '~> 4.2'
 
 gem 'sprockets-rails'
 gem 'cancancan'
