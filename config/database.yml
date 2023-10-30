@@ -15,5 +15,6 @@ test:
 production:
   <<: *default
   database: managment_system_production
-  username: postgres
+  username: ubuntu
   password: 
+  secret_key_base: a54af792e6c421477b04964a7a747ba37df60d7ced6dc543c01faa7c4802d203b80d82049b12e57279aec47d8d3eb35d9b5888a1b0489d234afa45a1b885c465≈y
