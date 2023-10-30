@@ -9,9 +9,13 @@ gem 'jquery-rails'
 gem 'sassc'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-# gem 'selenium-webdriver'
-# gem 'capybara', require: false
-
+gem 'selenium-webdriver'
+gem 'capybara', require: false
+gem 'capistrano'
+gem 'capistrano3-puma'
+gem 'capistrano-rails', require: false
+gem 'capistrano-bundler', require: false
+gem 'capistrano-rvm'
 
 gem 'rails', '~> 7.0.5'
 gem 'sprockets', '~> 4.2'
@@ -66,11 +70,7 @@ group :development do
   gem 'letter_opener'
   gem 'letter_opener_web'
   gem 'web-console'
-  gem 'capistrano'
-  gem 'capistrano3-puma'
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rvm'
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -80,7 +80,5 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem 'capybara'
-  gem 'selenium-webdriver'
   gem 'webdrivers'
 end
