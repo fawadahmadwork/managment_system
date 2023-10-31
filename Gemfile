@@ -7,15 +7,14 @@ gem 'bootstrap'
 gem 'devise'
 gem 'jquery-rails'
 gem 'sassc'
+gem 'figaro'
+gem 'puma', '~> 5.0'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'selenium-webdriver'
 gem 'capybara', require: false
-gem 'capistrano'
-gem 'capistrano3-puma'
-gem 'capistrano-rails', require: false
-gem 'capistrano-bundler', require: false
-gem 'capistrano-rvm'
+
+
 
 gem 'rails', '~> 7.0.5'
 gem 'sprockets', '~> 4.2'
@@ -24,7 +23,6 @@ gem 'sprockets-rails'
 gem 'cancancan'
 gem 'pg'
 
-gem 'puma', '~> 5.0'
 gem 'ransack'
 gem 'whenever', require: false
 
@@ -70,6 +68,12 @@ group :development do
   gem 'letter_opener'
   gem 'letter_opener_web'
   gem 'web-console'
+  gem 'capistrano'
+  gem 'capistrano3-puma'
+  gem 'capistrano3-nginx'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"

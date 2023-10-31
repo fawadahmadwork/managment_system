@@ -133,8 +133,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
   end
 
   create_table "salary_detail_histories", force: :cascade do |t|
-    t.integer "salary"
-    t.integer "allowances"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
@@ -151,16 +149,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
     t.integer "net_salary"
     t.bigint "salary_structure_id"
     t.index ["salary_structure_id"], name: "index_salary_detail_histories_on_salary_structure_id"
-  end
-
-  create_table "salary_details", force: :cascade do |t|
-    t.string "name"
-    t.integer "salary"
-    t.integer "allowances"
-    t.bigint "employee_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_salary_details_on_employee_id"
   end
 
   create_table "salary_slips", force: :cascade do |t|
@@ -207,6 +195,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
     t.index ["employee_id"], name: "index_salary_structures_on_employee_id"
   end
 
+  create_table "todos", force: :cascade do |t|
+    t.string "description"
+    t.boolean "done"
+    t.datetime "done_at"
+    t.string "todo_type"
+    t.bigint "employee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_todos_on_employee_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bank_account_details", "employees"
@@ -214,7 +213,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
   add_foreign_key "phone_numbers", "employees"
   add_foreign_key "pre_todo_items", "employees"
   add_foreign_key "salary_detail_histories", "salary_structures"
-  add_foreign_key "salary_details", "employees"
   add_foreign_key "salary_slips", "employees"
   add_foreign_key "salary_structures", "employees"
+  add_foreign_key "todos", "employees"
 end
