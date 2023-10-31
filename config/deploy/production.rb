@@ -1,12 +1,12 @@
 # server-based syntax
 # ======================
 
-server '54.242.238.116', user: 'ubuntu', roles: %w{web app db}
-# set :ssh_options, {
-# forward_agent: true,
-# auth_methods: %w[publickey],
-# keys: %w[/Users/macbook/Desktop/mang.pem]
-# }
+server '54.242.125.54', user: 'ubuntu', roles: %w{web app db}
+set :ssh_options, {
+forward_agent: true,
+auth_methods: %w[publickey],
+keys: %w[/Users/macbook/Desktop/mang.pem]
+}
 
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
