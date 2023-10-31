@@ -9,8 +9,6 @@ gem 'jquery-rails'
 gem 'sassc'
 gem 'figaro'
 gem 'puma', '~> 5.0'
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
 gem 'selenium-webdriver'
 gem 'capybara', require: false
 
