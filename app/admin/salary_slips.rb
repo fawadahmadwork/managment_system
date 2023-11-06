@@ -35,7 +35,7 @@ action_item :send_email, only: :show do
   if resource.email_sent # Check if the email has been sent
     button_tag 'Email already sent', class: 'disabled', disabled: true
   else
-    link_to 'Send Email', send_email_admin_salary_slip_path(resource), method: :post, data: { confirm: 'Are you sure you want to send an email to this employee?' }
+    link_to 'Send Email', send_email_admin_salary_slip_path(resource), method: :post, data: { confirm: 'Are you sure to send an email to this employee?' }
   end
 end
 
@@ -94,7 +94,7 @@ end
   show do
     attributes_table do
       row :name
-      row 'Salary Month' do |salary_slip|
+      row 'Salary month' do |salary_slip|
         salary_slip.salary_month&.strftime('%B %Y')
       end
       row :date_of_joining
