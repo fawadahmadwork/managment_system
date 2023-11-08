@@ -2,19 +2,21 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.2'
-gem 'activeadmin', '~> 2.14'
+gem 'activeadmin'
 gem 'bootstrap'
 gem 'devise'
 gem 'jquery-rails'
 gem 'sassc'
 gem 'figaro'
-gem 'puma', '~> 5.0'
+gem 'puma'
 gem 'selenium-webdriver'
 gem 'capybara', require: false
 
 
+gem 'ed25519', '>= 1.2', '< 2.0'
+gem 'bcrypt_pbkdf', '>= 1.0', '< 2.0'
 
-gem 'rails', '~> 7.0.5'
+gem 'rails'
 gem 'sprockets', '~> 4.2'
 
 gem 'sprockets-rails'
@@ -68,7 +70,6 @@ group :development do
   gem 'web-console'
   gem 'capistrano'
   gem 'capistrano3-puma'
-  gem 'capistrano3-nginx'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'

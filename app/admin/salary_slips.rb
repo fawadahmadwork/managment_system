@@ -113,7 +113,7 @@ end
         if salary_slip.pdf_attachment.attached?
           link_to 'View PDF', url_for(salary_slip.pdf_attachment)
         else
-          'No PDF attached'
+          'Noo  PDF attached'
         end
       end
     end

@@ -1,9 +1,4 @@
 server '54.242.125.54', user: 'deploy', roles: %w{web app db}
-set :ssh_options, {
-forward_agent: true,
-auth_methods: %w[publickey],
-keys: %w[/users/macbook/desktop/mang.pem]
-}
 
 
 
