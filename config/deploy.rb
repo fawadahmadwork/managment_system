@@ -4,7 +4,7 @@ lock "~> 3.18.0"
 set :application, "managment_system"
 set :repo_url, 'git@github.com:fawadahmadwork/managment_system.git'
 set :branch, 'main'
-set :deploy_to, '/home/mang/managment_system'
+set :deploy_to, '/home/deploy/managment_system'
 set :pty, true
 set :linked_files, %w{config/master.key config/database.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
