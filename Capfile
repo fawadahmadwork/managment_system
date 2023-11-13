@@ -8,8 +8,10 @@ require "capistrano/bundler"
 require "capistrano/rails/assets"
 require "capistrano/rails/migrations"
 require 'capistrano/puma'
-  require "capistrano/scm/git"
-    install_plugin Capistrano::SCM::Git
+install_plugin Capistrano::Puma
+install_plugin Capistrano::Puma::Daemon
+require "capistrano/scm/git"
+install_plugin Capistrano::SCM::Git
 
 # Load the SCM plugin appropriate to your project:
 #
