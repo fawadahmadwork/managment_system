@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_14_150800) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -139,7 +139,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_155639) do
     t.integer "basic_salary"
     t.integer "fuel"
     t.integer "medical_allownce"
-    t.integer "house_ren"
+    t.integer "house_rent"
     t.integer "opd"
     t.integer "arrears"
     t.integer "other_bonus"
