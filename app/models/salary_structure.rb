@@ -22,7 +22,6 @@ class SalaryStructure < ApplicationRecord
       other_bonus: other_bonus_was,
       gross_salary: gross_salary_was,
       provident_fund: provident_fund_was,
-      net_salary: net_salary_was
-    )
+      net_salary: net_salary_was )
   end
 end
