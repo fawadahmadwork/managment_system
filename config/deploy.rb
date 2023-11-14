@@ -37,6 +37,14 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 # set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 namespace :puma do
+
+    desc 'Restart Puma service'
+  task :ctlrestart do
+    on roles(:app) do
+      execute :sudo, :systemctl, :restart, 'puma.service'
+    end
+  end
+
   desc 'Create Directories for Puma Pids and Socket'
   task :make_dirs do
     on roles(:app) do
@@ -46,6 +54,7 @@ namespace :puma do
   end
 
   before 'deploy:starting', 'puma:make_dirs'
+  after'deploy:published', 'puma:ctlrestart'
 end
 
 namespace :deploy do
