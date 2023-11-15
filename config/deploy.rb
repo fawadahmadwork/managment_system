@@ -24,16 +24,7 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 ## Defaults:
 # set :scm,           :git
 #  set :branch,        :main
-<<<<<<< HEAD
-
 #  set :bundle_jobs, 8 # Set the number of parallel jobs
-=======
-<<<<<<< Updated upstream
- set :bundle_jobs, 8 # Set the number of parallel jobs
-=======
-#  set :bundle_jobs, 8 # Set the number of parallel jobs
->>>>>>> Stashed changes
->>>>>>> staging
 # set :format,        :pretty
 # set :log_level,     :debug
 # set :keep_releases, 5
