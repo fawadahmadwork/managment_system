@@ -1,5 +1,4 @@
- server '52.55.102.172', user: 'deploy', roles: %w{web app db}
-
+server '54.224.175.96', port: 22, roles: [:web, :app, :db], primary: true
 # server '52.55.102.172', port: 22, roles: [:web, :app, :db], primary: true
 
 # server-based syntax
