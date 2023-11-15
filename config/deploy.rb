@@ -1,4 +1,4 @@
-server '3.85.27.179', port: 22, roles: [:web, :app, :db], primary: true
+# server '52.55.102.172', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:fawadahmadwork/managment_system.git'
 set :application,     'managment_system'
