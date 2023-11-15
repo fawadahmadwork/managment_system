@@ -1,9 +1,6 @@
-# server '3.85.27.179', port: 22, roles: [:web, :app, :db], primary: true
-
 set :repo_url,        'git@github.com:fawadahmadwork/managment_system.git'
 set :application,     'managment_system'
 
-# If using Digital Ocean's Ruby on Rails Marketplace framework, your username is 'rails'
 set :user,            'deploy'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0

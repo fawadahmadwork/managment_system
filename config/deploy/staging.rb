@@ -1,8 +1,4 @@
-# config/deploy/staging.rb
-
 server '3.85.27.179', port: 22, roles: [:web, :app, :db], primary: true
-
-# server '3.85.27.179', port: 22, roles: [:web, :app, :db], primary: true
 
 # server-based syntax
 
