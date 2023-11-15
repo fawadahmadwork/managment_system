@@ -1,4 +1,5 @@
 server '54.224.175.96', port: 22, roles: [:web, :app, :db], primary: true
+set :branch, :main
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
