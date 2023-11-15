@@ -1,4 +1,5 @@
 server '3.85.27.179', port: 22, roles: [:web, :app, :db], primary: true
+set :branch, :staging
 
 # server-based syntax
 
