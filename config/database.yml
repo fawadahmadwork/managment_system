@@ -8,10 +8,14 @@ development:
   <<: *default
   database: managment_system_development
 
-test:
-  <<: *default
-  database: managment_system_test
+# test:
+#   <<: *default
+#   database: managment_system_test
 
-production:
-  <<: *default
-  database: managment_system_production
+# production:
+#   <<: *default
+#   database: managment_system_production
+
+# staging:
+#  <<: *default
+#   database: managment_system_staging
