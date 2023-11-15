@@ -8,7 +8,7 @@ set :puma_workers,    0
 # Don't change these unless you know what you're doing
 set :pty,             true
 set :use_sudo,        false
-set :stage,           :production
+# set :stage,           :production
 set :deploy_via,      :remote_cache
 set :deploy_to,       "/home/#{fetch(:user)}/apps/#{fetch(:application)}"
 set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
@@ -24,7 +24,11 @@ set :puma_init_active_record, true  # Change to false when not using ActiveRecor
 ## Defaults:
 # set :scm,           :git
 #  set :branch,        :main
+<<<<<<< Updated upstream
  set :bundle_jobs, 8 # Set the number of parallel jobs
+=======
+#  set :bundle_jobs, 8 # Set the number of parallel jobs
+>>>>>>> Stashed changes
 # set :format,        :pretty
 # set :log_level,     :debug
 # set :keep_releases, 5
