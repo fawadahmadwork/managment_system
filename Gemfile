@@ -11,6 +11,8 @@ gem 'figaro'
 gem 'puma'
 gem 'selenium-webdriver'
 gem 'capybara', require: false
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary', '0.12.3.1'
 
 
 gem 'ed25519', '>= 1.2', '< 2.0'
