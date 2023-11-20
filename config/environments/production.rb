@@ -35,9 +35,21 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
-
+config.action_mailer.default_url_options = { host: '54.224.175.96' }
+   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings =  {
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'yourdomain.com', # Replace with your domain or leave it as-is
+    user_name: 'fawadahmad99h@gmail.com', # Your Gmail email address
+    password: 'bccalnvxfeglesga', # Your Gmail password or an app-specific password
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :production
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
