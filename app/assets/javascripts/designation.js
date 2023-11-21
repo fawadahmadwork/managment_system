@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var designationOptions = {
       'Development': ['Internee', 'Software Engineer', 'Software Engineer-L1', 'Software Engineer-L2'],
-      'Quality Assurance': ['Internee', 'SQA', 'Senior SQA']
+      'Quality Assurance': ['Internee-QA', 'SQA', 'Senior SQA']
     };
 
     departmentSelect.addEventListener('change', function() {
