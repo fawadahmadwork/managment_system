@@ -1,5 +1,8 @@
 ActiveAdmin.register Employee do
   config.sort_order = 'id_asc'
+   action_item :new_leave, only: :show do
+    link_to 'New Leave', new_admin_leave_path(employee_id: employee.id)
+  end
     action_item :edit_pre_todo_items, only: :show do
        if employee.pre_todo_items.where(done: false).exists?
     link_to ' Todo Items', edit_pre_todo_items_admin_employee_path(employee), class: 'button'
@@ -259,6 +262,33 @@ end
         link_to 'Create New Salary Slip', new_admin_salary_slip_path(employee_id: employee.id), class: 'button'
       end
     end
+
+
+
+ panel 'leave' do
+  
+      if employee.leaves.present?
+        div do
+    strong 'Remaining Sick Leaves:'
+    span 10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:total_days)
+  end
+       div do
+    strong 'Remaining Urgent Work Leaves:'
+    span 5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:total_days)
+  end 
+      
+        div style: 'margin-top: 10px;' do
+          link_to 'View all leaves ', admin_leaves_path(q: { employee_id_eq: employee.id }), class: 'button'
+        end
+      else
+        div style: 'margin-top: 10px;' 'No leaves available.'
+      end
+      div style: 'margin-top: 10px;' do
+        link_to 'Apply for  leave ', new_admin_leave_path(employee_id: employee.id), class: 'button'
+      end
+    end
+
+
     panel 'Provident fund' do
       link_to 'View Provident Fund', admin_employee_provident_fund_path(employee_id: resource.id), class: 'button'
     end

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leave Approval Required</title>
+</head>
+<body>
+  <h1>Leave Approval Required</h1>
+  <p>Hello Admin,</p>
+  <p>A new leave requires your approval.</p>
+  <p>Leave Details:</p>
+  <ul>
+    <li>Leave Type: <%= @leave.leave_type %></li>
+    <li>Category: <%= @leave.category %></li>
+    <!-- Add other leave details here -->
+  </ul>
+  <p>Please click the link below to directly edit and approve the leave:</p>
+
+ <p><%= link_to 'Edit Leave', edit_admin_leave_url(@leave) %></p> 
+
+</body>
+</html>

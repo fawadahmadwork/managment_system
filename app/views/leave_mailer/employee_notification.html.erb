@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leave Status Update</title>
+</head>
+<body>
+  <h1>Leave Status Update</h1>
+  <p>Hello <%= @leave.employee.first_name %>,</p>
+  <p>Your leave status has been updated.</p>
+  <p>Leave Details:</p>
+  <ul>
+    <li>Leave Type: <%= @leave.leave_type %></li>
+    <li>Category: <%= @leave.category %></li>
+    <!-- Add other leave details here -->
+  </ul>
+  <p>You can log in to the employee portal for more information.</p>
+</body>
+</html>
+    

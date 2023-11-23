@@ -7,12 +7,12 @@ class Ability
       can :manage, :all
     elsif admin_user.admin?
       can :manage, :all
-      cannot :manage, Setting 
+      cannot :manage, Leave 
       cannot :manage, AdminUser
     else admin_user.hr?
       can :read, :all
       cannot :manage, AdminUser 
-      cannot :manage, Setting 
+      cannot :manage, Leave 
 
     end
   end

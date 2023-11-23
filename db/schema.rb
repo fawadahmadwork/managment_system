@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_090525) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_21_095844) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -113,6 +113,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_090525) do
     t.integer "signup_bonus"
   end
 
+  create_table "leaves", force: :cascade do |t|
+    t.string "leave_type"
+    t.string "category"
+    t.string "duration"
+    t.string "duration_type"
+    t.date "start_date"
+    t.date "end_date"
+    t.decimal "total_days"
+    t.string "status"
+    t.bigint "employee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_leaves_on_employee_id"
+  end
+
   create_table "phone_numbers", force: :cascade do |t|
     t.string "phone_number"
     t.bigint "employee_id", null: false
@@ -210,6 +225,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_090525) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bank_account_details", "employees"
   add_foreign_key "emails", "employees"
+  add_foreign_key "leaves", "employees"
   add_foreign_key "phone_numbers", "employees"
   add_foreign_key "pre_todo_items", "employees"
   add_foreign_key "salary_detail_histories", "salary_structures"
