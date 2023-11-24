@@ -26,13 +26,21 @@ ActiveAdmin.register Leave do
                        include_blank: false, input_html: { id: 'leave_duration' }
         f.input :duration_type, as: :select, collection: %w[Full_Day Half_Day ],
                        include_blank: false, input_html: { id: 'leave_duration_type' }
-        f.input :start_date,  as: :datepicker, label: 'Select Date'
-        f.input :end_date, as: :datepicker, wrapper_html: { style: 'display:none;' }, input_html: { style: 'display:none;', id: 'leave_end_date_input' }
-      if f.object.new_record?
-        f.input :total_days, label: 'leave_days',      input_html: { value: 1, id: 'leave_total_days' }
-      else
-        f.input :total_days, input_html: {id: 'leave_total_days' }
-      end
+        f.input :start_date, as: :datepicker, label_html: { id: 'leave_start_date_label' }, input_html: { id: 'leave_start_date' }
+
+
+
+
+        f.input :end_date, as: :datepicker, input_html: { id: 'leave_end_date' }, label_html: { id: 'leave_end_date_label' }
+
+
+
+     
+        f.input :total_days, label: 'leave_days',      input_html: { value: 1, id: 'leave_total_days'}
+   
+
+
+
       if f.object.new_record?
         f.input :status, as: :select, collection: ['Pending', 'Approved', 'Canceled'],
             input_html: { hidden: true }, wrapper_html: { style: 'display:none;' }, selected: 'Pending'
