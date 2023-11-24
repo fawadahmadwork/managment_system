@@ -1,3 +1,5 @@
+// for update designation options based on the selected department
+
 document.addEventListener('DOMContentLoaded', function () {
   var departmentSelect = document.getElementById('employee_department');
   var designationSelect = document.getElementById('employee_designation');
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// freezing date and comment 
+// for freezing date and comment 
 
 document.addEventListener('DOMContentLoaded', function() {
   const employmentStatusInput = document.getElementById('employee_employment_status');
@@ -87,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
   employmentStatusInput.addEventListener('change', toggleFreezeFields);
 });
 
-// mobile pattren
+// for mobile pattren
 
 document.addEventListener('DOMContentLoaded', function() {
   const phoneNumberInput = document.getElementById('phone_number_input_id'); // Replace with the actual ID of your phone number input
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// salary sum
+// for salary sum
 
 document.addEventListener('DOMContentLoaded', function () {
   const basicSalaryInput = document.getElementById('salary_structure_basic_salary');
@@ -170,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-//age from dob
+//for age from date of birth
 
   document.addEventListener("DOMContentLoaded", function () {
     var dateOfBirthInput = document.getElementById("date-of-birth");
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-// salary slip data sum
+// for salary slip data sum
 
   document.addEventListener('DOMContentLoaded', function() {
   const basicSalaryInput = document.getElementById('salary_slip_basic_salary');
@@ -247,7 +249,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// app/assets/javascripts/active_admin.js
+// for avatar preview
+
 document.addEventListener('DOMContentLoaded', function() {
   const avatarInput = document.getElementById('avatar-input');
   const avatarPreview = document.getElementById('avatar-preview');

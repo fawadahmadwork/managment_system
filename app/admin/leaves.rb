@@ -1,4 +1,14 @@
 ActiveAdmin.register Leave do
+
+   action_item :remaining_leave_info, only: [:new] do
+    employee = Employee.find(params[:employee_id])
+    div do
+      "Remaining Sick Leaves: #{10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:total_days)}"
+    end
+    div do
+      "Remaining Urgent Work Leaves: #{5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:total_days)}"
+    end
+  end
   menu false
   before_action :skip_sidebar!, only: :index
   actions :all, except: %i[destroy ]
@@ -14,29 +24,26 @@ ActiveAdmin.register Leave do
         employee = Employee.find(params[:employee_id])
         f.input :employee_id, as: :hidden, input_html: { value: params[:employee_id] }
       end
-      if object.new_record?
-        f.input :Remaining_sick_leaves, input_html: { readonly: true, value: 10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:total_days) }
-        f.input :Remaining_Urgent_Work_leaves, input_html: { readonly: true, value: 5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:total_days) }
-      end
+   
         f.input :leave_type, as: :select, collection: %w[Sick Urgent_Work Extra Hajj Marriage ],
-                       include_blank: false
+                       include_blank: false, input_html: {style: 'width: 100px;' }
         f.input :category, as: :select, collection: %w[ Paid Unpaid ],
-                       include_blank: false
+                       include_blank: false, input_html: {style: 'width: 100px;' }
         f.input :duration,  as: :select, collection: %w[One_Day Multiple_Days ],
                        include_blank: false, input_html: { id: 'leave_duration' }
         f.input :duration_type, as: :select, collection: %w[Full_Day Half_Day ],
-                       include_blank: false, input_html: { id: 'leave_duration_type' }
-        f.input :start_date, as: :datepicker, label_html: { id: 'leave_start_date_label' }, input_html: { id: 'leave_start_date' }
+                       include_blank: false, input_html: { id: 'leave_duration_type', style: 'width: 100px;' }
+        f.input :start_date, as: :datepicker, label_html: { id: 'leave_start_date_label' }, input_html: { id: 'leave_start_date', style: 'width: 100px;' }
 
 
 
 
-        f.input :end_date, as: :datepicker, input_html: { id: 'leave_end_date' }, label_html: { id: 'leave_end_date_label' }
+        f.input :end_date, as: :datepicker, input_html: { id: 'leave_end_date' , style: 'width: 100px;'}, label_html: { id: 'leave_end_date_label' }
 
 
 
      
-        f.input :total_days, label: 'leave_days',      input_html: { value: 1, id: 'leave_total_days'}
+        f.input :total_days, label: 'leave_days', label_html: { id: 'leave_total_days_label' },  input_html: { readonly: true, id: 'leave_total_days', style: 'width: 100px;' }
    
 
 
