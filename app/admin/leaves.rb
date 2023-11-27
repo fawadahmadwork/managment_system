@@ -3,10 +3,10 @@ ActiveAdmin.register Leave do
    action_item :remaining_leave_info, only: [:new] do
     employee = Employee.find(params[:employee_id])
     div do
-      "Remaining Sick Leaves: #{10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:total_days)}"
+      "Remaining Sick Leaves: #{10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:leave_days)}"
     end
     div do
-      "Remaining Urgent Work Leaves: #{5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:total_days)}"
+      "Remaining Urgent Work Leaves: #{5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:leave_days)}"
     end
   end
   menu false
@@ -17,7 +17,7 @@ ActiveAdmin.register Leave do
     link_to 'Back to Employee', admin_employee_path(resource.employee)
   end
   form id: 'leave-form' do |f|
-    f.semantic_errors(*f.object.errors.keys) if f.object.errors.any?
+    f.semantic_errors if f.object.errors.any?
 
     f.inputs 'Leaves Details' do
       if params[:employee_id].present?
@@ -43,7 +43,7 @@ ActiveAdmin.register Leave do
 
 
      
-        f.input :total_days, label: 'leave_days', label_html: { id: 'leave_total_days_label' },  input_html: { readonly: true, id: 'leave_total_days', style: 'width: 100px;' }
+        f.input :leave_days, label_html: { id: 'leave_total_days_label' },  input_html: { readonly: true, id: 'leave_total_days', style: 'width: 100px;' }
    
 
 
@@ -67,7 +67,7 @@ ActiveAdmin.register Leave do
     column :duration
     column :duration_type
     column :status
-    column :total_days
+    column :leave_days
     actions
   end
 
@@ -77,7 +77,7 @@ ActiveAdmin.register Leave do
       row :category 
       row :duration
       row :duration_type
-      row :total_days
+      row :leave_days
       row :start_date 
       row :end_date
       row :status
@@ -98,7 +98,5 @@ ActiveAdmin.register Leave do
   #     end
   #   end
   # end
-  
-
-  permit_params :leave_type, :category, :duration, :duration_type, :start_date, :end_date, :total_days, :status, :employee_id
+  permit_params :leave_type, :category, :duration, :duration_type, :start_date, :end_date, :total_days, :status, :employee_id, :leave_days
 end

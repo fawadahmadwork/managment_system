@@ -62,42 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   var startDateInput = document.getElementById("leave_start_date");
-//   var endDateInput = document.getElementById("leave_end_date");
-//   var totalDaysInput = document.getElementById("leave_total_days");
-
-//   $(startDateInput).datepicker({
-//     dateFormat: 'yy-mm-dd',
-//     onSelect: updateTotalDays
-//   });
-
-//   $(endDateInput).datepicker({
-//     dateFormat: 'yy-mm-dd',
-//     onSelect: updateTotalDays
-//   });
-
-//   function updateTotalDays() {
-//     var startDate = $(startDateInput).datepicker('getDate');
-//     var endDate = $(endDateInput).datepicker('getDate');
-
-//     if (startDate && endDate) {
-//       var timeDiff = endDate.getTime() - startDate.getTime();
-//       var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-//       // Update the total_days field
-//       totalDaysInput.value = daysDiff;
-//     }
-//   }
-// });
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
   var startDateInput = document.getElementById("leave_start_date");
   var endDateInput = document.getElementById("leave_end_date");
   var totalDaysInput = document.getElementById("leave_total_days");
+  var durationTypeInput = document.getElementById("leave_duration_type");
 
   $(startDateInput).datepicker({
     dateFormat: 'yy-mm-dd',
@@ -115,10 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (startDate && endDate) {
       var timeDiff = endDate.getTime() - startDate.getTime();
-      var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      var daysDiff = timeDiff / (1000 * 3600 * 24); // Total days as a decimal value
 
       // Update the total_days field
-      totalDaysInput.value = daysDiff;
+      if (durationTypeInput && durationTypeInput.value === "Half_Day") {
+        var halfDayDiff = daysDiff - 0.5; // Subtract half a day
+        totalDaysInput.value = halfDayDiff > 0 ? halfDayDiff : 0; // Ensure total_days is not negative
+      } else {
+        totalDaysInput.value = daysDiff;
+      }
     } else {
       // If end_date is not provided, set total_days to default value (1)
       totalDaysInput.value = 1;

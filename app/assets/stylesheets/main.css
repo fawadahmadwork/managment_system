@@ -87,3 +87,11 @@ legend {
   font-size: 30px;
   font-weight: bold;
 }
+#leave-information {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#leave-information div {
+  margin-bottom: 10px;
+}

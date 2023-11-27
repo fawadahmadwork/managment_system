@@ -1,4 +1,5 @@
 ActiveAdmin.register Employee do
+  
   config.sort_order = 'id_asc'
    action_item :new_leave, only: :show do
     link_to 'New Leave', new_admin_leave_path(employee_id: employee.id)
@@ -9,13 +10,17 @@ ActiveAdmin.register Employee do
      end
      end
 
+  member_action :leave_information do
+     @employee = Employee.find(params[:id])
+  render 'leave_information'
 
-     member_action :edit_pre_todo_items, method: :get do
+  end
+  member_action :edit_pre_todo_items, method: :get do
       @employee = Employee.find(params[:id])
       @pre_todo_items = @employee.pre_todo_items
-     end
+  end
 
- member_action :update_pre_todo_items, method: :put do
+  member_action :update_pre_todo_items, method: :put do
   pre_todo_items_params = params.permit(pre_todo_items: [:description, :done, :type])
     pre_todo_items_params[:pre_todo_items].each do |id, attributes|
       todo_item = PreTodoItem.find(id)
@@ -23,7 +28,7 @@ ActiveAdmin.register Employee do
     end
      flash[:notice] = "Pre todo items updated successfully."
     redirect_to admin_employee_path(params[:id])
-end
+  end
   form do |f|
     f.inputs do
       f.input :first_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
@@ -269,12 +274,20 @@ end
   
       if employee.leaves.present?
         div do
-    strong 'Remaining Sick Leaves:'
-    span 10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:total_days)
+    strong 'Remaining paid Sick Leaves:'
+    span 10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)
+  end
+        div do
+    strong 'Total Sick Leaves taken:'
+   span  employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:leave_days)
   end
        div do
-    strong 'Remaining Urgent Work Leaves:'
-    span 5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:total_days)
+    strong 'Remaining  paid Urgent Work Leaves:'
+    span 5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid ').sum(:leave_days)
+  end 
+       div do
+    strong 'Total Urgent Work Leaves taken:'
+    span employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:leave_days)
   end 
       
         div style: 'margin-top: 10px;' do
@@ -285,6 +298,9 @@ end
       end
       div style: 'margin-top: 10px;' do
         link_to 'Apply for  leave ', new_admin_leave_path(employee_id: employee.id), class: 'button'
+      end
+       div style: 'margin-top: 10px;' do
+        link_to 'View Leaves details', leave_information_admin_employee_path(employee), class: 'button'
       end
     end
 
@@ -342,6 +358,10 @@ end
       end
     end
   end
+
+
+
+   
   permit_params :first_name, :last_name, :age, :gender, :date_of_birth, :address, :national_id_card,
                 :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment, :starting_salary, :signup_bonus,
                 emails_attributes: %i[id email _destroy],

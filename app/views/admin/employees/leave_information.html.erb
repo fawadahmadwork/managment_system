@@ -1,0 +1,45 @@
+<!-- app/views/admin/employees/leave_information.html.erb -->
+<div id="leave-information">
+  <div>
+    <strong> Paid Sick Leaves Taken:</strong>
+    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)%></span>
+  </div>
+  <div>
+    <strong>Remaining Paid Sick Leaves:</strong>
+    <span><%= 10 - @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)%></span>
+  </div>
+  <div>
+    <strong> UnPaid Sick Leaves Taken:</strong>
+    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Unpaid').sum(:leave_days)%></span>
+  </div>
+  <div>
+    <strong>Total Sick Leaves taken:</strong>
+    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:leave_days)%></span>
+  </div>
+  <div>
+    <strong>Paid Urgent Work Leaves taken:</strong>
+    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days) %></span>
+  </div>
+   <div>
+    <strong>Remaining Paid Urgent Work Leaves:</strong>
+    <span><%= 5 - @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days) %></span>
+  </div>
+  <div>
+    <strong> UnPaid Urgent Work Leaves Taken:</strong>
+    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Unpaid').sum(:leave_days)%></span>
+  </div>
+   <div>
+    <strong>Total Urgent Work Leaves taken:</strong>
+    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:leave_days)%></span>
+  </div>
+   <div>
+    <strong>Marriage Leaves taken:</strong>
+    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Marriage', category: 'Paid').sum(:leave_days)%></span>
+  </div>
+
+ <div>
+    <strong> Hajj Leaves taken:</strong>
+    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days)%></span>
+  </div>
+
+</div>
