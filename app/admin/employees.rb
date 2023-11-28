@@ -270,39 +270,23 @@ ActiveAdmin.register Employee do
 
 
 
- panel 'leave' do
+  panel 'leave' do
   
-      if employee.leaves.present?
-        div do
-    strong 'Remaining paid Sick Leaves:'
-    span 10 - employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)
-  end
-        div do
-    strong 'Total Sick Leaves taken:'
-   span  employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:leave_days)
-  end
-       div do
-    strong 'Remaining  paid Urgent Work Leaves:'
-    span 5 - employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid ').sum(:leave_days)
-  end 
-       div do
-    strong 'Total Urgent Work Leaves taken:'
-    span employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:leave_days)
-  end 
-      
-        div style: 'margin-top: 10px;' do
-          link_to 'View all leaves ', admin_leaves_path(q: { employee_id_eq: employee.id }), class: 'button'
-        end
-      else
-        div style: 'margin-top: 10px;' 'No leaves available.'
-      end
-      div style: 'margin-top: 10px;' do
-        link_to 'Apply for  leave ', new_admin_leave_path(employee_id: employee.id), class: 'button'
-      end
-       div style: 'margin-top: 10px;' do
-        link_to 'View Leaves details', leave_information_admin_employee_path(employee), class: 'button'
-      end
+    div style: 'margin-top: 10px;' do
+    link_to 'Apply for  leave ', new_admin_leave_path(employee_id: employee.id), class: 'button'
     end
+    div style: 'margin-top: 10px;' do
+    link_to 'View Leaves details', leave_information_admin_employee_path(employee), class: 'button'
+    end
+  
+  if employee.leaves.present?
+    div style: 'margin-top: 10px;' do
+    link_to 'View all leaves ', admin_leaves_path(q: { employee_id_eq: employee.id }), class: 'button'
+    end
+  else
+        div style: 'margin-top: 10px;' 'No leaves available.'
+   end
+  end
 
 
     panel 'Provident fund' do

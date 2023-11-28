@@ -1,60 +1,43 @@
-//  for testing js working 
+// $(document).ready(function () {
+//   // Check if the current page is the new employee page
+//   if (window.location.pathname.includes('/leaves/new')) {
+//     // Display an alert when the new employee page is loaded
+//     alert('Do you want to create a new leave?');
+//   }
+// });
 
-document.addEventListener('DOMContentLoaded', function () {
-  
-  // Check if the current page is the new employee page
-  if (window.location.pathname.includes('/leaves/new')) {
-    // Display an alert when the new employee page is loaded
-    alert('Do you want to create a new leave?');
-  }
-});
+// for hajj and marriage
 
-//  for showing end date field and changing label of start date
 
-document.addEventListener('DOMContentLoaded', function () {
-  var endDateField = document.getElementById('leave_end_date');
-  var endDateLabel = document.querySelector('label[for="leave_end_date"]');
-  var totalDaysField = document.getElementById('leave_total_days');
-  var totalDaysLabel = document.querySelector('label[for="leave_total_days"]');
-  var startDateLabel = document.querySelector('label[for="leave_start_date"]');
-  var durationField = document.getElementById('leave_duration'); // Replace with your actual ID
+$(document).ready(function() {
+  // Function to toggle the visibility of fields based on the selected leave type
+  function toggleFieldsVisibility() {
+    var leaveType = $('input[name="leave[leave_type]"]:checked').val();
 
-  function hideEndDate() {
-    endDateField.style.display = 'none';
-    if (endDateLabel) {
-      endDateLabel.style.display = 'none';
+    // Logic to show/hide fields based on leave type
+    if (leaveType === 'Hajj' || leaveType === 'Marriage'){
+      // If Hajj is selected, set duration as Long_Leave and duration type as Full_Day
+      $('input[name="leave[duration]"][value="Long_Leave"]').prop('checked', true);
+      $('input[name="leave[duration_type]"][value="Full_Day"]').prop('checked', true);
+
+      // Hide duration and duration type fields
+      $('#leave_duration_input, #leave_duration_type_input').hide();
+    } else {
+      // If a different leave type is selected, show duration and duration type fields
+      $('#leave_duration_input, #leave_duration_type_input').show();
+
+      // Uncheck duration and duration type radio buttons
+      $('input[name="leave[duration]"]').prop('checked', false);
+      $('input[name="leave[duration_type]"]').prop('checked', false);
     }
-    totalDaysField.style.display = 'none';
-    if (endDateLabel) {
-      totalDaysLabel.style.display = 'none';
-    }
-    // Change the label of start date to 'Select Date'
-    startDateLabel.textContent = 'Select Date';
-  }
-
-  function showEndDate() {
-    endDateField.style.display = 'block'; // or 'inline' based on your layout
-    if (endDateLabel) {
-      endDateLabel.style.display = 'block';
-    }
-     totalDaysField.style.display = 'block';
-    if (endDateLabel) {
-      totalDaysLabel.style.display = 'block';
-    }
-    // Reset the label of start date
-    startDateLabel.textContent = 'Start Date';
   }
 
-  // By default, hide the end date and update the label of start date
-  hideEndDate();
+  // Initial toggle on page load
+  toggleFieldsVisibility();
 
-  // Add an event listener to the duration field
-  durationField.addEventListener('change', function () {
-    if (durationField.value === 'One_Day') {
-      hideEndDate();
-    } else if (durationField.value === 'Multiple_Days') {
-      showEndDate();
-    }
+  // Attach event handler to the leave type radio buttons
+  $('input[name="leave[leave_type]"]').change(function() {
+    toggleFieldsVisibility();
   });
 });
 
@@ -62,45 +45,110 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  var startDateInput = document.getElementById("leave_start_date");
-  var endDateInput = document.getElementById("leave_end_date");
-  var totalDaysInput = document.getElementById("leave_total_days");
-  var durationTypeInput = document.getElementById("leave_duration_type");
 
-  $(startDateInput).datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: updateTotalDays
+
+
+
+
+
+
+
+
+// for one day and long leave
+
+
+$(document).ready(function() {
+  // Function to toggle the visibility of the end date based on duration
+  function toggleEndDateVisibility() {
+    var duration = $('input[name="leave[duration]"]:checked').val();
+    var durationTypeCheckbox = $('#leave_duration_type_one_day');
+    var startDateLabel = $('#leave_start_date_input label');
+
+    if (duration === 'One_Day') {
+      // If duration is One Day, hide end date and uncheck duration type
+      $('#leave_end_date_input').hide();
+      $('#leave_leave_days_input').hide();
+      $('#leave_duration_type_input').show();
+      startDateLabel.text('Select Date'); // Change label of start date
+      durationTypeCheckbox.prop('checked', false);
+    } else if (duration === 'Long_Leave') {
+      // If duration is Long Leave, show end date and set duration type to Full Day
+      $('#leave_end_date_input').show();
+      $('#leave_leave_days_input').show();
+      $('#leave_duration_type_input').hide();
+      startDateLabel.text('Start Date'); // Change label of start date
+      durationTypeCheckbox.prop('checked', true);
+    } else {
+      // If any other duration, show end date and duration type
+      $('#leave_end_date_input').show();
+      $('#leave_duration_type_input').show();
+      startDateLabel.text('Start Date'); // Change label of start date
+    }
+  }
+
+  // Initial toggle on page load
+  toggleEndDateVisibility();
+
+  // Attach event handler to the duration radio buttons
+  $('input[name="leave[duration]"]').change(function() {
+    toggleEndDateVisibility();
   });
+});
 
-  $(endDateInput).datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: updateTotalDays
-  });
+// for get leaves days 
 
-  function updateTotalDays() {
-    var startDate = $(startDateInput).datepicker('getDate');
-    var endDate = $(endDateInput).datepicker('getDate');
+
+$(document).ready(function() {
+  // Function to check if a date is a weekend (Saturday or Sunday)
+  function isWeekend(date) {
+    var day = date.getDay();
+    return day === 0 || day === 6;
+  }
+
+  // Function to calculate and update leave days
+  function updateLeaveDays() {
+    var startDate = $('#leave_start_date').val();
+    var endDate = $('#leave_end_date').val();
+    var category = $('input[name="leave[category]"]:checked').val();
 
     if (startDate && endDate) {
-      var timeDiff = endDate.getTime() - startDate.getTime();
-      var daysDiff = timeDiff / (1000 * 3600 * 24); // Total days as a decimal value
+      // Parse the date strings to Date objects
+      var startDateObj = new Date(startDate);
+      var endDateObj = new Date(endDate);
 
-      // Update the total_days field
-      if (durationTypeInput && durationTypeInput.value === "Half_Day") {
-        var halfDayDiff = daysDiff - 0.5; // Subtract half a day
-        totalDaysInput.value = halfDayDiff > 0 ? halfDayDiff : 0; // Ensure total_days is not negative
-      } else {
-        totalDaysInput.value = daysDiff;
+      // Initialize leave days to 0
+      var leaveDays = 0;
+
+      // Loop through each day between start date and end date
+      var currentDate = new Date(startDateObj);
+      while (currentDate <= endDateObj) {
+        // Check if the current date is not a weekend, or if category is unpaid
+        if (!isWeekend(currentDate) || category === 'Unpaid') {
+          leaveDays++;
+        }
+
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
       }
-    } else {
-      // If end_date is not provided, set total_days to default value (1)
-      totalDaysInput.value = 1;
+
+      // Update the leave days input field
+      $('#leave_leave_days').val(leaveDays);
     }
   }
 
-  // Set default value for end_date based on whether it's a new record or not
-  if (endDateInput && endDateInput.value === "") {
-    endDateInput.value = null; // Set to null for a new record
-  }
+  // Attach event handlers to start date, end date, and category inputs
+  $('#leave_start_date').on('change', function() {
+    updateLeaveDays();
+  });
+
+  $('#leave_end_date').on('change', function() {
+    updateLeaveDays();
+  });
+
+  $('input[name="leave[category]"]').on('change', function() {
+    updateLeaveDays();
+  });
+
+  // Initial update on page load
+  updateLeaveDays();
 });

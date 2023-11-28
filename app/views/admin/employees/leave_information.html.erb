@@ -1,45 +1,36 @@
 <!-- app/views/admin/employees/leave_information.html.erb -->
 <div id="leave-information">
-  <div>
-    <strong> Paid Sick Leaves Taken:</strong>
-    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)%></span>
-  </div>
-  <div>
-    <strong>Remaining Paid Sick Leaves:</strong>
-    <span><%= 10 - @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').sum(:leave_days)%></span>
-  </div>
-  <div>
-    <strong> UnPaid Sick Leaves Taken:</strong>
-    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Unpaid').sum(:leave_days)%></span>
-  </div>
-  <div>
-    <strong>Total Sick Leaves taken:</strong>
-    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Sick').sum(:leave_days)%></span>
-  </div>
-  <div>
-    <strong>Paid Urgent Work Leaves taken:</strong>
-    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days) %></span>
-  </div>
-   <div>
-    <strong>Remaining Paid Urgent Work Leaves:</strong>
-    <span><%= 5 - @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days) %></span>
-  </div>
-  <div>
-    <strong> UnPaid Urgent Work Leaves Taken:</strong>
-    <span><%=  @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Unpaid').sum(:leave_days)%></span>
-  </div>
-   <div>
-    <strong>Total Urgent Work Leaves taken:</strong>
-    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work').sum(:leave_days)%></span>
-  </div>
-   <div>
-    <strong>Marriage Leaves taken:</strong>
-    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Marriage', category: 'Paid').sum(:leave_days)%></span>
-  </div>
-
- <div>
-    <strong> Hajj Leaves taken:</strong>
-    <span><%= @employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').sum(:leave_days)%></span>
-  </div>
-
+  <table id="leave-details">
+    <caption>Total Leaves Taken This Year: <%= @employee.leaves.where(status: 'Approved').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %></caption>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Paid Leaves Taken</th>
+        <th>Paid Leaves Remaining</th>
+        <th>UnPaid Leaves Taken</th>
+        <th>Total Leaves</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% leave_types = ['Sick', 'Urgent_Work', 'Marriage', 'Hajj', 'Extra'] %>
+      <% leave_types.each do |leave_type| %>
+        <tr>
+          <td class="type"><%= leave_type %></td>
+          <td><%= @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %></td>
+          <td>
+            <% if leave_type == 'Sick' %>
+              <%= 10 - @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %>
+            <% elsif leave_type == 'Urgent_Work' %>
+              <%= 5 - @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %>
+            <% else leave_type.in?(%w[Marriage Hajj Extra]) %>
+              - <!-- Display '-' for Hajj, Marriage, and Extra -->
+    
+            <% end %>
+          </td>
+          <td><%= @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Unpaid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %></td>
+          <td><%= @employee.leaves.where(status: 'Approved', leave_type: leave_type).where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

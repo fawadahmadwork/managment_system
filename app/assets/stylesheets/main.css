@@ -87,11 +87,78 @@ legend {
   font-size: 30px;
   font-weight: bold;
 }
-#leave-information {
-  font-size: 18px;
-  margin-top: 20px;
+
+
+
+
+ #leave-information {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+     font-size: 16px;
 }
 
-#leave-information div {
+  #leave-information div {
   margin-bottom: 10px;
+}
+
+  #leave-information th, #leave-information td {
+    padding: 8px;
+    text-align: center;
+   
+}
+.type{
+   font-weight: bold;
+}
+ 
+   #leave-information caption {
+   
+    font-weight: bold;
+    text-align: center;
+    font-size: 22px;
+}
+
+
+  #leave-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  #leave-details caption {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  #leave-details th, #leave-details td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  #leave-details th {
+    background-color: #f2f2f2;
+  }
+
+  #leave-details tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  #leave-details tbody tr:hover {
+    background-color: #eefaf1;
+  }
+
+  #leave-details tfoot {
+    font-weight: bold;
+  }
+
+.formtastic fieldset > ol >li.radio fieldset ol li {
+  margin:0.5em ;
+  display: inline-block;
+   font-size:14px;
+}
+
+.formtastic fieldset legend label {
+  font-size: 12px;
+ 
 }
