@@ -31,6 +31,7 @@ ActiveAdmin.register Employee do
   end
   form do |f|
     f.inputs do
+
       f.input :first_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
       f.input :last_name, as: :string, input_html: { style: 'text-transform: capitalize;' }
       f.input :date_of_birth, as: :datepicker, datepicker_options: {
@@ -73,6 +74,17 @@ ActiveAdmin.register Employee do
 
         f.input :termination_date, as: :datepicker
       end
+    f.input :probation_period,
+        label: (f.object.probation_period == 'completed' ? false : 'Probation Period'),
+        as: f.object.new_record? ? :hidden : :select,
+        collection: %w[on_probation completed],
+        include_blank: false,
+        input_html: {
+          value: f.object.new_record? ? 'on_probation' : nil,
+          style: f.object.probation_period == 'completed' ? 'display: none;' : ''
+        }
+        f.input :probation_completed_date
+       
 
       f.input :avatar, as: :file, input_html: { id: 'avatar-input' }
       if f.object.avatar.attached?
@@ -84,7 +96,6 @@ ActiveAdmin.register Employee do
           image_tag '', id: 'avatar-image', style: 'max-width: 100px;'
         end
       end
-
       f.input :signup_bonus
       f.input :address, as: :text
       f.input :notes
@@ -186,14 +197,17 @@ ActiveAdmin.register Employee do
       end
       row :address
       row :national_id_card
+      row :probation_period unless resource.probation_period == "completed"    
+      row :probation_completed_date if resource.probation_completed_date.present?
+ 
       row :employment_type
       row :department
       row :designation
       row :employment_status
-      if employee.employment_status == 'Freeze'
+    if employee.employment_status == 'Freeze'
         row :freezing_date if resource.freezing_date.present?
         row :freezing_comment if resource.freezing_comment.present?
-      end
+    end
       row :signup_bonus
       row :starting_salary do |employee|
         first_salary_history = employee.salary_detail_histories.order(created_at: :asc).first
@@ -348,6 +362,7 @@ ActiveAdmin.register Employee do
    
   permit_params :first_name, :last_name, :age, :gender, :date_of_birth, :address, :national_id_card,
                 :designation, :department, :date_of_joining, :termination_date, :avatar, :notes, :employment_status, :employment_type, :freezing_date, :freezing_comment, :starting_salary, :signup_bonus,
+                :probation_period, :probation_completed_date,
                 emails_attributes: %i[id email _destroy],
                 phone_numbers_attributes: %i[id phone_number _destroy],
                 bank_account_details_attributes: %i[id account_title account_number bank_name branch_code IBAN _destroy],

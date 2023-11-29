@@ -95,7 +95,7 @@ $(document).ready(function() {
   });
 });
 
-// for get leaves days 
+// for get leaves days without weekends 
 
 
 $(document).ready(function() {
@@ -152,3 +152,9 @@ $(document).ready(function() {
   // Initial update on page load
   updateLeaveDays();
 });
+
+
+
+
+
+

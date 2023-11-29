@@ -32,7 +32,13 @@ class Employee < ApplicationRecord
   # validates :starting_salary, numericality: { greater_than_or_equal_to: 0 }
   validates :signup_bonus, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_save :capitalize_names
+  before_update :set_probation_completed_date
   after_save :update_related_salary_structure
+
+
+
+
+
  def update_salary_structure_from_template
     template = SalaryStructure.find_by(employee_id: nil, name: self.designation)
     if template
@@ -52,8 +58,11 @@ class Employee < ApplicationRecord
   end
 
 
-
-  private
+  def set_probation_completed_date
+    if probation_period_changed? && probation_period == "completed"
+      self.probation_completed_date = Time.now
+    end
+  end
 
   def date_of_birth_within_range
     return if date_of_birth.blank? # Skip validation if date_of_birth is blank
