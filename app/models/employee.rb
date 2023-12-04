@@ -1,4 +1,13 @@
 class Employee < ApplicationRecord
+  def total_unpaid_leave_days_current_month
+    leaves
+      .where(category: 'Unpaid')
+      .where("EXTRACT(MONTH FROM start_date) = ? AND EXTRACT(YEAR FROM start_date) = ?", Date.today.month, Date.today.year)
+      .sum(:leave_days)
+  end
+  def leave_percentage_current_month
+    (total_unpaid_leave_days_current_month / 30.0) * 100
+  end
   has_many :pre_todo_items, dependent: :destroy
   accepts_nested_attributes_for :pre_todo_items, allow_destroy: true
   has_one :salary_structure, dependent: :destroy
@@ -106,6 +115,7 @@ class Employee < ApplicationRecord
       pre_todo_items.create(description: description, done: false, type: 'pre_joining' )
     end
    end
+  
    private
   def create_post_todo_items
      descriptions = YAML.load_file(Rails.root.join('config', 'post_todo_items.yml'))['descriptions']

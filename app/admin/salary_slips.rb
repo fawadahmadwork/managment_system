@@ -55,22 +55,42 @@ end
 
         f.input :date_of_joining, input_html: { value: employee.date_of_joining, readonly: true }
 
-        f.input :salary_month, as: :datepicker,
-                               input_html: {
-                                 value: f.object.salary_month || Date.today,
-                                 format: '%B %Y'
-                               }
-        f.input :designation, input_html: { value: employee.designation, readonly: true }
-        f.input :basic_salary, input_html: { value: employee.salary_structure&.basic_salary }
-        f.input :fuel, input_html: { value: employee.salary_structure&.fuel }
-        f.input :medical_allownce, input_html: { value: employee.salary_structure&.medical_allownce }
-        f.input :house_rent, input_html: { value: employee.salary_structure&.house_rent }
-        f.input :opd, input_html: { value: employee.salary_structure&.opd }
-        f.input :arrears, input_html: { value: employee.salary_structure&.arrears }
-        f.input :other_bonus, input_html: { value: employee.salary_structure&.other_bonus }
-        f.input :gross_salary, input_html: { value: employee.salary_structure&.gross_salary, readonly: true }
-        f.input :provident_fund, input_html: { value: employee.salary_structure&.provident_fund, readonly: true }
-        f.input :net_salary, input_html: { value: employee.salary_structure&.net_salary, readonly: true }
+
+      #  f.input :salary_month, as: :datepicker,
+      #                          input_html: {
+      #                            value: f.object.salary_month || Date.today,
+      #                            format: '%B %Y'
+      #                          }
+      #                          
+      f.input :salary_month, as: :datepicker,
+  input_html: {
+    value: (f.object.salary_month || Date.today),
+    readonly: true
+  }
+
+         f.input :designation, input_html: { value: employee.designation, readonly: true }
+       if employee.leave_percentage_current_month.present?
+          leave_percentage = employee.leave_percentage_current_month
+          f.input :basic_salary, input_html: { value: (employee.salary_structure&.basic_salary - (employee.salary_structure&.basic_salary * leave_percentage / 100).round) }
+          f.input :fuel, input_html: { value: (employee.salary_structure&.fuel - (employee.salary_structure&.fuel * leave_percentage / 100).round) }
+          f.input :medical_allownce, input_html: { value: (employee.salary_structure&.medical_allownce - (employee.salary_structure&.medical_allownce * leave_percentage / 100).round) }
+          f.input :house_rent, input_html: { value: (employee.salary_structure&.house_rent - (employee.salary_structure&.house_rent * leave_percentage / 100).round) }
+          f.input :opd, input_html: { value: (employee.salary_structure&.opd - (employee.salary_structure&.opd * leave_percentage / 100).round) }
+          f.input :arrears, input_html: { value: (employee.salary_structure&.arrears - (employee.salary_structure&.arrears * leave_percentage / 100).round) }
+          f.input :other_bonus, input_html: { value: (employee.salary_structure&.other_bonus - (employee.salary_structure&.other_bonus * leave_percentage / 100).round) }
+          f.input :unpaid_leaves, input_html: { value: employee.total_unpaid_leave_days_current_month, readonly: true }
+       else
+          f.input :basic_salary, input_html: { value: employee.salary_structure&.basic_salary }
+          f.input :fuel, input_html: { value: employee.salary_structure&.fuel }
+          f.input :medical_allownce, input_html: { value: employee.salary_structure&.medical_allownce }
+          f.input :house_rent, input_html: { value: employee.salary_structure&.house_rent }
+          f.input :opd, input_html: { value: employee.salary_structure&.opd }
+          f.input :arrears, input_html: { value: employee.salary_structure&.arrears }
+          f.input :other_bonus, input_html: { value: employee.salary_structure&.other_bonus }
+        end
+         f.input :gross_salary, input_html: { value: employee.salary_structure&.gross_salary, readonly: true }
+         f.input :provident_fund, input_html: { value: employee.salary_structure&.provident_fund, readonly: true }
+         f.input :net_salary, input_html: { value: employee.salary_structure&.net_salary, readonly: true }
       end
     end
 
@@ -104,6 +124,7 @@ end
       row :medical_allownce
       row :house_rent
       row :opd
+      row :unpaid_leaves if resource.unpaid_leaves.present?
       row :arrears
       row :other_bonus
       row :gross_salary
@@ -120,5 +141,5 @@ end
   end
 
   permit_params :name, :salary_month, :designation, :date_of_joining, :basic_salary, :fuel, :medical_allownce,
-                :house_rent, :opd, :arrears, :other_bonus, :gross_salary, :provident_fund, :net_salary, :employee_id
+                :house_rent, :opd, :arrears, :other_bonus, :gross_salary, :provident_fund, :net_salary, :employee_id, :unpaid_leaves
 end
