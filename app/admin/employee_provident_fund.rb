@@ -47,8 +47,8 @@ ActiveAdmin.register_page 'Employee Provident Fund' do
             td(salary_slip.provident_fund)
             td(salary_slip.provident_fund)
           end
-        end
-        tr(style: 'font-size: 15px; font-weight: bold;') do
+         end
+         tr(style: 'font-size: 15px; font-weight: bold;') do
           th 'Total'
           th(provident_fund_total)
           th(company_contribution_total)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_29_125117) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_07_101757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,6 +81,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_125117) do
     t.index ["employee_id"], name: "index_bank_account_details_on_employee_id"
   end
 
+  create_table "clients", force: :cascade do |t|
+    t.string "name"
+    t.text "address"
+    t.string "email"
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "emails", force: :cascade do |t|
     t.string "email"
     t.bigint "employee_id", null: false
@@ -148,6 +157,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_125117) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_pre_todo_items_on_employee_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "project_type"
+    t.string "billing_type"
+    t.string "source"
+    t.decimal "rate"
+    t.decimal "fee_percentage"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_projects_on_client_id"
   end
 
   create_table "salary_detail_histories", force: :cascade do |t|
@@ -224,6 +247,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_125117) do
     t.index ["employee_id"], name: "index_todos_on_employee_id"
   end
 
+  create_table "weekly_hours", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.decimal "hours"
+    t.decimal "external_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_weekly_hours_on_project_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bank_account_details", "employees"
@@ -231,8 +263,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_125117) do
   add_foreign_key "leaves", "employees"
   add_foreign_key "phone_numbers", "employees"
   add_foreign_key "pre_todo_items", "employees"
+  add_foreign_key "projects", "clients"
   add_foreign_key "salary_detail_histories", "salary_structures"
   add_foreign_key "salary_slips", "employees"
   add_foreign_key "salary_structures", "employees"
   add_foreign_key "todos", "employees"
+  add_foreign_key "weekly_hours", "projects"
 end
