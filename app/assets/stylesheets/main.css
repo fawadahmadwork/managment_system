@@ -162,3 +162,38 @@ legend {
   font-size: 12px;
  
 }
+
+
+#leave_leave_type {
+  width: 85px;
+}
+
+#leave_category {
+  width: 85px;
+}
+
+
+.inline-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Style for the custom inline label */
+.inline-label {
+  margin-right: 10px; /* Adjust as needed for spacing */
+  margin-left: 10px; /* Adjust as needed for spacing */
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(116, 119, 121);
+}
+.inline-days {
+  margin-left: 180px;
+  font-size: 15px;
+
+}
+/* Add space between checkbox and text */
+.inline-days input[type="checkbox"] {
+    margin-right: 10px; /* Adjust the value to control the spacing */
+}

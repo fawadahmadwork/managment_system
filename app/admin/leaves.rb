@@ -3,48 +3,13 @@ ActiveAdmin.register Leave do
   before_action :skip_sidebar!, only: :index
   actions :all, except: %i[destroy ]
   config.remove_action_item(:new)
-
-
-
-# action_item :remaining_leave_info, only: [:new] do
-#   employee = Employee.find(params[:employee_id])
-  
-#   remaining_sick_leaves = 10 - employee.leaves
-#                                       .where(status: 'Approved', leave_type: 'Sick', category: 'Paid')
-#                                       .where("DATE_PART('year', start_date) = ?", Time.now.year)
-#                                       .sum(:leave_days)
-  
-#   remaining_urgent_work_leaves = 5 - employee.leaves
-#                                             .where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid')
-#                                             .where("DATE_PART('year', start_date) = ?", Time.now.year)
-#                                             .sum(:leave_days)
-
-#   if employee.probation_completed_date && employee.probation_completed_date.year == Time.now.year
-#     days_since_beginning_of_year = (employee.probation_completed_date.to_time - Time.new(employee.probation_completed_date.year, 1, 1).to_time) / (24 * 60 * 60)
-#     percentage_reduction = (days_since_beginning_of_year / 365) * 100
-
-#     remaining_sick_leaves *= (100 - percentage_reduction) / 100
-#     remaining_urgent_work_leaves *= (100 - percentage_reduction) / 100
-#   end
-
-#   div do
-#     "Remaining Paid Sick Leaves: #{round_to_nearest_half(remaining_sick_leaves)}"
-#   end
-
-#   div do
-#     "Remaining Paid Urgent Work Leaves: #{round_to_nearest_half(remaining_urgent_work_leaves)}"
-#   end
-# end
-
-
-
   action_item :remaining_leave_info, only: [:new] do
     employee = Employee.find(params[:employee_id])
+   div do
+        "Remaining Paid Sick Leaves: #{employee.sick_leaves_limit - employee.sick_leaves_taken}"
+      end
     div do
-      "Remaining Paid Sick Leaves: #{10 -employee.leaves.where(status: 'Approved', leave_type: 'Sick', category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days)}"
-    end
-    div do
-      "Remaining Paid Urgent Work Leaves: #{5  -employee.leaves.where(status: 'Approved', leave_type: 'Urgent_Work', category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days)}"
+      "Remaining Paid Urgent Work Leaves: #{employee.urgent_leaves_limit - employee.urgent_leaves_taken}"
     end
   end
 
@@ -61,24 +26,35 @@ ActiveAdmin.register Leave do
         f.input :employee_id, as: :hidden, input_html: { value: params[:employee_id] }
       end
    
-        f.input :leave_type, as: :radio, collection: %w[Sick Urgent_Work Extra Hajj Marriage ]
+        f.input :leave_type, as: :select, collection: %w[Sick Urgent_Work Extra Hajj Marriage ], include_blank: false
 
 
 
-        f.input :category, as: :radio, collection: %w[ Paid Unpaid ]
+      f.input :category, as: :select, collection: %w[Paid Unpaid],
+      include_blank: false
 
 
 
 
 
 
-        f.input :duration, as: :radio, collection: %w[One_Day Long_Leave]
+        f.input :duration, as: :select, collection: %w[One_Day Long_Leave], include_blank: false
 
                  
 
 
 
-        f.input :duration_type, as: :radio  , collection: %w[Full_Day Half_Day ]
+
+
+f.input :duration_type, as: :hidden, input_html: { value: 'Full_Day' }
+  div class: 'inline-container' do
+    f.label 'Duration Type', class: 'inline-label'
+    f.input :half_day, as: :boolean, wrapper_html: { class: 'inline-days'}
+  end
+
+
+
+
 
 
 
@@ -146,5 +122,5 @@ ActiveAdmin.register Leave do
   # end
   #     
   #   
-  permit_params :leave_type, :category, :duration, :duration_type, :start_date, :end_date, :total_days, :status, :employee_id, :leave_days
+  permit_params :leave_type, :category, :duration, :duration_type, :start_date, :end_date, :total_days, :status, :employee_id, :leave_days, :half_day
 end

@@ -1,13 +1,4 @@
 class Employee < ApplicationRecord
-  def total_unpaid_leave_days_current_month
-    leaves
-      .where(category: 'Unpaid')
-      .where("EXTRACT(MONTH FROM start_date) = ? AND EXTRACT(YEAR FROM start_date) = ?", Date.today.month, Date.today.year)
-      .sum(:leave_days)
-  end
-  def leave_percentage_current_month
-    (total_unpaid_leave_days_current_month / 30.0) * 100
-  end
   has_many :pre_todo_items, dependent: :destroy
   accepts_nested_attributes_for :pre_todo_items, allow_destroy: true
   has_one :salary_structure, dependent: :destroy
@@ -106,7 +97,7 @@ class Employee < ApplicationRecord
    after_create :create_pre_todo_items
    after_create :create_post_todo_items
 
-  private
+ 
 
   def create_pre_todo_items
     # Add your logic to create pre_todo_items for the new employee here.
@@ -116,11 +107,53 @@ class Employee < ApplicationRecord
     end
    end
   
-   private
+  
   def create_post_todo_items
      descriptions = YAML.load_file(Rails.root.join('config', 'post_todo_items.yml'))['descriptions']
       descriptions.each do |description|
         pre_todo_items.create(description: description, done: false, type: 'on_joining')
       end
       end
+
+
+
+
+def sick_leaves_limit
+  calculate_adjusted_leave_limit(10)
+end
+
+def urgent_leaves_limit
+  calculate_adjusted_leave_limit(5)
+end
+
+
+def calculate_adjusted_leave_limit(default_limit)
+  return default_limit if probation_completed_date.blank? || probation_completed_date.year != Date.current.year
+
+  percentage_completed = (probation_completed_date.yday.to_f / 365) * 100
+  adjusted_limit = (default_limit - (default_limit * (percentage_completed / 100))).floor
+
+  [adjusted_limit, 0].max
+end
+
+
+
+def sick_leaves_taken
+  leaves.where(status: 'Approved' , leave_type: 'Sick', category:'Paid')
+          .where("DATE_PART('year', start_date) = ?", Time.now.year)
+          .sum(:leave_days)
+end
+
+def urgent_leaves_taken
+  leaves.where(status: 'Approved' , leave_type: 'Urgent_Work', category:'Paid')
+          .where("DATE_PART('year', start_date) = ?", Time.now.year)
+          .sum(:leave_days)
+end
+
+
+
+
+
+
+
 end

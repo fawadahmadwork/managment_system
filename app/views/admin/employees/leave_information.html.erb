@@ -19,9 +19,9 @@
           <td><%= @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %></td>
           <td>
             <% if leave_type == 'Sick' %>
-              <%= 10 - @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %>
+              <%= @employee.sick_leaves_limit - @employee.sick_leaves_taken %>
             <% elsif leave_type == 'Urgent_Work' %>
-              <%= 5 - @employee.leaves.where(status: 'Approved', leave_type: leave_type, category: 'Paid').where("DATE_PART('year', start_date) = ?", Time.now.year).sum(:leave_days) %>
+              <%= @employee.urgent_leaves_limit - @employee.urgent_leaves_taken %>
             <% else leave_type.in?(%w[Marriage Hajj Extra]) %>
               - <!-- Display '-' for Hajj, Marriage, and Extra -->
     
