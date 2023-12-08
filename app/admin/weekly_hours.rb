@@ -1,5 +1,5 @@
 ActiveAdmin.register WeeklyHour do
-  permit_params :project_id, :hours, :external_rate
+  permit_params :project_id, :hours, :external_rate, :date
   
   
   index do
@@ -29,7 +29,7 @@ ActiveAdmin.register WeeklyHour do
     column :net_amount do |weekly_hour|
       weekly_hour.net_amount
     end
-     
+     column :date
     actions
   end
   
