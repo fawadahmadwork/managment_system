@@ -14,7 +14,7 @@ action_item :remaining_leave_info, only: [:new] do
       "Remaining Paid Urgent Work Leaves: #{employee.urgent_leaves_limit - employee.urgent_leaves_taken}"
     end
   else
-    div "Probation period not completed, no leave information available."
+    div "Probation period not completed. Apply in unpaid Category"
   end
 end
 

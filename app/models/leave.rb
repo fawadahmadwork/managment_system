@@ -7,7 +7,7 @@ class Leave < ApplicationRecord
   validate :start_date_within_current_month
   validate :end_date_greater_than_start_date
   validate :check_marriage_hajj_leave, on: :create
-  validate :employee_probation_completed
+  validate :employee_probation_completed, on: :create, if: -> { category == 'Paid' }
   before_create :set_end_date
   before_create :set_full_day
   before_create :set_duration_type
@@ -52,10 +52,10 @@ class Leave < ApplicationRecord
 
 
 
-  def start_date_within_current_month
-   if start_date.present? && start_date < Time.zone.now.beginning_of_month
 
-      errors.add(:start_date, 'must be in the current month')
+  def start_date_within_current_month
+    if start_date.present? && (start_date < Time.zone.now.beginning_of_month || start_date > (Time.zone.now + 3.months).end_of_month)
+      errors.add(:start_date, 'must be within the current month and the coming 3 months')
     end
   end
 
