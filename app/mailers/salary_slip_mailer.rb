@@ -22,7 +22,7 @@ class SalarySlipMailer < ApplicationMailer
         end
       end
     end
-  end
+  end 
 
   private
 

@@ -83,7 +83,7 @@ ActiveAdmin.register Employee do
           value: f.object.new_record? ? 'on_probation' : nil,
           style: f.object.probation_period == 'completed' ? 'display: none;' : ''
         }
-        f.input :probation_completed_date
+        # f.input :probation_completed_date
        
 
       f.input :avatar, as: :file, input_html: { id: 'avatar-input' }
