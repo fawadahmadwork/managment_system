@@ -56,17 +56,17 @@ end
         f.input :date_of_joining, input_html: { value: employee.date_of_joining, readonly: true }
 
 
-      #  f.input :salary_month, as: :datepicker,
-      #                          input_html: {
-      #                            value: f.object.salary_month || Date.today,
-      #                            format: '%B %Y'
-      #                          }
-      #                          
-      f.input :salary_month, as: :datepicker,
-  input_html: {
-    value: (f.object.salary_month || Date.today),
-    readonly: true
-  }
+       f.input :salary_month, as: :datepicker,
+                               input_html: {
+                                 value: f.object.salary_month || Date.today,
+                                 format: '%B %Y'
+                               }
+                               
+  #     f.input :salary_month, as: :datepicker,
+  # input_html: {
+  #   value: (f.object.salary_month || Date.today),
+  #   readonly: true
+  # }
 
          f.input :designation, input_html: { value: employee.designation, readonly: true }
        if employee.leave_percentage_current_month.present?

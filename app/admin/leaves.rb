@@ -3,15 +3,21 @@ ActiveAdmin.register Leave do
   before_action :skip_sidebar!, only: :index
   actions :all, except: %i[destroy ]
   config.remove_action_item(:new)
-  action_item :remaining_leave_info, only: [:new] do
-    employee = Employee.find(params[:employee_id])
-   div do
-        "Remaining Paid Sick Leaves: #{employee.sick_leaves_limit - employee.sick_leaves_taken}"
-      end
+action_item :remaining_leave_info, only: [:new] do
+  employee = Employee.find(params[:employee_id])
+
+  if employee.probation_period == "completed"
+    div do
+      "Remaining Paid Sick Leaves: #{employee.sick_leaves_limit - employee.sick_leaves_taken}"
+    end
     div do
       "Remaining Paid Urgent Work Leaves: #{employee.urgent_leaves_limit - employee.urgent_leaves_taken}"
     end
+  else
+    div "Probation period not completed, no leave information available."
   end
+end
+
 
   action_item :back_to_employee, only: :show do
     link_to 'Back to Employee', admin_employee_path(resource.employee)

@@ -116,6 +116,22 @@ class Employee < ApplicationRecord
       end
 
 
+ def leave_percentage_current_month
+    total_unpaid_leave_days = total_unpaid_leave_days_current_month
+    
+
+  
+      total_unpaid_leave_days.to_f / 30 * 100.round(2)
+   
+  end
+
+   def total_unpaid_leave_days_current_month
+    current_month_leaves = leaves.where(category: 'Unpaid').where('start_date >= ? AND end_date <= ?', Date.current.beginning_of_month, Date.current.end_of_month)
+    current_month_leaves.sum(&:leave_days)
+  end
+
+
+
 
 
 def sick_leaves_limit
