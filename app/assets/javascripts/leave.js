@@ -121,3 +121,34 @@ $(document).ready(function() {
 
 
 
+
+
+
+
+
+
+// working code with a error of hidden on filter reload
+
+ $(document).ready(function() {
+    // Hide the panels initially
+    $('#monthly-logs-panel').hide();
+    $('#weekly-logs-panel').hide();
+
+    // Handle button click to toggle the monthly panel visibility and change button text
+    $('#monthly-button').click(function() {
+      $('#monthly-logs-panel').toggle();
+
+      // Change button text based on panel visibility
+      var buttonText = $('#monthly-logs-panel').is(':visible') ? 'Hide Monthly Logs' : 'Show Monthly Logs';
+      $(this).text(buttonText);
+    });
+
+    // Handle button click to toggle the weekly panel visibility and change button text
+    $('#weekly-button').click(function() {
+      $('#weekly-logs-panel').toggle();
+
+      // Change button text based on panel visibility
+      var buttonText = $('#weekly-logs-panel').is(':visible') ? 'Hide Weekly Logs' : 'Show Weekly Logs';
+      $(this).text(buttonText);
+    });
+  });

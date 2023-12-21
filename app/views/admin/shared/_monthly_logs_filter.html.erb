@@ -1,20 +1,5 @@
 <%= form_tag url_for, method: :get do %>
   <%= select_tag 'q[date_month_eq]', options_for_select(Date::MONTHNAMES.compact.each_with_index.map { |month, index| [month, index + 1] }, (params[:q] && params[:q][:date_month_eq]) || Time.zone.now.month) %>
-
-
   <%= select_tag 'q[date_year_eq]', options_for_select((Time.zone.now.year - 2..Time.zone.now.year + 2).to_a, (params[:q] && params[:q][:date_year_eq]) || Time.zone.now.year) %>
-
-
-  <%
-=begin%>
- <%= select_tag 'q[week_number_eq]', options_for_select((1..5).map { |n| ["#{n.ordinalize} week", n] }, (params[:q] && params[:q][:week_number_eq]) || 1) %> 
-<%
-=end%>
-
   <%= submit_tag 'Filter', style: 'margin-left: 10px;' %>
-  <%
-=begin%>
- <%= link_to 'Clear Filters', admin_monthly_logs_path, class: 'button', style: 'margin-left: 10px;' %> 
-<%
-=end%>
 <% end %>

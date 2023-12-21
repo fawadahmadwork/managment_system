@@ -209,4 +209,18 @@ body.admin_project_weekly_hours .panel h3 {
   font-size: 22px;
  
 }
+#monthly-logs th {
+  font-weight: 500;
+  text-transform: capitalize; 
+  font-size: smaller; 
+}
+.btn{
+  display: flex;
+  
+}
+.action_items {
+  margin-right: 20px; /* Adjust the margin as needed */
+  margin-left: 20px; /* Adjust the margin as needed */
+}
+
 
