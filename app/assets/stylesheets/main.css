@@ -223,4 +223,6 @@ body.admin_project_weekly_hours .panel h3 {
   margin-left: 20px; /* Adjust the margin as needed */
 }
 
-
+.edit-margin{
+  margin-right: 7px;
+}

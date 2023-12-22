@@ -151,4 +151,35 @@ $(document).ready(function() {
       var buttonText = $('#weekly-logs-panel').is(':visible') ? 'Hide Weekly Logs' : 'Show Weekly Logs';
       $(this).text(buttonText);
     });
+ });
+  
+
+
+
+
+ 
+
+
+
+
+$(document).ready(function() {
+  // Hide the "Other Source" field initially
+  $('#other-source-field, label[for="other-source-field"]').hide();
+
+  // Attach change event listener to the source select
+  $('.source-select').change(function() {
+    // Check if the selected value is 'Other'
+    if ($(this).val() === 'Other') {
+      // Show the "Other Source" field
+      $('#other-source-field, label[for="other-source-field"]').show();
+    } else {
+      // Hide and clear the "Other Source" field
+      $('#other-source-field, label[for="other-source-field"]').hide();
+      $('#other-source-field').val('');
+    }
   });
+
+  // Trigger the change event to set the initial state
+  $('.source-select').change();
+});
+

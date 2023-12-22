@@ -16,6 +16,8 @@ ActiveAdmin.register_page 'Monthly Logs' do
   start_date = Time.zone.local(selected_year, selected_month)
   start_date..start_date.end_of_month
 end
+
+
     total_weekly_hours_all = 0
     total_amount_all = 0
     total_fee_all = 0

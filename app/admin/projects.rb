@@ -1,11 +1,11 @@
 ActiveAdmin.register Project do
-  permit_params :name, :description, :project_type, :billing_type, :source, :rate, :fee_percentage, :client_id, :date_completed, :status
+  permit_params :name, :description, :project_type, :billing_type, :source, :source_detail, :rate, :fee_percentage, :client_id, :date_completed, :status
 
   index do
     selectable_column
     id_column
     column("Name") { |project| link_to project.name, admin_project_path(project) }
-    column :description
+    # column :description
     column :project_type
     column :billing_type
     column :source
@@ -22,13 +22,20 @@ ActiveAdmin.register Project do
   end
 
   form do |f|
-    f.inputs 'Project Details' do
+    f.inputs do
+      if f.object.new_record? && params[:client_id].present?
+       f.input :client_id, as: :hidden, input_html: { value: params[:client_id] }
+      elsif f.object.new_record?
+       f.input :client_id, as: :select, collection: Client.all.map { |client| [client.name, client.id] }
+      else
+       f.input :client_id, as: :string, input_html: { disabled: true, value: f.object.client&.name || '' }
+      end
       f.input :name
       f.input :description
-      f.input :client
       f.input :project_type, as: :select, collection: ['Full Time', 'Part Time']
       f.input :billing_type, as: :select, collection: ['Hourly', 'Fixed']
-      f.input :source, as: :select, collection: ['Direct', 'Others']
+      f.input :source, as: :select, collection: ['Direct', 'Upwork', 'Freelancer', 'Other'], input_html: { class: 'source-select' }
+      f.input :source_detail, input_html: { id: 'other-source-field'}
       f.input :status, as: :select, collection: ['Active', 'Inactive', 'Closed']
       f.input :rate
       f.input :fee_percentage
@@ -45,6 +52,7 @@ ActiveAdmin.register Project do
       row :project_type
       row :billing_type
       row :source
+      row :source_detail  if resource.source_detail.present?
       row :rate
       row :fee_percentage
       row :client
@@ -65,5 +73,12 @@ ActiveAdmin.register Project do
   member_action :view_weekly_hours, method: :get do
     @weekly_hours = resource.weekly_hours
     # Add any additional logic needed for viewing weekly hours
+  end
+    controller do
+    def create
+      super do |format|
+        redirect_to admin_client_path(resource.client) and return if resource.valid?
+      end
+    end
   end
 end

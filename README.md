@@ -22,3 +22,12 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+
+
+* Tasks pending
+    ... Monhly logs ...
+   ... monthly logs jquery hide on reload
+   ... week adjustment on days basis
+   ...
