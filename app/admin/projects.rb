@@ -1,9 +1,10 @@
 ActiveAdmin.register Project do
   permit_params :name, :description, :project_type, :billing_type, :source, :source_detail, :rate, :fee_percentage, :client_id, :date_completed, :status
-
+ config.sort_order = 'name_asc'
   index do
     selectable_column
-    id_column
+    # id_column
+     index_column
     column("Name") { |project| link_to project.name, admin_project_path(project) }
     # column :description
     column :project_type
@@ -26,8 +27,9 @@ ActiveAdmin.register Project do
       if f.object.new_record? && params[:client_id].present?
        f.input :client_id, as: :hidden, input_html: { value: params[:client_id] }
       elsif f.object.new_record?
-       f.input :client_id, as: :select, collection: Client.all.map { |client| [client.name, client.id] }
-      else
+      #  f.input :client_id, as: :select, collection: Client.all.map { |client| [client.name, client.id] }
+    f.input :client_id, as: :select, collection: Client.order(:name).map { |client| [client.name, client.id] }  
+    else
        f.input :client_id, as: :string, input_html: { disabled: true, value: f.object.client&.name || '' }
       end
       f.input :name

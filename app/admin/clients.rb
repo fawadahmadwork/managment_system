@@ -1,8 +1,13 @@
 ActiveAdmin.register Client do
-  
+action_item :new_leave, only: :show do
+    link_to "Projects", new_admin_project_path( client_id: client.id )
+end
+  config.sort_order = 'name_asc'
   index do
+    
     selectable_column
-    id_column
+    # id_column
+     index_column
       column :name do |client|
       link_to client.name, admin_client_path(client)
     end
@@ -51,8 +56,8 @@ ActiveAdmin.register Client do
 
     panel "Projects" do
        table_for client.projects do
-        column("ID") { |project| link_to project.id, admin_project_path(project) }
         column("Name") { |project| link_to project.name, admin_project_path(project) }
+        column("Description") { |project| link_to project.description, admin_project_path(project) }
         # Add more columns as needed
       end
     end
