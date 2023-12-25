@@ -24,7 +24,7 @@ class WeeklyHour < ApplicationRecord
   belongs_to :project
  before_validation :set_default_date
   validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :external_rate, presence: true, allow_blank: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :external_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_validation :set_date
   before_save :set_week_date
 
@@ -41,8 +41,6 @@ class WeeklyHour < ApplicationRecord
   end
 
   def external_cost
-    return 0 if external_rate.blank?
-
     hours * external_rate
   end
 
