@@ -1,4 +1,4 @@
-server '54.224.175.96', port: 22, roles: [:web, :app, :db], primary: true
+server '54.85.160.142', port: 22, roles: [:web, :app, :db], primary: true
 set :branch, :main
 
 # server-based syntax
