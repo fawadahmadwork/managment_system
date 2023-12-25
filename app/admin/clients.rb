@@ -11,12 +11,6 @@ ActiveAdmin.register Client do
     column :email do |client|
       link_to client.email, admin_client_path(client)
     end
-
-    # Make the phone column a link to the client
-    column :phone do |client|
-      link_to client.phone, admin_client_path(client)
-    end
-    
     
     actions defaults: false do |client|
       
