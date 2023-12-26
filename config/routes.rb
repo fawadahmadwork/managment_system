@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, confirmable: true
    get 'index', to: 'home#index'
+   mount Blazer::Engine, at: "blazer"
 end
