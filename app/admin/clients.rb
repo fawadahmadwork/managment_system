@@ -26,7 +26,9 @@ ActiveAdmin.register Client do
     column :email do |client|
       link_to client.email, admin_client_path(client)
     end
-     actions defaults: false do |client|
+    
+    actions defaults: false do |client|
+      
       item "Projects", admin_projects_path(q: { client_id_eq: client.id }), class: 'member_link'
       item "Edit", edit_resource_path(client), class: "member_link"
       link_to "Delete", resource_path(client), method: :delete, data: { confirm: "Are you sure?" }, class: "member_link"
