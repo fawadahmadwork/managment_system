@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_22_150101) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_25_102159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -259,6 +259,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_150101) do
     t.date "date"
     t.date "week_date"
     t.string "week_number"
+    t.decimal "rate"
+    t.decimal "fee_percentage"
     t.index ["project_id"], name: "index_weekly_hours_on_project_id"
   end
 

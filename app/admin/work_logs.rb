@@ -1,5 +1,11 @@
-ActiveAdmin.register_page 'Monthly Logs' do
-  content title: ' Project Logs' do
+ActiveAdmin.register_page 'Work Logs' do
+  
+   menu priority: 1
+     action_item :new_weekly_hour, only: :index do
+    link_to 'New Weekly Hour', new_admin_weekly_hour_path
+  end
+  content  do
+    
   div id: 'monthly-logs' do
 
    def selected_month
@@ -227,7 +233,7 @@ last_week_start = 1.week.ago.beginning_of_week
       total_external_cost = 0
       total_net_amount = 0
       
-      Project.all.each do |project|
+      Project.all.order('lower(name)').each do |project|
         selected_month_and_year = Date.new(selected_year.to_i, selected_month.to_i)
         
         project_weekly_hours_selected_month = project.weekly_hours.where(week_date: selected_month_and_year.beginning_of_month..selected_month_and_year.end_of_month)

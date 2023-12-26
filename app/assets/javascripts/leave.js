@@ -183,3 +183,29 @@ $(document).ready(function() {
   $('.source-select').change();
 });
 
+
+
+
+
+
+  $(document).ready(function() {
+      var checkbox = $('#show_external_rate_checkbox');
+      var externalRateWrapper = $('#external_rate_wrapper');
+
+      // Hide/show external_rate field based on checkbox state
+      function toggleExternalRateField() {
+        if (checkbox.prop('checked')) {
+          externalRateWrapper.show();
+        } else {
+          externalRateWrapper.hide();
+        }
+      }
+
+      // Initial state on page load
+      toggleExternalRateField();
+
+      // Toggle visibility on checkbox change
+      checkbox.change(function() {
+        toggleExternalRateField();
+      });
+    });

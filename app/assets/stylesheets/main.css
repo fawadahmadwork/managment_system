@@ -226,3 +226,14 @@ body.admin_project_weekly_hours .panel h3 {
 .edit-margin{
   margin-right: 7px;
 }
+
+
+
+form fieldset > ol > li.boolean label {
+    width: 100%;
+    padding-left: 0%;
+    padding-right: 10px;
+    text-transform: none !important;
+    font-weight: bold ;
+    padding-bottom: 10px;
+}
