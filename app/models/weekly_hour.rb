@@ -1,5 +1,6 @@
 class WeeklyHour < ApplicationRecord
   belongs_to :project
+  has_many :invoices
   
   attr_accessor :show_external_rate
 
@@ -12,7 +13,25 @@ class WeeklyHour < ApplicationRecord
   validates :hours, presence: true, numericality: { greater_than_or_equal_to: 1 }
   validates :external_rate, presence: true, numericality: { greater_than_or_equal_to: 0 }
   before_save :set_week_date
+  after_create :weekly_invoice
 
+  def weekly_invoice
+
+    if self.project.weekly_payment?
+      Invoice.create!(
+        {
+          project_id: self.project.id, 
+          weekly_hour_id: self.id,
+          due_date: (date.beginning_of_week(:monday) + 4.days) + (project.due_duration.days),
+          start_date:date.beginning_of_week(:monday),
+          end_date: date.beginning_of_week(:monday) + 4.days,
+          amount: self.total_amount,
+          hours: self.hours
+        }
+      )
+    end
+
+  end
 
   def set_date
     self.date ||= Time.now if date.blank?
@@ -87,7 +106,8 @@ end
                 else 'th'
                 end
 
-  "#{week_number}#{week_suffix} week of  #{start_date.strftime('%b')} (#{start_date.strftime('%d %b')} to #{end_date.strftime('%d %b')})"
+  "#{week_number}#{week_suffix} week #{start_date.strftime('%B')} (#{start_date.strftime('%d %b')} to #{end_date.strftime('%d %b')})"
+    # "#{week_number}#{week_suffix} week (#{start_date.strftime('%d %b')} to #{end_date.strftime('%d %b')})"
 end
 
 

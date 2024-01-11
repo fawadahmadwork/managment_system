@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   belongs_to :client
   has_many :weekly_hours, dependent: :destroy
+  has_many :invoices, dependent: :destroy
   validates :name, presence: true
   # validates :type, presence: true
   validates :billing_type, presence: true

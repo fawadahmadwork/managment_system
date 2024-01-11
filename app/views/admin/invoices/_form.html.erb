@@ -1,0 +1,30 @@
+<%= semantic_form_for [:admin, @invoice] do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :start_date_filter, as: :string, input_html: { class: "datepicker", value: @invoice.start_date_filter || Date.current.beginning_of_month } %>
+    <%= f.input :end_date_filter, as: :string, input_html: { class: "datepicker", value: @invoice.end_date_filter || Date.current.end_of_month } %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.action :submit, label: "Add Form", button_html: { id: "add-form" } %>
+  <% end %>
+<% end %>
+
+<div class="form-invoice" style="display: none;">
+  <div class="form-data">
+    <%= semantic_form_for @invoice, url: create_multiple_admin_invoices_path do |f| %>
+      <%= f.inputs do %>
+        <%= f.input :project_id, as: :select, collection: Project.all.order('lower(name)').map { |project| [project.name, project.id] } %>
+        <%= f.input :status %>
+        <%= f.input :start_date, as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :end_date, as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :due_date, as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :hours %>
+        <%= f.input :amount %>
+      <% end %>
+      <%= f.actions do %>
+        <%= button_tag "remove", id: 'remove-button', type: 'button' %>
+      <% end %>
+    <% end %>
+    <%= submit_tag "Bulk Creation", id: "bulk-button" %>
+  </div>
+</div>

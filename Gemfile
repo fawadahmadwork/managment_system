@@ -13,6 +13,7 @@ gem 'selenium-webdriver'
 gem 'capybara', require: false
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary', '0.12.3.1'
+gem 'aasm'
 
 
 gem 'blazer'

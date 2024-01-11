@@ -3,4 +3,5 @@
 //= require active_admin/base
 //= require new
 //= require leave
+//= require invoice
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_26_105432) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_09_144311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -180,6 +180,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_26_105432) do
     t.date "probation_completed_date"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.bigint "project_id"
+    t.bigint "weekly_hour_id"
+    t.date "due_date"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "status"
+    t.string "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "hours"
+    t.index ["project_id"], name: "index_invoices_on_project_id"
+    t.index ["weekly_hour_id"], name: "index_invoices_on_weekly_hour_id"
+  end
+
   create_table "leaves", force: :cascade do |t|
     t.string "leave_type"
     t.string "category"
@@ -229,6 +244,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_26_105432) do
     t.date "date_completed"
     t.string "status"
     t.string "source_detail"
+    t.integer "due_duration"
+    t.boolean "weekly_payment"
     t.index ["client_id"], name: "index_projects_on_client_id"
   end
 

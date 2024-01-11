@@ -237,3 +237,7 @@ form fieldset > ol > li.boolean label {
     font-weight: bold ;
     padding-bottom: 10px;
 }
+
+#bulk-button {
+  display: none;
+}

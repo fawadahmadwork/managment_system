@@ -17,7 +17,7 @@ ActiveAdmin.register Project do
 #   end
 # end
 
-  permit_params :name, :description, :project_type, :billing_type, :source, :source_detail, :rate, :fee_percentage, :client_id, :date_completed, :status, :client_id
+  permit_params :name, :description, :project_type, :billing_type, :source, :source_detail, :rate, :fee_percentage, :client_id, :date_completed, :status, :client_id, :due_duration, :weekly_payment
 
 
 action_item :new_project, only: :index do
@@ -88,6 +88,8 @@ config.action_items.delete_if { |item| item.name == :new }
       f.input :status, as: :select, collection: ['Active', 'Inactive', 'Closed']
       f.input :rate
       f.input :fee_percentage,  input_html: { value: "0" }
+      f.input :due_duration
+      f.input :weekly_payment, as: :select, collection: {'True' => 1, 'False' => 0}
     end
 
     f.actions
@@ -108,6 +110,8 @@ config.action_items.delete_if { |item| item.name == :new }
       row :status
       row "Starting Date", &:created_at
       row :date_completed if resource.date_completed.present?
+      row :due_duration
+      row :weekly_payment
     end
     end
 
