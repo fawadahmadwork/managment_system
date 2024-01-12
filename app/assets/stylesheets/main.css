@@ -24,9 +24,6 @@
   z-index: 1; /* Bring the enlarged image to the front */
 }
 
-/* form.formtastic fieldset ol li.fl {
-  display:inline;
-} */
 form.formtastic fieldset ol li.fl {float: left ; margin-left: auto ;}
 form.formtastic fieldset ol li.fk {float: left ; width: 90% ; margin-left: 40px; }
 
@@ -240,4 +237,80 @@ form fieldset > ol > li.boolean label {
 
 #bulk-button {
   display: none;
+}
+
+.form-data {
+  width: 44rem;
+}
+
+.select-form {
+  width: 30rem;
+}
+
+.select-form ol,
+.form-data ol {
+  display: flex;
+}
+
+.select-form ol li,
+.form-data ol li {
+  display: grid;
+}
+
+.select-form #invoice_start_date,
+.select-form #invoice_end_date {
+  width: 10rem;
+}
+
+.select-form #invoice_submit_action {
+  position: absolute;
+  margin-top: 13px;
+}
+
+.select-form fieldset,
+.form-data fieldset {
+  padding: 0;
+}
+
+.form-data .actions {
+  width: 100px;
+  display: flex;
+  justify-content: end;
+}
+
+.select-form .actions {
+  width: 10px;
+  display: flex;
+  justify-content: end;
+}
+
+.form-data #invoice_project_id,{
+  width: 17rem;
+  height: 1.8rem;
+}
+
+.form-data #invoice_hours,
+.form-data #invoice_amount {
+  width: 5rem;
+  height: 1.8rem;
+}
+
+.form-data .actions ol{
+  position: absolute;
+  margin-top: 13px;
+}
+
+.form-data input[name="invoice[due_date]"] {
+  width: 10rem;
+}
+
+.select-form label[for="invoice_start_date"],
+.form-data label[for="invoice_due_date"],
+.select-form label[for="invoice_end_date"]  {
+  width: 5rem;
+}
+
+#status-change {
+  display: flex;
+  width: 6rem;
 }

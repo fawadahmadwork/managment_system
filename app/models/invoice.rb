@@ -3,7 +3,7 @@ class Invoice < ApplicationRecord
   include AASM
   attr_accessor :start_date_filter, :end_date_filter
 
-  enum status: { initiated: 0, invoiced: 1, disbursed: 2, received: 3, canceled: 4, wont_proceed: 5 }
+  enum status: { initiated: 0, invoiced: 1, disbursed: 2, received: 3, canceled: 4, wont_pay: 5 }
 
   aasm column: :status, no_direct_assignment: true, enum: true do
     state :initiated, initial: true
@@ -11,7 +11,7 @@ class Invoice < ApplicationRecord
     state :disbursed
     state :received
     state :canceled
-    state :wont_proceed
+    state :wont_pay
 
     event :invoiced do
       transitions from: [:initiated], to: :invoiced
@@ -29,8 +29,8 @@ class Invoice < ApplicationRecord
       transitions from: [:initiated, :invoiced, :disbursed], to: :canceled
     end
 
-    event :wont_proceed do
-      transitions from: [:initiated, :invoiced, :disbursed], to: :wont_proceed
+    event :wont_pay do
+      transitions from: [:initiated, :invoiced, :disbursed], to: :wont_pay
     end
   end
 
